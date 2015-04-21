@@ -1,0 +1,145 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#34495e"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/ShowOnLockScreen"
+        android:textColor="#FFFFFF"
+        android:id="@+id/checkBox"
+        android:textSize="17sp"
+        android:checked="true"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/LockScreenSettings"
+        android:textSize="21sp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/textView"
+        android:gravity="center" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="@string/ToggleNotification"
+        android:textColor="#34495e"
+        android:id="@+id/button"
+        android:textSize="17sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:textAllCaps="false" />
+
+    <!--<ExpandableListView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/expandableListView"-->
+    <!--android:textColor="#FFFFFF"/>-->
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/ShowWindGust"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:id="@+id/checkBox3"
+        android:checked="true"
+        android:layout_below="@+id/checkBox4"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/ShowWindSpeed"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:id="@+id/checkBox2"
+        android:checked="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/checkBox"
+        />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/ShowWindDirection"
+        android:textColor="#FFFFFF"
+        android:id="@+id/checkBox4"
+        android:checked="true"
+        android:textSize="17sp"
+        android:layout_below="@+id/checkBox2"
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/radioGroup"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:textSize="17sp"
+        android:text="@string/Temperature"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/button"
+        android:gravity="bottom">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Temperature Metrics"
+            android:textColor="#FFFFFF"
+            android:textSize="19sp"
+            android:id="@+id/textView3"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_below="@+id/checkBox2" />
+
+        <RadioButton
+            android:id="@+id/temperatureC"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="17sp"
+            android:text="@string/Celsius"
+            android:textColor="#FFFFFF"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/temperatureF"
+            android:layout_width="fill_parent"
+            android:text="@string/Fahrenheit"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:layout_height="50dp"
+            android:layout_weight="0.04" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/editText"
+        android:layout_below="@+id/checkBox3"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:layout_marginLeft="29dp"
+        android:text="@string/EnterLocation" />
+
+</RelativeLayout>
