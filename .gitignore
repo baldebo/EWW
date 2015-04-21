@@ -38,6 +38,7 @@ gen-external-apklibs
 .idea/datasources.xml
 .idea/dataSources.ids
 .idea/modules.xml
+.idea/libraries
 *.iml
 
 # Mac OS X clutter
