@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Weather Warning</string>
+    <string name="title_activity_main_widget">MainWidget</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="wind_direction">Wind Direction</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="wind_gust">Wind Gust</string>
+    <string name="location">Location</string>
 </resources>
