@@ -29,4 +29,5 @@
     <string name="favoritesbutton">favoritesbutton</string>
     <string name="informationbutton">informationbutton</string>
     <string name="helpbutton">helpbutton</string>
+    <string name="logotext">Early Weather Warning</string>
 </resources>
