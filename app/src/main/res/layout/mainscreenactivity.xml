@@ -38,7 +38,8 @@
         android:contentDescription="@string/searchbutton"
         android:layout_above="@+id/textView7"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="38dp" />
+        android:layout_marginStart="38dp"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -47,7 +48,8 @@
         android:background="@android:drawable/ic_menu_manage"
         android:contentDescription="@string/settingsbutton"
         android:layout_above="@+id/textView7"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -57,7 +59,8 @@
         android:layout_marginStart="38dp"
         android:contentDescription="@string/mapbutton"
         android:layout_above="@+id/textView12"
-        android:layout_toEndOf="@+id/textView11" />
+        android:layout_toEndOf="@+id/textView11"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -66,7 +69,8 @@
         android:background="@android:drawable/ic_menu_myplaces"
         android:contentDescription="@string/favoritesbutton"
         android:layout_alignTop="@+id/imageButton5"
-        android:layout_alignStart="@+id/textView7" />
+        android:layout_alignStart="@+id/textView7"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -75,7 +79,8 @@
         android:background="@android:drawable/ic_menu_info_details"
         android:contentDescription="@string/informationbutton"
         android:layout_alignTop="@+id/imageButton3"
-        android:layout_alignStart="@+id/imageButton2" />
+        android:layout_alignStart="@+id/imageButton2"
+        android:clickable="true" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -84,7 +89,8 @@
         android:background="@android:drawable/ic_menu_mapmode"
         android:layout_alignTop="@+id/imageButton2"
         android:layout_alignStart="@+id/imageButton3"
-        android:contentDescription="@string/helpbutton" />
+        android:contentDescription="@string/helpbutton"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
