@@ -155,7 +155,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@mipmap/logo"
-        android:contentDescription="@string/logo"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/textView6" />
 
