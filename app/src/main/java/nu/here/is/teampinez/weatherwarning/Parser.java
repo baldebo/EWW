@@ -47,7 +47,8 @@ public class Parser extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String v) {
         progressDialog.dismiss();
-        Log.e("Post Execute", v);
+        //TODO Remove debug logging
+        Log.d("Post Execute", v);
     }
 
     private String getJson(int timeout) {
@@ -67,6 +68,7 @@ public class Parser extends AsyncTask<String, Void, String> {
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
+            //TODO Make this non-static.
             writer.write(params(SearchActivity.authid, 320011, 6398983, 10000));
 
             writer.flush();
@@ -86,9 +88,6 @@ public class Parser extends AsyncTask<String, Void, String> {
                         sb.append(line).append("\n");
                     }
                     br.close();
-
-                    // Log.i("Response", sb.toString());
-
                     return sb.toString();
             }
 
@@ -111,11 +110,15 @@ public class Parser extends AsyncTask<String, Void, String> {
         sb.append("<REQUEST>");
         sb.append("<LOGIN authenticationkey='").append(authid).append("' />");
         sb.append("<QUERY objecttype='WeatherStation'>");
+
+        //TODO Change from SWEREF
         sb.append("<FILTER>").append("<WITHIN name='Geometry.SWEREF99TM' shape='center' value='").append(lat).append(" ").append(lon).append("' radius='").append(radius).append("'").append("/></FILTER>");
+
         sb.append("<INCLUDE>Name</INCLUDE>");
         sb.append("</QUERY></REQUEST>");
 
-        Log.i("Request", sb.toString());
+        //TODO Remove debug logging
+        Log.d("Request", sb.toString());
 
         return sb.toString();
     }
