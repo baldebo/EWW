@@ -7,11 +7,16 @@ import android.view.MenuItem;
 
 
 public class SearchActivity extends Activity {
+    final static String authid = "5fe4551a599447929a301bc183b83a26";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Parser p = new Parser();
+        p.execute();
+
     }
 
 
