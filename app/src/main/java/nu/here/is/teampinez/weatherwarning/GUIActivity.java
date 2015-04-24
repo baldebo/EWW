@@ -1,12 +1,12 @@
 package nu.here.is.teampinez.weatherwarning;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
 
-public class GUIActivity extends ActionBarActivity {
+public class GUIActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,5 +14,8 @@ public class GUIActivity extends ActionBarActivity {
         setContentView(R.layout.mainscreenactivity);
     }
 
-
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
 }
