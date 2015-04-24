@@ -1,5 +1,7 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,18 +21,36 @@ import java.util.logging.Logger;
 /**
  * Created by max on 2015-04-24.
  */
-public class Parser extends AsyncTask<Void, String, String> {
+public class Parser extends AsyncTask<String, Void, String> {
+
+    private ProgressDialog progressDialog;
+
+    Parser(Activity activity) {
+        super();
+        progressDialog = new ProgressDialog(activity);
+    }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected void onPreExecute() {
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("Loading..");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setProgress(0);
+        progressDialog.show();
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
         return getJson(500);
     }
 
-    protected void onPostExecute(Void v) {
-
+    @Override
+    protected void onPostExecute(String v) {
+        progressDialog.dismiss();
+        Log.e("Post Execute", v);
     }
 
-    String getJson(int timeout) {
+    private String getJson(int timeout) {
         HttpURLConnection c = null;
         try {
             URL url = new URL("http://api.trafikinfo.trafikverket.se/beta/data.json");
@@ -46,7 +66,9 @@ public class Parser extends AsyncTask<Void, String, String> {
 
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
             writer.write(params(SearchActivity.authid, 320011, 6398983, 10000));
+
             writer.flush();
             writer.close();
             os.close();
@@ -65,7 +87,7 @@ public class Parser extends AsyncTask<Void, String, String> {
                     }
                     br.close();
 
-                    Log.i("Response", sb.toString());
+                    // Log.i("Response", sb.toString());
 
                     return sb.toString();
             }
