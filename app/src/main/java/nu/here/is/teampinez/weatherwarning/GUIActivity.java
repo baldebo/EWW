@@ -14,7 +14,7 @@ public class GUIActivity extends Activity {
         setContentView(R.layout.mainscreenactivity);
     }
 
-    public void sendMessage(View view) {
+    public void openSearch(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }

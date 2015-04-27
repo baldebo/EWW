@@ -16,7 +16,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="38dp"
         android:clickable="true"
-        android:onClick="sendMessage" />
+        android:onClick="openSearch" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
