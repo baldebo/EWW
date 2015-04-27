@@ -116,8 +116,14 @@ public class Parser extends AsyncTask<String, Void, String> {
          */
         sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(lon).append(" ").append(lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
 
+        /*
+         * More datas?
+         */
+        sb.append("<INCLUDE>Measurement.MeasureTime</INCLUDE>");
         sb.append("<INCLUDE>Name</INCLUDE>");
         sb.append("<INCLUDE>Measurement.Air.Temp</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Road.Temp</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Wind.Force</INCLUDE>");
         sb.append("</QUERY></REQUEST>");
 
         //TODO Remove debug logging
