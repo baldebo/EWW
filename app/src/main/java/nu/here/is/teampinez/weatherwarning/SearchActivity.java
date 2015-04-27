@@ -34,7 +34,8 @@ public class SearchActivity extends Activity {
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
 
-                Log.d("JSON Station >", station.getString("Name"));
+                Log.d("JSON Station > ", station.getString("Name"));
+                Log.d("JSON Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
             }
 
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
