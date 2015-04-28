@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,14 +12,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- * Created by max on 2015-04-24.
- */
 public class Parser extends AsyncTask<String, Void, String> {
 
     private ProgressDialog progressDialog;

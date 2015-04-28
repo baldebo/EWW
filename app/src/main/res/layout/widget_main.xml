@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:id="@+id/locationBtn"
+        android:clickable="true"
+        android:background="#ff3498db"
+        android:layout_margin="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:text="@string/wind_direction"
+            android:id="@+id/windDirectionBtn"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="#ff3498db"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:text="@string/wind_speed"
+            android:id="@+id/windSpeedBtn"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="#c0392b"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:text="@string/wind_gust"
+            android:id="@+id/windGustBtn"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="#ff3498db"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:text="@string/road_temperature"
+            android:id="@+id/roadTemperatureBtn"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="#ff3498db"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+</LinearLayout>

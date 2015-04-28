@@ -34,5 +34,12 @@
     // SETTINGS ACTIVITY //
     <string name="title_activity_settings">SettingsActivity</string>
 
+    // WIDGET ACTIVITY //
+    <string name="location">Location</string>
+    <string name="wind_direction">Wind Direction</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="wind_gust">Wind Gust</string>
+    <string name="road_temperature">Road Temperature</string>
+
     <string name="hello_world">Hello world!</string>
 </resources>
