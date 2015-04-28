@@ -28,6 +28,7 @@ import android.widget.RemoteViews;
             views.setOnClickPendingIntent(R.id.roadTemperatureBtn, pendingIntent);
 
 
+
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
