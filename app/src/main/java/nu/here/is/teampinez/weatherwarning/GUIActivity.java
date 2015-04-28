@@ -13,8 +13,6 @@ import java.text.DecimalFormat;
 public class GUIActivity extends Activity {
 
     TextView theTextView;
-
-
     MyCurrentLocationListener gps;
 
     @Override
@@ -30,10 +28,13 @@ public class GUIActivity extends Activity {
                 if (gps.canGetLocation()) {
                     double locLat = gps.getLatitude();
                     double locLon = gps.getLongitude();
+                    double locLatTemp = locLat * 100000;
+                    double locLonTemp = locLon * 100000;
+                    int locLatInt = (int) locLatTemp;
+                    int locLonInt = (int) locLonTemp;
+                    DecimalFormat df = new DecimalFormat("#");
 
-                    DecimalFormat df = new DecimalFormat("#.000");
-
-                    theTextView.setText("Your location is\nLat: " + df.format(locLat) + "\nLong: " + df.format(locLon));
+                    theTextView.setText("Your location is\nLat: " + locLatInt + "\nLong: " + locLonInt);
                 }
             }
         });

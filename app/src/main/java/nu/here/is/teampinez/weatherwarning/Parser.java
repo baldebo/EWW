@@ -24,9 +24,11 @@ import java.util.logging.Logger;
 public class Parser extends AsyncTask<String, Void, String> {
 
     private ProgressDialog progressDialog;
+    MyCurrentLocationListener gps;
 
     Parser(Activity activity) {
         super();
+        gps = new MyCurrentLocationListener(activity);
         progressDialog = new ProgressDialog(activity);
     }
 
@@ -69,7 +71,9 @@ public class Parser extends AsyncTask<String, Void, String> {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
             //TODO Make this non-static.
-            writer.write(params(SearchActivity.authid, 320011, 6398983, 10000));
+            double locLat = gps.getLatitude();
+            double locLon = gps.getLongitude();
+            writer.write(params(SearchActivity.authid, locLat, locLon, "0,1"));
 
             writer.flush();
             writer.close();
@@ -105,16 +109,21 @@ public class Parser extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    private String params(String authid, int lat, int lon, int radius) {
+    private String params(String authid, double lat, double lon, String radius) {
         StringBuilder sb = new StringBuilder();
         sb.append("<REQUEST>");
         sb.append("<LOGIN authenticationkey='").append(authid).append("' />");
         sb.append("<QUERY objecttype='WeatherStation'>");
 
-        //TODO Change from SWEREF
-        sb.append("<FILTER>").append("<WITHIN name='Geometry.SWEREF99TM' shape='center' value='").append(lat).append(" ").append(lon).append("' radius='").append(radius).append("'").append("/></FILTER>");
+        /*
+         * Values lat and long position will be swapped sometime soon in the API.
+         */
+        sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(lon).append(" ").append(lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
 
         sb.append("<INCLUDE>Name</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Air.Temp</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Road.Temp</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Wind.Force</INCLUDE>");
         sb.append("</QUERY></REQUEST>");
 
         //TODO Remove debug logging
