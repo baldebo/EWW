@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#ff272a2b"
+    android:id="@+id/relativeLayout">
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton"
+        android:background="@android:drawable/ic_menu_search"
+        android:contentDescription="@string/searchbutton"
+        android:layout_above="@+id/textView7"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="38dp"
+        android:clickable="true"
+        android:onClick="sendMessage" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton2"
+        android:background="@android:drawable/ic_menu_manage"
+        android:contentDescription="@string/settingsbutton"
+        android:clickable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView6"
+        android:layout_alignStart="@+id/textView8" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton3"
+        android:background="@android:drawable/ic_menu_help"
+        android:layout_marginStart="38dp"
+        android:contentDescription="@string/mapbutton"
+        android:layout_above="@+id/textView12"
+        android:layout_toEndOf="@+id/textView11"
+        android:clickable="true" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton4"
+        android:background="@android:drawable/ic_menu_myplaces"
+        android:contentDescription="@string/favoritesbutton"
+        android:layout_alignTop="@+id/imageButton5"
+        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/textView7"
+        android:clickable="true" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton5"
+        android:background="@android:drawable/ic_menu_info_details"
+        android:contentDescription="@string/informationbutton"
+        android:clickable="true"
+        android:layout_above="@+id/textView11"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/imageButton6"
+        android:background="@android:drawable/ic_menu_mapmode"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignStart="@+id/imageButton3"
+        android:contentDescription="@string/helpbutton"
+        android:clickable="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search"
+        android:id="@+id/textView7"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_above="@+id/imageButton4"
+        android:layout_alignStart="@+id/imageButton"
+        android:layout_alignEnd="@+id/imageButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:id="@+id/textView8"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_below="@+id/imageButton2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map"
+        android:id="@+id/textView9"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_alignStart="@+id/imageButton6"
+        android:layout_alignEnd="@+id/imageButton6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favorites"
+        android:id="@+id/textView10"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imageButton4"
+        android:layout_marginBottom="42dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/information"
+        android:id="@+id/textView11"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView10"
+        android:layout_alignStart="@+id/imageButton5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help"
+        android:id="@+id/textView12"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:layout_alignTop="@+id/textView11"
+        android:layout_alignStart="@+id/imageButton3"
+        android:layout_alignEnd="@+id/imageButton3" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@mipmap/logo"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/textView6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_above="@+id/imageButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logotext"
+        android:id="@+id/textView13"
+        android:textColor="#ffffffff"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:minHeight="60sp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
