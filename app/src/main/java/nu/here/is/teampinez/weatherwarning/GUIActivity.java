@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 
 public class GUIActivity extends Activity {
-    private static ImageButton imgButton_search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +14,7 @@ public class GUIActivity extends Activity {
     }
 
     public void openSettings(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
