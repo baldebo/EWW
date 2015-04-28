@@ -30,4 +30,9 @@
     <string name="informationbutton">informationbutton</string>
     <string name="helpbutton">helpbutton</string>
     <string name="logotext">Early Weather Warning</string>
+
+    // SETTINGS ACTIVITY //
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
