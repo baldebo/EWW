@@ -14,20 +14,11 @@ public class GUIActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainscreenactivity);
-        OnClickButtonListener();
     }
 
-    public void OnClickButtonListener () {
-        imgButton_search = (ImageButton)findViewById(R.id.imgBtnSettings);
-        imgButton_search.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent("nu.here.is.teampinez.weatherwarning.SettingsActivity");
-                        startActivity(intent);
-                    }
-                }
-        );
+    public void openSettings(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
     }
 
     public void openSearch(View view) {

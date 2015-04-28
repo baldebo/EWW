@@ -26,7 +26,8 @@
         android:contentDescription="@string/settingsbutton"
         android:layout_above="@+id/textSearch"
         android:layout_centerHorizontal="true"
-        android:clickable="true" />
+        android:clickable="true"
+        android:onClick="openSettings" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
