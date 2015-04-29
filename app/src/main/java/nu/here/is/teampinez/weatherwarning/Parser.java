@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,14 +12,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- * Created by max on 2015-04-24.
- */
 public class Parser extends AsyncTask<String, Void, String> {
 
     private ProgressDialog progressDialog;
@@ -71,9 +66,13 @@ public class Parser extends AsyncTask<String, Void, String> {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
             //TODO Make this non-static.
+<<<<<<< HEAD
             double locLat = gps.getLatitude();
             double locLon = gps.getLongitude();
             writer.write(params(SearchActivity.authid, locLat, locLon, "0,1"));
+=======
+            writer.write(params(SearchActivity.authid, 57.7073, 11.9388, "0,1"));
+>>>>>>> a78d11cb6fc9f50579908e8e7c7a60575207774d
 
             writer.flush();
             writer.close();
@@ -120,6 +119,10 @@ public class Parser extends AsyncTask<String, Void, String> {
          */
         sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(lon).append(" ").append(lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
 
+        /*
+         * More datas?
+         */
+        sb.append("<INCLUDE>Measurement.MeasureTime</INCLUDE>");
         sb.append("<INCLUDE>Name</INCLUDE>");
         sb.append("<INCLUDE>Measurement.Air.Temp</INCLUDE>");
         sb.append("<INCLUDE>Measurement.Road.Temp</INCLUDE>");

@@ -47,10 +47,17 @@ public class SearchActivity extends Activity {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
+<<<<<<< HEAD
                 stationName[i] = station.getString("Name");
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 //Log.d("JSON Station >", station.getString("Name"));
+=======
+
+                Log.d("JSON Station > ", station.getString("Name"));
+                Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
+                Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
+>>>>>>> a78d11cb6fc9f50579908e8e7c7a60575207774d
             }
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override

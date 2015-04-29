@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 
 
-public class GUIActivity extends Activity {
 
+<<<<<<< HEAD
     TextView theTextView;
     MyCurrentLocationListener gps;
 
@@ -22,6 +22,10 @@ public class GUIActivity extends Activity {
     int locLatInt;
     int locLonInt;
 
+=======
+
+public class GUIActivity extends Activity {
+>>>>>>> a78d11cb6fc9f50579908e8e7c7a60575207774d
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +49,13 @@ public class GUIActivity extends Activity {
         theTextView = (TextView) findViewById(R.id.textView13);
     }
 
-    public void sendMessage(View view) {
+
+    public void openSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openSearch(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
