@@ -15,7 +15,7 @@
     <string name="show_on_lockscreen">Show on Lockscreen</string>
     <string name="metrics">Metrics</string>
     <string name="toggle_change">Toggle Changes</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings Activity</string>
 
 
     //MAIN SCREEN //
@@ -37,10 +37,13 @@
 
     // HELP SCREEN //
     <string name="textheader">Testing 1234567</string>
+    <string name="title_activity_help">Help Activity</string>
+
 
     // FAVORITE SCREEN //
     <string name="addfavorite">Add to favorites</string>
     <string name="texthint">Enter weatherstation</string>
+    <string name="title_activity_favorites">Favorites Activity</string>
 
 
 
@@ -51,9 +54,8 @@
     <string name="wind_speed">Wind Speed</string>
     <string name="wind_gust">Wind Gust</string>
     <string name="road_temperature">Road Temperature</string>
+    <string name="title_activity_map">Map Activity</string>
+ 
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_help">HelpActivity</string>
-    <string name="title_activity_favorites">FavoritesActivity</string>
-    <string name="title_activity_map">Map</string>
+
 </resources>
