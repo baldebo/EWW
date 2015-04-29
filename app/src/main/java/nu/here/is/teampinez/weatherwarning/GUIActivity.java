@@ -6,6 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+//  MAP IMPORTS //
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
@@ -52,6 +63,21 @@ public class GUIActivity extends Activity {
 
     public void openSearch(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void openHelp(View view) {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
+    public void openFavorites(View view) {
+        Intent intent = new Intent(this, FavoritesActivity.class);
+        startActivity(intent);
+    }
+
+    public void openMap(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 

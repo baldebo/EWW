@@ -13,21 +13,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Metrics"
-        android:textSize="30dp"
+        android:text="@string/metrics"
+        android:textSize="30sp"
         android:textColor="#ff3490e8"
-        android:id="@+id/textView"
+        android:id="@+id/textMetrics"
         android:gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:phoneNumber="false" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:text="Toggle Changes"
+        android:text="@string/toggle_change"
         android:textColor="#34495e"
-        android:id="@+id/button"
+        android:id="@+id/btnToggleChanges"
         android:textSize="17sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -40,19 +39,12 @@
     <!--android:id="@+id/expandableListView"-->
     <!--android:textColor="#FFFFFF"/>-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fahrenheit"
-        android:id="@+id/checkBox"
-        android:layout_below="@+id/textView"
+        android:id="@+id/chkBoxFahrenheit"
+        android:layout_below="@+id/textMetrics"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff" />
@@ -61,8 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/miles"
-        android:id="@+id/checkBox2"
-        android:layout_below="@+id/checkBox"
+        android:id="@+id/chkBoxMiles"
+        android:layout_below="@+id/chkBoxFahrenheit"
         android:layout_alignParentStart="true"
         android:checked="false"
         android:textSize="14sp"
@@ -72,8 +64,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/kilometers"
-        android:id="@+id/checkBox3"
-        android:layout_below="@+id/checkBox"
+        android:id="@+id/chkBoxKilometers"
+        android:layout_below="@+id/chkBoxFahrenheit"
         android:layout_alignParentEnd="true"
         android:checked="true"
         android:textSize="14sp"
@@ -83,11 +75,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/celsius"
-        android:id="@+id/checkBox4"
+        android:id="@+id/chkBoxCelcius"
         android:checked="true"
         android:textSize="14sp"
-        android:layout_below="@+id/textView"
-        android:layout_alignStart="@+id/checkBox3"
+        android:layout_below="@+id/textMetrics"
+        android:layout_alignStart="@+id/chkBoxKilometers"
         android:textColor="#ffffffff" />
 
     <TextView
@@ -96,43 +88,42 @@
         android:text="@string/wind"
         android:textSize="30sp"
         android:textColor="#ff3490e8"
-        android:id="@+id/textView3"
+        android:id="@+id/textWind"
         android:gravity="center"
-        android:layout_below="@+id/checkBox2"
+        android:layout_below="@+id/chkBoxMiles"
         android:layout_centerHorizontal="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/windspeed"
-        android:id="@+id/checkBox5"
+        android:id="@+id/chkBoxWindspeed"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/textView3"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_below="@+id/textWind" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gusts"
-        android:id="@+id/checkBox6"
+        android:id="@+id/chkBoxGusts"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/textWind"
         android:layout_centerHorizontal="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/direction"
-        android:id="@+id/checkBox7"
+        android:id="@+id/chkBoxDirection"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3" />
+        android:layout_below="@+id/textWind"
+        android:layout_alignEnd="@+id/textWind" />
 
     <TextView
         android:layout_width="match_parent"
@@ -140,31 +131,31 @@
         android:text="@string/notifications"
         android:textSize="30sp"
         android:textColor="#ff3490e8"
-        android:id="@+id/textView4"
+        android:id="@+id/textNotifications"
         android:gravity="center"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/toggle_notifications"
-        android:id="@+id/checkBox8"
+        android:id="@+id/chkBoxToggleNotifications"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/textView2"
+        android:layout_alignTop="@+id/chkBoxShowOnLockscreen"
         android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_on_lockscreen"
-        android:id="@+id/checkBox9"
+        android:id="@+id/chkBoxShowOnLockscreen"
         android:checked="false"
         android:textSize="14sp"
         android:textColor="#ffffffff"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/textNotifications"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

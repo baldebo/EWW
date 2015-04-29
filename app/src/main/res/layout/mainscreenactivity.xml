@@ -39,7 +39,8 @@
         android:contentDescription="@string/mapbutton"
         android:layout_above="@+id/textHelp"
         android:layout_toEndOf="@+id/textInformation"
-        android:clickable="true" />
+        android:clickable="true"
+        android:onClick="openHelp" />
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -50,7 +51,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@+id/imgBtnInformation"
         android:layout_alignStart="@+id/textSearch"
-        android:clickable="true" />
+        android:clickable="true"
+        android:onClick="openFavorites"/>
 
     <ImageButton
         android:layout_width="@android:dimen/notification_large_icon_width"
@@ -71,7 +73,8 @@
         android:layout_alignTop="@+id/imgBtnSettings"
         android:layout_alignStart="@+id/imgBtnHelp"
         android:contentDescription="@string/helpbutton"
-        android:clickable="true" />
+        android:clickable="true"
+        android:onClick="openMap"/>
 
     <TextView
         android:layout_width="wrap_content"
