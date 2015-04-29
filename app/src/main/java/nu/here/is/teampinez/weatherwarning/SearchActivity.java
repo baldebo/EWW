@@ -34,9 +34,9 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.activity_search);
         Button btnSearch = (Button) findViewById(R.id.search_button);
         Parser p = new Parser(SearchActivity.this);
-        /*try {
+        try {
             //TODO Try to make nicer!
-            /*JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+            JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
 
             Log.d("JSON", jsonArray.toString());
             final String stationName[] = new String[jsonArray.length()];
@@ -50,25 +50,27 @@ public class SearchActivity extends Activity {
                 stationName[i] = station.getString("Name");
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 //Log.d("JSON Station >", station.getString("Name"));
 
                 Log.d("JSON Station > ", station.getString("Name"));
                 Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
                 Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
+                Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
 
             }
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //txtStatName.setText("Name: " + stationName[0]);
-                    //txtAirTemp.setText("Air Temperature: " + airTemp[0]);
-                    //txtRdTemp.setText("Road Temperature: " + roadTemp[0]);
-                    //txtWndSpd.setText("Wind Speed: " + windSpd[0]);
+                    txtStatName.setText("Name: " + stationName[0]);
+                    txtAirTemp.setText("Air Temperature: " + airTemp[0] + "°C");
+                    txtRdTemp.setText("Road Temperature: " + roadTemp[0] + "°C");
+                    txtWndSpd.setText("Wind Speed: " + windSpd[0] + " m/s");
                 }
             });
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
 
         txtStatName = (TextView) findViewById(R.id.name);
         txtAirTemp = (TextView) findViewById(R.id.temp_air);
