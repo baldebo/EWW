@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 
 
+public class GUIActivity extends Activity {
 
-<<<<<<< HEAD
     TextView theTextView;
     MyCurrentLocationListener gps;
 
@@ -22,10 +21,6 @@ import java.text.DecimalFormat;
     int locLatInt;
     int locLonInt;
 
-=======
-
-public class GUIActivity extends Activity {
->>>>>>> a78d11cb6fc9f50579908e8e7c7a60575207774d
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +29,7 @@ public class GUIActivity extends Activity {
         if(gps.canGetLocation()){
             updateCoordinates();
         }
-        ImageButton ourButton = (ImageButton) findViewById(R.id.imageButton5);
+        ImageButton ourButton = (ImageButton) findViewById(R.id.imgBtnInformation);
         ourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +41,7 @@ public class GUIActivity extends Activity {
             }
         });
 
-        theTextView = (TextView) findViewById(R.id.textView13);
+        theTextView = (TextView) findViewById(R.id.textHeader);
     }
 
 

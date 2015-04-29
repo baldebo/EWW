@@ -66,14 +66,10 @@ public class Parser extends AsyncTask<String, Void, String> {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
             //TODO Make this non-static.
-<<<<<<< HEAD
+
             double locLat = gps.getLatitude();
             double locLon = gps.getLongitude();
             writer.write(params(SearchActivity.authid, locLat, locLon, "0,1"));
-=======
-            writer.write(params(SearchActivity.authid, 57.7073, 11.9388, "0,1"));
->>>>>>> a78d11cb6fc9f50579908e8e7c7a60575207774d
-
             writer.flush();
             writer.close();
             os.close();
