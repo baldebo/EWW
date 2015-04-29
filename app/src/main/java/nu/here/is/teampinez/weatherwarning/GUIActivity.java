@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 
 
+
+
 public class GUIActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainscreenactivity);
     }
+
 
     public void openSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
