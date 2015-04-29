@@ -47,10 +47,12 @@
 
     // WIDGET ACTIVITY //
     <string name="location">Location</string>
-    <string name="wind_direction">Wind Direction</string>
-    <string name="wind_speed">Wind Speed</string>
-    <string name="wind_gust">Wind Gust</string>
-    <string name="road_temperature">Road Temperature</string>
+    <string name="windDirection">Wind Direction</string>
+    <string name="windSpeed">Wind Speed</string>
+    <string name="windGust">Wind Gust</string>
+    <string name="roadTemperature">Road Temperature</string>
+    <string name="refresh">Refresh</string>
+    <string name="stationName">Station Name</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">HelpActivity</string>
