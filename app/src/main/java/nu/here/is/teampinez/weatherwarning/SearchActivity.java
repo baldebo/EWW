@@ -43,13 +43,13 @@ public class SearchActivity extends Activity {
             final String airTemp[] = new String[jsonArray.length()];
             final String roadTemp[] = new String[jsonArray.length()];
             final String windSpd[] = new String[jsonArray.length()];
+            boolean windError = false;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
                 stationName[i] = station.getString("Name");
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 //Log.d("JSON Station >", station.getString("Name"));
             }
             btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,7 @@ public class SearchActivity extends Activity {
                     txtStatName.setText("Name: " + stationName[0]);
                     txtAirTemp.setText("Air Temperature: " + airTemp[0]);
                     txtRdTemp.setText("Road Temperature: " + roadTemp[0]);
-                    txtWndSpd.setText("Wind Speed: " + windSpd[0]);
+                    //txtWndSpd.setText("Wind Speed: " + windSpd[0]);
                 }
             });
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {

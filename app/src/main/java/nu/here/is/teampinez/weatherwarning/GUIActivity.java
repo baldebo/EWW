@@ -15,25 +15,28 @@ public class GUIActivity extends Activity {
     TextView theTextView;
     MyCurrentLocationListener gps;
 
+    double locLat;
+    double locLon;
+    double locLonTemp;
+    double locLatTemp;
+    int locLatInt;
+    int locLonInt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainscreenactivity);
-
+        gps = new MyCurrentLocationListener(GUIActivity.this);
+        if(gps.canGetLocation()){
+            updateCoordinates();
+        }
         ImageButton ourButton = (ImageButton) findViewById(R.id.imageButton5);
         ourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gps = new MyCurrentLocationListener(GUIActivity.this);
                 if (gps.canGetLocation()) {
-                    double locLat = gps.getLatitude();
-                    double locLon = gps.getLongitude();
-                    double locLatTemp = locLat * 100000;
-                    double locLonTemp = locLon * 100000;
-                    int locLatInt = (int) locLatTemp;
-                    int locLonInt = (int) locLonTemp;
-                    DecimalFormat df = new DecimalFormat("#");
-
+                    updateCoordinates();
+                    convertCoordsToInt();
                     theTextView.setText("Your location is\nLat: " + locLatInt + "\nLong: " + locLonInt);
                 }
             }
@@ -46,4 +49,18 @@ public class GUIActivity extends Activity {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
+
+    public void updateCoordinates() {
+        locLat = gps.getLatitude();
+        locLon = gps.getLongitude();
+    }
+
+    public void convertCoordsToInt() {
+        locLonTemp = locLon * 100000;
+        locLatTemp = locLat * 100000;
+        locLatInt = (int) locLatTemp;
+        locLonInt = (int) locLonTemp;
+    }
+
+
 }

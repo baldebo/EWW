@@ -56,7 +56,7 @@ public class Parser extends AsyncTask<String, Void, String> {
     private String getJson(int timeout) {
         HttpURLConnection c = null;
         try {
-            URL url = new URL("http://api.trafikinfo.trafikverket.se/beta/data.json");
+            URL url = new URL("http://api.trafikinfo.trafikverket.se/v1/data.json");
             c = (HttpURLConnection) url.openConnection();
             c.setRequestMethod("POST");
             c.setUseCaches(false);
