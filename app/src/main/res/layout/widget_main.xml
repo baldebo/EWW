@@ -55,7 +55,9 @@
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/windDirection"
-            android:id="@+id/windDirectionBtn" />
+            android:id="@+id/windDirectionBtn"
+            android:padding="6dp"
+            android:elegantTextHeight="false" />
 
         <TextView
             android:layout_weight="1"
@@ -67,7 +69,9 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/windSpeed"
-            android:id="@+id/windSpeedBtn" />
+            android:id="@+id/windSpeedBtn"
+            android:padding="6dp"
+            android:elegantTextHeight="false" />
 
         <TextView
             android:layout_weight="1"
@@ -79,7 +83,8 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/windGust"
-            android:id="@+id/windGustBtn" />
+            android:id="@+id/windGustBtn"
+            android:padding="5dp" />
 
         <TextView
             android:layout_weight="1"
@@ -91,7 +96,9 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/roadTemperature"
-            android:id="@+id/roadTemperatureBtn" />
+            android:id="@+id/roadTemperatureBtn"
+            android:padding="5dp"
+            android:elegantTextHeight="false" />
     </LinearLayout>
 
 </LinearLayout>
