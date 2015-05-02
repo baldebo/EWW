@@ -39,6 +39,7 @@ public class GUIActivity extends Activity {
         gps = new MyCurrentLocationListener(GUIActivity.this);
         if(gps.canGetLocation()){
             updateCoordinates();
+            convertCoordsToInt();
         }
         ImageButton ourButton = (ImageButton) findViewById(R.id.imgBtnInformation);
         ourButton.setOnClickListener(new View.OnClickListener() {

@@ -25,7 +25,7 @@
             android:id="@+id/stationNameBtn"
             android:layout_weight="0.50" />
 
-        <TextView
+        <Button
             android:layout_width="0px"
             android:clickable="true"
             android:background="#ff3498db"

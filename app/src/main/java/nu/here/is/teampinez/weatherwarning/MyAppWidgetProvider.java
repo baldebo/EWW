@@ -1,17 +1,19 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class MyAppWidgetProvider extends AppWidgetProvider {
-
-    TextView windSpeed;
-    TextView roadTemperature;
-    TextView stationNameText;
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
@@ -35,10 +33,6 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
         final int N = appWidgetIds.length;
 
 
-        TextView textRefresh = null;
-        Button refresh = (Button) findViewById(R.id.refresh);
-
-
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
             // Create an Intent to launch ExampleActivity
@@ -48,60 +42,27 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_main);
-            views.setOnClickPendingIntent(R.id.stationName, pendingIntent);
+            views.setOnClickPendingIntent(R.id.stationNameBtn, pendingIntent);
             views.setOnClickPendingIntent(R.id.windDirectionBtn, pendingIntent);
             views.setOnClickPendingIntent(R.id.windSpeedBtn, pendingIntent);
             views.setOnClickPendingIntent(R.id.windGustBtn, pendingIntent);
             views.setOnClickPendingIntent(R.id.roadTemperatureBtn, pendingIntent);
 
+            Intent intent2 = new Intent(context, WidgetAutoUpdater.class);
+            PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0, intent2, 0);
+
+            views.setOnClickPendingIntent(R.id.refreshBtn, pendingIntent2);
+
+            appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
+
+//            finish();
             //views.setTextViewText(R.id.windSpeedBtn, (CharSequence) txtWndSpd);
             //views.setTextViewText(R.id.roadTemperatureBtn, (CharSequence) txtRdTemp);
             //views.setTextViewText(R.id.stationName, (CharSequence) txtStatName);
 
 
 
-    public void onReceive(Context context, Intent intent){
-            Parser p = new Parser(MyAppWidgetProvider.this);
-            try {
-                //TODO Try to make nicer!
-                JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
 
-                Log.d("JSON", jsonArray.toString());
-                final String stationName[] = new String[jsonArray.length()];
-                final String airTemp[] = new String[jsonArray.length()];
-                final String roadTemp[] = new String[jsonArray.length()];
-                final String windSpd[] = new String[jsonArray.length()];
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject station = jsonArray.getJSONObject(i);
-                    stationName[i] = station.getString("Name");
-                    airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
-                    roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                    windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                    //Log.d("JSON Station >", station.getString("Name"));
-
-                    Log.d("JSON Station > ", station.getString("Name"));
-                    Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
-                    Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                    Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-
-                }
-
-                refresh.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        stationNameText.setText("Name: " + stationName[0]);
-                        roadTemperature.setText("Road Temperature: " + roadTemp[0] + "°C");
-                        windSpeed.setText("Wind Speed: " + windSpd[0] + " m/s");
-                    }
-                });
-            } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            stationNameText = (TextView) RemoteViews(R.id.stationNameBtn, (CharSequence) stationNameText);
-            roadTemperature = (TextView) findViewById(R.id.roadTemperatureBtn);
-            windSpeed = (TextView) findViewById(R.id.windSpeedBtn);
 
 
             //            final SearchActivity searchActivity = new SearchActivity();
@@ -127,14 +88,17 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
             //               // Tell the AppWidgetManager to perform an update on the current app widget
             //               appWidgetManager.updateAppWidget(appWidgetId, views);
-        }
+
         }
 
+        }
+
+
 //    Button refresh = (Button) RemoteViews(R.id.refresh);
-        TextView txtStatName;
-        TextView txtAirTemp;
-        TextView txtRdTemp;
-        TextView txtWndSpd;
+//        TextView txtStatName;
+//        TextView txtAirTemp;
+//        TextView txtRdTemp;
+//        TextView txtWndSpd;
 //    Parser p = new Parser(MyAppWidgetProvider.this);
 //    try {
 //        //TODO Try to make nicer!
@@ -172,10 +136,64 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 //    } catch (JSONException| TimeoutException| ExecutionException| InterruptedException e) {
 //        e.printStackTrace();
 
-
     }
 
-    }
+    class WidgetAutoUpdater extends Activity {
+
+        TextView txtStatName;
+        TextView txtRdTemp;
+        TextView txtWndSpd;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.widget_main);
+            Button refresh = (Button) findViewById(R.id.refreshBtn);
+            Parser p = new Parser(WidgetAutoUpdater.this);
+            try {
+                //TODO Try to make nicer!
+                JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+
+                Log.d("JSON", jsonArray.toString());
+                final String stationName[] = new String[jsonArray.length()];
+                final String airTemp[] = new String[jsonArray.length()];
+                final String roadTemp[] = new String[jsonArray.length()];
+                final String windSpd[] = new String[jsonArray.length()];
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject station = jsonArray.getJSONObject(i);
+                    stationName[i] = station.getString("Name");
+                    airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+                    roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                    windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                    //Log.d("JSON Station >", station.getString("Name"));
+
+                   // Log.d("JSON Station > ", station.getString("Name"));
+                   // Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
+                   // Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
+                   // Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
+
+                }
+                refresh.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        txtStatName.setText(stationName[0]);
+                        txtRdTemp.setText(roadTemp[0]);
+                        txtWndSpd.setText(windSpd[0]);
+                    }
+                });
+            } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            txtStatName = (TextView) findViewById(R.id.stationNameBtn);
+            txtRdTemp = (TextView) findViewById(R.id.roadTemperatureBtn);
+            txtWndSpd = (TextView) findViewById(R.id.windSpeedBtn);
+
+        }
+
+}
+
 
 //    txtStatName = (TextView) findViewById(R.id.name);
 //    txtAirTemp = (TextView) findViewById(R.id.temp_air);
