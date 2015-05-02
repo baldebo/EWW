@@ -3,7 +3,6 @@
         android:minWidth="250dp"
         android:minHeight="110dp"
         android:updatePeriodMillis="5000"
-        android:installLocation="preferExternal"
         android:resizeMode="horizontal|vertical"
         android:widgetCategory="home_screen|keyguard"
         android:layout_height="match_parent"
