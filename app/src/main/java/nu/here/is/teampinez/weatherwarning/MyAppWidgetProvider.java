@@ -53,7 +53,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
             views.setOnClickPendingIntent(R.id.refreshBtn, pendingIntent2);
 
-            appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
+            //appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
 
 //            finish();
             //views.setTextViewText(R.id.windSpeedBtn, (CharSequence) txtWndSpd);
@@ -144,7 +144,6 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
         TextView txtRdTemp;
         TextView txtWndSpd;
 
-        @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.widget_main);
