@@ -58,9 +58,9 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 
 //            finish();
-            //views.setTextViewText(R.id.windSpeedBtn, (CharSequence) txtWndSpd);
-            //views.setTextViewText(R.id.roadTemperatureBtn, (CharSequence) txtRdTemp);
-            //views.setTextViewText(R.id.stationName, (CharSequence) txtStatName);
+            //views.setTextViewText(R.id.windSpeedBtn, (CharSequence) txtWndSpd1);
+            //views.setTextViewText(R.id.roadTemperatureBtn, (CharSequence) txtRdTemp1);
+            //views.setTextViewText(R.id.stationName, (CharSequence) txtStatName1);
 
 
 
@@ -72,10 +72,10 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
             //   for (int i = 0; i < N; i++){
 
             //       RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.widget_main);
-            //       v.setTextViewText(R.id.roadTemperatureBtn, (CharSequence) searchActivity.txtRdTemp);
+            //       v.setTextViewText(R.id.roadTemperatureBtn, (CharSequence) searchActivity.txtRdTemp1);
             //       //v.setTextViewText(R.id.windDirectionBtn, (CharSequence) searchActivity.t);
-            //       v.setTextViewText(R.id.windSpeedBtn, (CharSequence) searchActivity.txtWndSpd);
-            //       //v.setTextViewText(R.id.windGustBtn, (CharSequence) searchActivity.txtRdTemp);
+            //       v.setTextViewText(R.id.windSpeedBtn, (CharSequence) searchActivity.txtWndSpd1);
+            //       //v.setTextViewText(R.id.windGustBtn, (CharSequence) searchActivity.txtRdTemp1);
             //       appWidgetManager.updateAppWidget(appWidgetId, views);
 
             //   }
@@ -97,10 +97,10 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 
 //    Button refresh = (Button) RemoteViews(R.id.refresh);
-//        TextView txtStatName;
-//        TextView txtAirTemp;
-//        TextView txtRdTemp;
-//        TextView txtWndSpd;
+//        TextView txtStatName1;
+//        TextView txtAirTemp1;
+//        TextView txtRdTemp1;
+//        TextView txtWndSpd1;
 //    Parser p = new Parser(MyAppWidgetProvider.this);
 //    try {
 //        //TODO Try to make nicer!
@@ -129,10 +129,10 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 //        btnSearch.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                txtStatName.setText("Name: " + stationName[0]);
-//                txtAirTemp.setText("Air Temperature: " + airTemp[0] + "°C");
-//                txtRdTemp.setText("Road Temperature: " + roadTemp[0] + "°C");
-//                txtWndSpd.setText("Wind Speed: " + windSpd[0] + " m/s");
+//                txtStatName1.setText("Name: " + stationName[0]);
+//                txtAirTemp1.setText("Air Temperature: " + airTemp[0] + "°C");
+//                txtRdTemp1.setText("Road Temperature: " + roadTemp[0] + "°C");
+//                txtWndSpd1.setText("Wind Speed: " + windSpd[0] + " m/s");
 //            }
 //        });
 //    } catch (JSONException| TimeoutException| ExecutionException| InterruptedException e) {
@@ -198,8 +198,8 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 }
 
 
-//    txtStatName = (TextView) findViewById(R.id.name);
-//    txtAirTemp = (TextView) findViewById(R.id.temp_air);
-//    txtRdTemp = (TextView) findViewById(R.id.temp_road);
-//    txtWndSpd = (TextView) findViewById(R.id.wind);
+//    txtStatName1 = (TextView) findViewById(R.id.name);
+//    txtAirTemp1 = (TextView) findViewById(R.id.temp_air);
+//    txtRdTemp1 = (TextView) findViewById(R.id.temp_road);
+//    txtWndSpd1 = (TextView) findViewById(R.id.wind);
 

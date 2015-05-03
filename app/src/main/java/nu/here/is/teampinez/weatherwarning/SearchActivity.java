@@ -12,9 +12,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -23,17 +21,38 @@ import java.util.concurrent.TimeoutException;
 public class SearchActivity extends Activity {
     final static String authid = "5fe4551a599447929a301bc183b83a26";
 
-    TextView txtStatName;
-    TextView txtAirTemp;
-    TextView txtRdTemp;
-    TextView txtWndSpd;
+    TextView txtStatName1;
+    TextView txtAirTemp1;
+    TextView txtRdTemp1;
+    TextView txtWndSpd1;
+    TextView txtStatName2;
+    TextView txtAirTemp2;
+    TextView txtRdTemp2;
+    TextView txtWndSpd2;
+
+    public boolean moreThanOne = false;
+    boolean firstPass = true;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Button btnSearch = (Button) findViewById(R.id.search_button);
         Parser p = new Parser(SearchActivity.this);
+
+        txtStatName1 = (TextView) findViewById(R.id.txtStation1);
+        txtAirTemp1 = (TextView) findViewById(R.id.txtAirTemp1);
+        txtRdTemp1 = (TextView) findViewById(R.id.txtRoadTemp1);
+        txtWndSpd1 = (TextView) findViewById(R.id.txtWind1);
+
+        txtStatName2 = (TextView) findViewById(R.id.txtStation2);
+        txtAirTemp2 = (TextView) findViewById(R.id.txtAirTemp2);
+        txtRdTemp2 = (TextView) findViewById(R.id.txtRoadTemp2);
+        txtWndSpd2 = (TextView) findViewById(R.id.txtWind2);
+
+        setTxtAlpha(0.0);
+
         try {
             //TODO Try to make nicer!
             JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
@@ -50,7 +69,7 @@ public class SearchActivity extends Activity {
                 stationName[i] = station.getString("Name");
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                //windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 //Log.d("JSON Station >", station.getString("Name"));
 
                 Log.d("JSON Station > ", station.getString("Name"));
@@ -58,24 +77,32 @@ public class SearchActivity extends Activity {
                 Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
                 Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
 
+                if (i > 0) {
+                    moreThanOne = true;
+                }
             }
+
             btnSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    txtStatName.setText("Name: " + stationName[0]);
-                    txtAirTemp.setText("Air Temperature: " + airTemp[0] + "°C");
-                    txtRdTemp.setText("Road Temperature: " + roadTemp[0] + "°C");
-                    txtWndSpd.setText("Wind Speed: " + windSpd[0] + " m/s");
+                    firstPass = false;
+                    setTxtAlpha(1.0);
+
+                    txtStatName1.setText("Name: " + stationName[0]);
+                    txtAirTemp1.setText("Air Temperature: " + airTemp[0] + "°C");
+                    txtRdTemp1.setText("Road Temperature: " + roadTemp[0] + "°C");
+
+                    txtStatName2.setText("Name: " + stationName[1]);
+                    txtAirTemp2.setText("Air Temperature: " + airTemp[1] + "°C");
+                    txtRdTemp2.setText("Road Temperature: " + roadTemp[1] + "°C");
+                    //txtWndSpd1.setText("Wind Speed: " + windSpd[1] + " m/s");
+
                 }
             });
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        txtStatName = (TextView) findViewById(R.id.name);
-        txtAirTemp = (TextView) findViewById(R.id.temp_air);
-        txtRdTemp = (TextView) findViewById(R.id.temp_road);
-        txtWndSpd = (TextView) findViewById(R.id.wind);
     }
 
 
@@ -100,4 +127,22 @@ public class SearchActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void setTxtAlpha(double visibility) {
+        float alphaF = (float) visibility;
+        if (txtStatName1.getText() != null) {
+            txtStatName1.setAlpha(alphaF);
+            txtAirTemp1.setAlpha(alphaF);
+            txtRdTemp1.setAlpha(alphaF);
+            txtWndSpd1.setAlpha(alphaF);
+        }
+        if (moreThanOne && !firstPass) {
+            txtStatName2.setAlpha(alphaF);
+            txtAirTemp2.setAlpha(alphaF);
+            txtRdTemp2.setAlpha(alphaF);
+            txtWndSpd2.setAlpha(alphaF);
+            System.out.println("Setting " + txtStatName2.getText() + " + visibility to " + visibility);
+        }
+    }
+
 }
