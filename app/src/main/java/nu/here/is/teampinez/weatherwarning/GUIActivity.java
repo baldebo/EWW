@@ -25,10 +25,11 @@ public class GUIActivity extends Activity {
     TextView theTextView;
     MyCurrentLocationListener gps;
 
+    /*
+    Variables below this point are used to store coordinates.
+     */
     double locLat;
     double locLon;
-    double locLonTemp;
-    double locLatTemp;
     int locLatInt;
     int locLonInt;
 
@@ -45,6 +46,9 @@ public class GUIActivity extends Activity {
         ourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * This method was only created to test the GPS locator
+                 */
                 if (gps.canGetLocation()) {
                     updateCoordinates();
                     convertCoordsToInt();
@@ -56,6 +60,9 @@ public class GUIActivity extends Activity {
         theTextView = (TextView) findViewById(R.id.textHeader);
     }
 
+    /**
+     * These methods facilitate changes between activities
+     **/
 
     public void openSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
@@ -82,16 +89,28 @@ public class GUIActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     Coordinates methods here below.
+     **/
+
     public void updateCoordinates() {
+
+        /**
+         * This pulls coordinates from the GPS Locator
+         */
+
         locLat = gps.getLatitude();
         locLon = gps.getLongitude();
     }
 
     public void convertCoordsToInt() {
-        locLonTemp = locLon * 100000;
-        locLatTemp = locLat * 100000;
-        locLatInt = (int) locLatTemp;
-        locLonInt = (int) locLonTemp;
+
+        /**
+         * This converts coordinates into a format accepted by the parser.
+         */
+
+        locLatInt = (int) locLat * 100000;
+        locLonInt = (int) locLon * 100000;
     }
 
 
