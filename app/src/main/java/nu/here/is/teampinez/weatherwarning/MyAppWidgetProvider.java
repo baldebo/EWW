@@ -31,8 +31,6 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
-
-
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
             // Create an Intent to launch ExampleActivity
@@ -53,11 +51,11 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
             views.setOnClickPendingIntent(R.id.refreshBtn, pendingIntent2);
 
-<<<<<<< HEAD
+
             appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
-=======
+
             //appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
->>>>>>> 4d498c34dc44b00ffed0c87edec351b72338c9cc
+
 
 //            finish();
             //views.setTextViewText(R.id.windSpeedBtn, (CharSequence) txtWndSpd);
@@ -148,10 +146,8 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
         TextView txtRdTemp;
         TextView txtWndSpd;
 
-<<<<<<< HEAD
+
         @Override
-=======
->>>>>>> 4d498c34dc44b00ffed0c87edec351b72338c9cc
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.widget_main);
