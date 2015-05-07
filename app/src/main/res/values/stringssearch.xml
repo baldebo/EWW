@@ -1,8 +1,0 @@
-<resources>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="search_title_bar">Search View</string>
-    <string name="search_button">Search</string>
-    <string name="station_name">Station</string>
-    <string name="temp_air">Air Temperature</string>
-    <string name="temp_road">Road Temperature</string>
-</resources>

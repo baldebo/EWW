@@ -1,5 +1,5 @@
 <resources>
-   //SETTINGS SCREEN //
+    //SETTINGS SCREEN //
     <string name="app_name">Early Weather Warning</string>
     <string name="action_settings">Settings</string>
     <string name="fahrenheit">Fahrenheit</string>
@@ -16,7 +16,6 @@
     <string name="metrics">Metrics</string>
     <string name="toggle_change">Toggle Changes</string>
     <string name="title_activity_settings">Settings Activity</string>
-
 
     //MAIN SCREEN //
     <string name="eww">EWW</string>
@@ -35,18 +34,22 @@
     <string name="helpbutton">helpbutton</string>
     <string name="logotext">Early Weather Warning</string>
 
+    // SEARCH SCREEN //
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="search_title_bar">Search View</string>
+    <string name="search_button">Search</string>
+    <string name="station_name">Station</string>
+    <string name="temp_air">Air Temperature</string>
+    <string name="temp_road">Road Temperature</string>
+
     // HELP SCREEN //
     <string name="textheader">Testing 1234567</string>
     <string name="title_activity_help">Help Activity</string>
-
 
     // FAVORITE SCREEN //
     <string name="addfavorite">Add to favorites</string>
     <string name="texthint">Enter weatherstation</string>
     <string name="title_activity_favorites">Favorites Activity</string>
-
-
-
 
     // WIDGET ACTIVITY //
     <string name="location">Location</string>
