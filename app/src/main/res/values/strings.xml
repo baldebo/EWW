@@ -55,5 +55,6 @@
     <string name="wind_gust">Wind Gust</string>
     <string name="road_temperature">Road Temperature</string>
     <string name="title_activity_map">Map Activity</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
