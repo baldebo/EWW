@@ -11,84 +11,105 @@ import android.view.View;
 import android.widget.CheckBox;
 
 
-public class SettingsActivity extends ActionBarActivity {
-    // Create a constant for the setting that you're saving
-    private static final String SETTING_CHECK_BOX = "checkbox_setting";
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
-    private CheckBox chkBoxFahrenheit;
-//    private CheckBox chkBoxMiles;
-//    private CheckBox chkBoxCelcius;
-//    private CheckBox chkBoxKilometers;
-//    private CheckBox chkBoxWindspeed;
-//    private CheckBox chkBoxGusts;
-//    private CheckBox chkBoxDirection;
-//    private CheckBox chkBoxToggleNotifications;
-//    private CheckBox chkBoxShowOnLockscreen;
 
+public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_main);
-        chkBoxFahrenheit = (CheckBox) findViewById(R.id.chkBoxFahrenheit);
-//        chkBoxMiles = (CheckBox) findViewById(R.id.chkBoxMiles);
-//        chkBoxCelcius = (CheckBox) findViewById(R.id.chkBoxCelcius);
-//        chkBoxKilometers = (CheckBox) findViewById(R.id.chkBoxKilometers);
-//        chkBoxWindspeed = (CheckBox) findViewById(R.id.chkBoxWindspeed);
-//        chkBoxGusts = (CheckBox) findViewById(R.id.chkBoxGusts);
-//        chkBoxDirection = (CheckBox) findViewById(R.id.chkBoxDirection);
-//        chkBoxToggleNotifications = (CheckBox) findViewById(R.id.chkBoxToggleNotifications);
-//        chkBoxShowOnLockscreen = (CheckBox) findViewById(R.id.chkBoxShowOnLockscreen);
 
+        CheckBox chkBoxFahrenheit, chkBoxCelcius, chkBoxMiles, chkBoxKilometers, chkBoxWindspeed, chkBoxGusts, chkBoxDirection, chkBoxToggleNotifications, chkBoxShowOnLockscreen;
 
-        // Set the initial state of the check box based on saved value
-        chkBoxFahrenheit.setChecked(isCheckedSettingEnabled());
-//        chkBoxMiles.setChecked(isCheckedSettingEnabled());
-//        chkBoxCelcius.setChecked(isCheckedSettingEnabled());
-//        chkBoxKilometers.setChecked(isCheckedSettingEnabled());
-//        chkBoxWindspeed.setChecked(isCheckedSettingEnabled());
-//        chkBoxGusts.setChecked(isCheckedSettingEnabled());
-//        chkBoxDirection.setChecked(isCheckedSettingEnabled());
-//        chkBoxToggleNotifications.setChecked(isCheckedSettingEnabled());
-//        chkBoxShowOnLockscreen.setChecked(isCheckedSettingEnabled());
+        chkBoxFahrenheit = (CheckBox)findViewById(R.id.chkBoxFahrenheit);
+        chkBoxFahrenheit.setChecked(getFromSp("chkBoxFahrenheit"));
+        chkBoxFahrenheit.setOnCheckedChangeListener(this);
 
+        chkBoxCelcius = (CheckBox)findViewById(R.id.chkBoxCelcius);
+        chkBoxCelcius.setChecked(getFromSp("chkBoxCelcius"));
+        chkBoxCelcius.setOnCheckedChangeListener(this);
+
+        chkBoxMiles = (CheckBox)findViewById(R.id.chkBoxMiles);
+        chkBoxMiles.setChecked(getFromSp("chkBoxMiles"));
+        chkBoxMiles.setOnCheckedChangeListener(this);
+
+        chkBoxKilometers = (CheckBox)findViewById(R.id.chkBoxKilometers);
+        chkBoxKilometers.setChecked(getFromSp("chkBoxKilometers"));
+        chkBoxKilometers.setOnCheckedChangeListener(this);
+
+        chkBoxWindspeed = (CheckBox)findViewById(R.id.chkBoxWindspeed);
+        chkBoxWindspeed.setChecked(getFromSp("chkBoxWindspeed"));
+        chkBoxWindspeed.setOnCheckedChangeListener(this);
+
+        chkBoxGusts = (CheckBox)findViewById(R.id.chkBoxGusts);
+        chkBoxGusts.setChecked(getFromSp("chkBoxGusts"));
+        chkBoxGusts.setOnCheckedChangeListener(this);
+
+        chkBoxDirection = (CheckBox)findViewById(R.id.chkBoxDirection);
+        chkBoxDirection.setChecked(getFromSp("chkBoxDirection"));
+        chkBoxDirection.setOnCheckedChangeListener(this);
+
+        chkBoxToggleNotifications = (CheckBox)findViewById(R.id.chkBoxToggleNotifications);
+        chkBoxToggleNotifications.setChecked(getFromSp("chkBoxToggleNotifications"));
+        chkBoxToggleNotifications.setOnCheckedChangeListener(this);
+
+        chkBoxShowOnLockscreen = (CheckBox)findViewById(R.id.chkBoxShowOnLockscreen);
+        chkBoxShowOnLockscreen.setChecked(getFromSp("chkBoxShowOnLockscreen"));
+        chkBoxShowOnLockscreen.setOnCheckedChangeListener(this);
+
+    }
+
+    private boolean getFromSp(String key){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("SharedPreferences_Test",
+                Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false);
+    }
+
+    private void saveInSp(String key, boolean value){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("SharedPreferences_Test",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        // Persist the setting. Could also do this with an OnCheckedChangeListener.
-        setCheckedSettingEnabled(chkBoxFahrenheit.isChecked());
-//        setCheckedSettingEnabled(chkBoxMiles.isChecked());
-//        setCheckedSettingEnabled(chkBoxCelcius.isChecked());
-//        setCheckedSettingEnabled(chkBoxKilometers.isChecked());
-//        setCheckedSettingEnabled(chkBoxWindspeed.isChecked());
-//        setCheckedSettingEnabled(chkBoxDirection.isChecked());
-//        setCheckedSettingEnabled(chkBoxGusts.isChecked());
-//        setCheckedSettingEnabled(chkBoxToggleNotifications.isChecked());
-//        setCheckedSettingEnabled(chkBoxShowOnLockscreen.isChecked());
-
-    }
-
-    /**
-     * Returns true if the setting has been saved as enabled,
-     * false by default
-     */
-    private boolean isCheckedSettingEnabled() {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(SETTING_CHECK_BOX, false);
-    }
-
-    /**
-     * Persists the new state of the setting
-     *
-     * @param enabled the new state for the setting
-     */
-    private void setCheckedSettingEnabled(boolean enabled) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putBoolean(SETTING_CHECK_BOX, enabled)
-                .apply();
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+            case R.id.chkBoxFahrenheit:
+                saveInSp("chkBoxFahrenheit", isChecked);
+                break;
+            case R.id.chkBoxCelcius:
+                saveInSp("chkBoxCelcius", isChecked);
+                break;
+            case R.id.chkBoxMiles:
+                saveInSp("chkBoxMiles", isChecked);
+                break;
+            case R.id.chkBoxKilometers:
+                saveInSp("chkBoxKilometers", isChecked);
+                break;
+            case R.id.chkBoxWindspeed:
+                saveInSp("chkBoxWindspeed", isChecked);
+                break;
+            case R.id.chkBoxGusts:
+                saveInSp("chkBoxGusts", isChecked);
+                break;
+            case R.id.chkBoxDirection:
+                saveInSp("chkBoxDirection", isChecked);
+                break;
+            case R.id.chkBoxToggleNotifications:
+                saveInSp("chkBoxToggleNotifications", isChecked);
+                break;
+            case R.id.chkBoxShowOnLockscreen:
+                saveInSp("chkBoxShowOnLockscreen", isChecked);
+                break;
+        }
     }
 }
