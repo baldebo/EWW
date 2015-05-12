@@ -173,7 +173,7 @@
         android:minHeight="60sp"
         android:layout_below="@+id/imgHeader"
         android:layout_centerHorizontal="true"
-        android:onClick="informationClicked"
-        android:clickable="true" />
+ />
+
 
 </RelativeLayout>

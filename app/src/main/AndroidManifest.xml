@@ -51,6 +51,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@layout/appwidgetproviderinfo" />
         </receiver>
+        <activity
+            android:name=".NotificationMain"
+            android:label="NotificationMain" >
+            <intent-filter>
+                <action android:name="nu.here.is.teampinez.weatherwarning.NotificationMain" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".HelpActivity"

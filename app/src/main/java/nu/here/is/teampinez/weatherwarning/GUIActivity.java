@@ -1,8 +1,11 @@
 package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -91,6 +94,37 @@ public class GUIActivity extends Activity {
         locLatTemp = locLat * 100000;
         locLatInt = (int) locLatTemp;
         locLonInt = (int) locLonTemp;
+    }
+
+    public void informationClicked(View view){
+
+
+        final NotificationCompat.Builder notification = null;
+         final int mId = 12345;
+        TextView informationButton = (TextView) findViewById(R.id.textHeader);
+         final int PRIORITY_MAX = 2;
+        //build notification
+        assert false;
+        notification.setSmallIcon(R.drawable.notification_warning);
+        notification.setTicker("This is the ticker");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle("This is the title");
+        notification.setContentText("This is the body text");
+
+        Intent intent = new Intent(this, SettingsActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        informationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                notification.setContentIntent(pendingIntent);
+
+
+                //issue notification
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.notify(mId, notification.build());                }        });
+
     }
 
 
