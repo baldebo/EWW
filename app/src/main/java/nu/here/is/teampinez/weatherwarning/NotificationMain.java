@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeoutException;
 
 public class NotificationMain extends ActionBarActivity {
 
-    Notification n;
+    //Notification n;
     NotificationCompat.Builder notification;
     public static final int mId = 12345;
     public static final int PRIORITY_MAX = 2;
@@ -81,6 +82,10 @@ public class NotificationMain extends ActionBarActivity {
                 .setContentTitle("Name: " + stationName[0])
                 .setContentText("Hello World!");
 
+        //mBuilder.setDefaults(Notification.DEFAULT_SOUND
+        //        | Notification.DEFAULT_LIGHTS | Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT);
+
+
 
         //jsonOutput[0] = "";
         //jsonOutput[1] = "";
@@ -110,6 +115,7 @@ public class NotificationMain extends ActionBarActivity {
                 stackBuilder.getPendingIntent(
                         0,
                         PendingIntent.FLAG_UPDATE_CURRENT
+
                 );
 
 
@@ -120,7 +126,13 @@ public class NotificationMain extends ActionBarActivity {
 
         // mId allows you to update the notification later on.
         mNotificationManager.notify(mId, mBuilder.build());
-        notification.setOngoing(true);
+        //notification.setOngoing(true);
+
+
+        //boolean permanent = PreferenceManager.getDefaultSharedPreferences().getBoolean("permanent", false);
+        //if(permanent) {
+        //    mBuilder.setOngoing(true);
+        //}
 
 
     }
