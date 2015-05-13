@@ -68,17 +68,9 @@ public class GUIActivity extends Activity {
 
         theTextView = (TextView) findViewById(R.id.textHeader);
 
-
         //NOTIFICATION CODE
-
-        //NotificationCompat.Builder notification;
         final int mId = 12345;
         final int PRIORITY_MAX = 2;
-
-        //notification = new NotificationCompat.Builder(this);
-        Notification n = null;
-        //n.flags = Notification.FLAG_ONGOING_EVENT;
-
         final NotificationCompat.Builder mBuilder;
 
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -103,7 +95,6 @@ public class GUIActivity extends Activity {
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                //Log.d("JSON Station >", station.getString("Name"));
 
                 Log.d("JSON Station > ", station.getString("Name"));
                 Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
@@ -122,18 +113,19 @@ public class GUIActivity extends Activity {
 
         mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification_warning)
-                .setContentTitle("Name: " + stationName[0])
-                .setContentText("Hello World!");
-        mBuilder.setOngoing(true);
-        mBuilder.setColor(0xd903);
+                .setContentTitle(jsonOutput[0])
+                .setContentText("Drag Down For More Info!")
+                .setOngoing(true)
+                .setColor(0xd903);
 
-        //jsonOutput[0] = "";
-        //jsonOutput[1] = "";
-        //jsonOutput[2] = "";
-        //jsonOutput[3] = "";
-        inboxStyle.setBigContentTitle("FORECAST:");
+
+        inboxStyle.setBigContentTitle("Name: " + stationName[0]);
         for (String jsonResult : jsonOutput) {
             inboxStyle.addLine(jsonResult);
+            //jsonOutput[0] = "";
+            //jsonOutput[1] = "";
+            //jsonOutput[2] = "";
+            //jsonOutput[3] = "";
         }
         mBuilder.setStyle(inboxStyle);
 
@@ -164,8 +156,6 @@ public class GUIActivity extends Activity {
 
         // mId allows you to update the notification later on.
         mNotificationManager.notify(mId, mBuilder.build());
-
-
     }
 
 

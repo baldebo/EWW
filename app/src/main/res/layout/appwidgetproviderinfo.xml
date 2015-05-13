@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-        android:minWidth="250dp"
-        android:minHeight="110dp"
-        android:updatePeriodMillis="180000"
-        android:resizeMode="horizontal|vertical"
-        android:widgetCategory="home_screen|keyguard"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-    </appwidget-provider>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="110dp"
+    android:updatePeriodMillis="5000"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen|keyguard"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+</appwidget-provider>
 
 
     <!--android:previewImage="@layout/example_appwidget"-->
