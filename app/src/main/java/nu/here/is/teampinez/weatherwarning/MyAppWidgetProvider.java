@@ -55,7 +55,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
             //views.setOnClickPendingIntent(R.id.refreshBtn, pendingIntent2);
 
 
-            appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
+            //appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
 
             //appWidgetManager.updateAppWidget(new ComponentName(context.getPackageName(), WidgetAutoUpdater.class.getName()), views);
 
@@ -198,94 +198,6 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 //        }
 //
 //}
-    class WidgetAutoUpdater extends Activity {
-
-        TextView txtStatName;
-        TextView txtRdTemp;
-        TextView txtWndSpd;
-
-    public static final int mId = 45612;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.notification_warning)
-                            .setContentTitle("My notification")
-                            .setContentText("Hello World!");
-            // Creates an explicit intent for an Activity in your app
-            Intent resultIntent = new Intent(this, SettingsActivity.class);
-
-            // The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(SettingsActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-            mNotificationManager.notify(mId, mBuilder.build());
-
-
-
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.widget_main);
-            Button refresh = (Button) findViewById(R.id.refreshBtn);
-            Parser p = new Parser(WidgetAutoUpdater.this);
-            try {
-                //TODO Try to make nicer!
-                JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
-
-                Log.d("JSON", jsonArray.toString());
-                final String stationName[] = new String[jsonArray.length()];
-                final String airTemp[] = new String[jsonArray.length()];
-                final String roadTemp[] = new String[jsonArray.length()];
-                final String windSpd[] = new String[jsonArray.length()];
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject station = jsonArray.getJSONObject(i);
-                    stationName[i] = station.getString("Name");
-                    airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
-                    roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                    windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                    //Log.d("JSON Station >", station.getString("Name"));
-
-                   // Log.d("JSON Station > ", station.getString("Name"));
-                   // Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
-                   // Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                   // Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-
-                }
-                refresh.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        txtStatName.setText(stationName[0]);
-                        txtRdTemp.setText(roadTemp[0]);
-                        txtWndSpd.setText(windSpd[0]);
-                    }
-                });
-            } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            txtStatName = (TextView) findViewById(R.id.stationNameBtn);
-            txtRdTemp = (TextView) findViewById(R.id.roadTemperatureBtn);
-            txtWndSpd = (TextView) findViewById(R.id.windSpeedBtn);
-
-        }
-
-}
 
 
 //    txtStatName = (TextView) findViewById(R.id.name);
