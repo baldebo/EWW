@@ -78,6 +78,10 @@ public class GUIActivity extends Activity {
 
         Parser p = new Parser(GUIActivity.this);
         String[] stationName = new String[0];
+        String[] airTemp = new String[0];
+        String[] roadTemp = new String[0];
+        String[] windSpd = new String[0];
+
 
         try {
             //TODO Try to make nicer!
@@ -85,9 +89,9 @@ public class GUIActivity extends Activity {
 
             Log.d("JSON", jsonArray.toString());
             stationName = new String[jsonArray.length()];
-            final String airTemp[] = new String[jsonArray.length()];
-            final String roadTemp[] = new String[jsonArray.length()];
-            final String windSpd[] = new String[jsonArray.length()];
+            airTemp = new String[jsonArray.length()];
+            roadTemp = new String[jsonArray.length()];
+            windSpd = new String[jsonArray.length()];
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
@@ -119,13 +123,13 @@ public class GUIActivity extends Activity {
                 .setColor(0xd903);
 
 
-        inboxStyle.setBigContentTitle("Name: " + stationName[0]);
+        inboxStyle.setBigContentTitle(jsonOutput[0]);
         for (String jsonResult : jsonOutput) {
             inboxStyle.addLine(jsonResult);
-            //jsonOutput[0] = "";
-            //jsonOutput[1] = "";
-            //jsonOutput[2] = "";
-            //jsonOutput[3] = "";
+            jsonOutput[0] = ("Name: " + stationName[0]);
+            jsonOutput[1] = ("Air Temperature: " + airTemp[0] + "C");
+            jsonOutput[2] = ("Road Temperature: " + roadTemp[0] + "C");
+            jsonOutput[3] = ("Wind Speed: " + windSpd[0] + " m/s");
         }
         mBuilder.setStyle(inboxStyle);
 
