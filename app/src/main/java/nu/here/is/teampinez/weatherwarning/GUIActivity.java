@@ -1,12 +1,18 @@
 package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -122,7 +128,6 @@ public class GUIActivity extends Activity {
                 .setOngoing(true)
                 .setColor(0xd903);
 
-
         inboxStyle.setBigContentTitle(jsonOutput[0]);
         for (String jsonResult : jsonOutput) {
             inboxStyle.addLine(jsonResult);
@@ -132,6 +137,22 @@ public class GUIActivity extends Activity {
             jsonOutput[3] = ("Wind Speed: " + windSpd[0] + " m/s");
         }
         mBuilder.setStyle(inboxStyle);
+
+        //To quantify the metrics that get pulled as Strings we parse them into ints then check if they are extreme,
+        // if so then the notification vibrates, and the LED is red and plays a sound to warn the user, also now the display lights up
+        double airTemperature = Double.parseDouble(airTemp[0]);
+        double windSpeed = Double.parseDouble(windSpd[0]);
+        double roadTemperature = Double.parseDouble(roadTemp[0]);
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+        if (roadTemperature <= 0 || windSpeed > 2 || airTemperature >= 10) {
+            mBuilder.setColor(16711680).setSound(uri).setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                    .setLights(Color.RED, 3000, 3000).setOngoing(true);
+            PowerManager.WakeLock screenOn = ((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "example");
+            screenOn.acquire();
+            screenOn.release();
+
+        }
 
         //Set to Top Priority because it involves weather emergency warnings (2 is the highest priority)
         mBuilder.setPriority(PRIORITY_MAX);
