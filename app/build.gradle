@@ -24,4 +24,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.google.android.gms:play-services:7.0.0'
+    compile files('libs/Automotive-API-1.1.jar')
+    compile files('libs/lib.jar')
+    compile files('libs/SDP-1.1.jar')
+    compile files('libs/VIL-1.1.jar')
+    compile 'org.slf4j:slf4j-android:1.7.12'
 }
