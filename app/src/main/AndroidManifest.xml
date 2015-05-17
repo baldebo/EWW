@@ -42,15 +42,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MyAppWidgetProvider" >
+        <activity
+            android:name=".StationActivity"
+            android:label="@string/title_activity_search" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
+                <action android:name="nu.here.is.teampinez.weatherwarning.StationActivity" />
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@layout/appwidgetproviderinfo" />
-        </receiver>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
 
         <activity
             android:name=".HelpActivity"

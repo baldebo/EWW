@@ -76,6 +76,11 @@ public class GUIActivity extends Activity {
         startActivity(intent);
     }
 
+    public void openStationView(View view) {
+        Intent intent = new Intent(this, StationActivity.class);
+        startActivity(intent);
+    }
+
     /**
      Coordinates methods here below.
      **/

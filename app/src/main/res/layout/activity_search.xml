@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_title_bar"
-        android:id="@+id/search_title_bar"
+        android:id="@+id/txtTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="15pt"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="@string/station_name"
         android:id="@+id/txtStation1"
-        android:layout_below="@+id/search_title_bar"
+        android:layout_below="@+id/txtTitle"
         android:layout_alignParentStart="true"
         android:paddingBottom="5dp" />
 
