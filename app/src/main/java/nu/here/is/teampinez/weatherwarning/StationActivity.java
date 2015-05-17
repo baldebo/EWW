@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -25,24 +27,16 @@ public class StationActivity extends Activity {
     final static String authid = "5fe4551a599447929a301bc183b83a26";
     MyCurrentLocationListener gps;
 
-
-
-    TextView txtStatName1;
-    TextView txtAirTemp1;
-    TextView txtRdTemp1;
-    TextView txtWndSpd1;
-    TextView txtStatName2;
-    TextView txtAirTemp2;
-    TextView txtRdTemp2;
-    TextView txtWndSpd2;
-    TextView txtTitle;
-
     String stationName[];
     String airTemp[];
     String roadTemp[];
     String windSpd[];
 
-
+    public static final String FIRST_COLUMN     ="First";
+    public static final String SECOND_COLUMN    ="Second";
+    public static final String THIRD_COLUMN     ="Third";
+    public static final String FOURTH_COLUMN    ="Fourth";
+    private ArrayList<HashMap<String,String>> list;
 
     public boolean moreThanOne = false;
 
@@ -54,18 +48,10 @@ public class StationActivity extends Activity {
 
         Button btnSearch = (Button) findViewById(R.id.btnSearch);
 
-        // ListAdapter Starts
-
-        // setTxtAlpha(0.0);
-
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getWeather();
-                if (stationName == null) {
-                    txtTitle.setText("No Stations Found");
-                }
-
             }
         });
     }
@@ -111,6 +97,10 @@ public class StationActivity extends Activity {
                 moreThanOne = false;
             }
 
+            ListView listView = (ListView) findViewById(R.id.listStations);
+
+            list = new ArrayList<HashMap<String,String>>();
+
             Log.d("JSON Station > ", "--------");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
@@ -126,29 +116,23 @@ public class StationActivity extends Activity {
                 Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
             }
             Log.d("JSON Station > ", "--------");
-            ListAdapter stationListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stationName);
-            ListView listStations = (ListView) findViewById(R.id.listStations);
-            listStations.setAdapter(stationListAdapter);
 
-            //setTxtAlpha(1.0);
+            for (int i = 0; i <stationName.length; i++) {
+                HashMap<String,String> temp = new HashMap<String,String>();
+                temp.put(FIRST_COLUMN, stationName[i]);
+                temp.put(SECOND_COLUMN, roadTemp[i]);
+                temp.put(THIRD_COLUMN, airTemp[i]);
+                temp.put(FOURTH_COLUMN, "5");
+                list.add(temp);
+            }
 
-   /*         txtStatName1.setText("Name: " + stationName[0]);
-            txtAirTemp1.setText("Air Temperature: " + airTemp[0] + "°C");
-            txtRdTemp1.setText("Road Temperature: " + roadTemp[0] + "°C");
-            //txtWndSpd1.setText("Wind Speed: " + windSpd[1] + " m/s");
+            ListViewAdapter adapter = new ListViewAdapter(this, list);
+            listView.setAdapter(adapter);
 
-            if (!moreThanOne) {
-                txtTitle.setText(stationName.length + " station");
-                txtStatName2.setText("");
-                txtAirTemp2.setText("");
-                txtRdTemp2.setText("");
-                txtWndSpd2.setText("");
-            } else if (moreThanOne) {
-                txtTitle.setText(stationName.length + " stations");
-                txtStatName2.setText("Name: " + stationName[1]);
-                txtAirTemp2.setText("Air Temperature: " + airTemp[1] + "°C");
-                txtRdTemp2.setText("Road Temperature: " + roadTemp[1] + "°C");
-            }*/
+            //ListAdapter stationListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , stationName);
+            //ListView listStations = (ListView) findViewById(R.id.listStations);
+            //listStations.setAdapter(stationListAdapter);
+
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
