@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-
-
-
 public class GUIActivity extends Activity {
 
     TextView theTextView;
