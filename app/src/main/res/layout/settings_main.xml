@@ -7,7 +7,9 @@
     tools:context="nu.here.is.teampinez.weatherwarning.SettingsActivity"
     android:background="#ff272a2b"
     android:orientation="vertical"
-    android:id="@+id/relativeLayout">
+    android:id="@+id/relativeLayout"
+    android:onClick="displayNotification"
+    android:clickable="true">
 
 
     <TextView
@@ -145,7 +147,8 @@
         android:textSize="14sp"
         android:textColor="#ffffffff"
         android:layout_alignTop="@+id/chkBoxShowOnLockscreen"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:clickable="false" />
 
     <CheckBox
         android:layout_width="wrap_content"

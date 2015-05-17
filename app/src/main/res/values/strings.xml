@@ -42,7 +42,7 @@
     <string name="addfavorite">Add to favorites</string>
     <string name="texthint">Enter weatherstation</string>
 
-
+<string name="settingpreferences">Setting Preference</string>
 
 
     // WIDGET ACTIVITY //

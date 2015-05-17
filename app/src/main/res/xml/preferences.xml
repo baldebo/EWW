@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="ToggleNotification"
+        android:title="Activate Notification"
+        android:summary="Display Sticky Notification"
+        android:defaultValue="false"
+        android:onClick=".SettingActivity.updateNotificationActivation()"/>
+
+    <ListPreference
+        android:key="Temperature"
+        android:title="Choose Temperature Metric"
+        android:summary="F or C"
+        android:entries="@array/Temperature"
+        android:entryValues="@array/Temperature_Values"
+        android:defaultValue="C"/>
+
+</PreferenceScreen>

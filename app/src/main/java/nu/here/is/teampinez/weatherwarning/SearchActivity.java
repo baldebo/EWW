@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,8 @@ public class SearchActivity extends Activity {
             });
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Parser isn't functioning, please try again shortly",
+                    Toast.LENGTH_SHORT).show();
         }
 
         txtStatName = (TextView) findViewById(R.id.name);

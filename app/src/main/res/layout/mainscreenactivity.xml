@@ -175,5 +175,14 @@
         android:layout_centerHorizontal="true"
  />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:id="@+id/button"
+        android:layout_below="@+id/textHeader"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
