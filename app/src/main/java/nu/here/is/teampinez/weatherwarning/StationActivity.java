@@ -101,6 +101,14 @@ public class StationActivity extends Activity {
 
             list = new ArrayList<HashMap<String,String>>();
 
+
+            for (int i = 0; i < stationName.length; i++) {
+
+                stationName[i] = null;
+                airTemp[i] = null;
+                roadTemp[i] = null;
+            }
+
             Log.d("JSON Station > ", "--------");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
@@ -122,9 +130,12 @@ public class StationActivity extends Activity {
                 temp.put(FIRST_COLUMN, stationName[i]);
                 temp.put(SECOND_COLUMN, roadTemp[i]);
                 temp.put(THIRD_COLUMN, airTemp[i]);
-                temp.put(FOURTH_COLUMN, "5");
+                temp.put(FOURTH_COLUMN, "5 m/s");
                 list.add(temp);
             }
+
+            View view = View.inflate(this, R.layout.station_header, null);
+            listView.addHeaderView(view);
 
             ListViewAdapter adapter = new ListViewAdapter(this, list);
             listView.setAdapter(adapter);
