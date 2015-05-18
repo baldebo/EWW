@@ -31,7 +31,7 @@ public class DriveActivity extends Activity {
     String airTemp[];
     String roadTemp[];
     String windSpd[];
-    String stationCoords[];
+    double distanceToStation[];
 
     TextView txtWindSpd;
     TextView txtUpdateTime;
@@ -88,7 +88,7 @@ public class DriveActivity extends Activity {
             airTemp = new String[jsonArray.length()];
             roadTemp = new String[jsonArray.length()];
             windSpd = new String[jsonArray.length()];
-            stationCoords = new String[jsonArray.length()];
+            distanceToStation = new double[jsonArray.length()];
 
             Log.d("JSON", jsonArray.toString());
 
@@ -103,12 +103,18 @@ public class DriveActivity extends Activity {
             Log.d("JSON Station > ", "--------");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
-                String coordSplitter = station.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT");
+                String coordSplitter;
+                coordSplitter = station.getJSONObject("Geometry").getString("WGS84");
+                coordSplitter = coordSplitter.replace("POINT", "");
+                coordSplitter = coordSplitter.replace("(", "");
+                coordSplitter = coordSplitter.replace(")","");
                 String coordArray[] = coordSplitter.split(" ");
 
-                double statLon = Double.parseDouble(coordArray[0]);
-                double statLat = Double.parseDouble(coordArray[1]);
+                double statLon = Double.parseDouble(coordArray[1]);
+                double statLat = Double.parseDouble(coordArray[2]);
 
+                distanceToStation[i] = getDistance(statLat, statLon);
+                Log.d("Distance", String.valueOf(distanceToStation[i]));
                 stationName[i] = station.getString("Name");
                 airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
@@ -120,7 +126,7 @@ public class DriveActivity extends Activity {
                 Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
                 Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
                 Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                Log.d("JSON GPS > ", station.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT"));
+                Log.d("JSON GPS > ", station.getJSONObject("Geometry").getString("WGS84"));
             }
             Log.d("JSON Station > ", "--------");
 
@@ -135,6 +141,7 @@ public class DriveActivity extends Activity {
                 txtFirstBig.setText(stationName[0]);
                 txtTempRoad.setText(roadTemp[0] + "°C");
                 txtTempAir.setText(airTemp[0] + "°C");
+                txtUpdateTime.setText(String.format("%.2f", distanceToStation[0]) + " km to station.");
 
                 windSpd[i] = String.format("%.1f", randomWind);
             }
@@ -145,7 +152,9 @@ public class DriveActivity extends Activity {
     }
 
     public double getDistance(double statLat, double statLon) {
-        double distanceInKm = 0;
+        Log.d("Notification","Starting getDistance");
+        double v = 6372.8;
+
         double gpsLat = gps.getLatitude(); //lat1
         double gpsLon = gps.getLongitude(); //lon1
 
@@ -155,6 +164,9 @@ public class DriveActivity extends Activity {
         gpsLat = Math.toRadians(gpsLat);
         statLat = Math.toRadians(statLat);
 
-        return distanceInKm;
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(gpsLat) * Math.cos(statLat);
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        return v * c;
     }
 }
