@@ -31,17 +31,9 @@
         android:layout_alignParentStart="true"
         android:layout_above="@+id/revMid"
         android:layout_alignTop="@+id/txtFirstBig"
-        android:layout_marginTop="100dp"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Air°C"
-            android:id="@+id/txtTempAir"
-            android:paddingRight="5dp"
-            android:layout_gravity="center_vertical" />
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:id="@+id/tableRow">
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,15 +42,7 @@
             android:text="Road°C"
             android:id="@+id/txtTempRoad"
             android:paddingRight="5dp"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="WindSpd"
-            android:id="@+id/txtWindSpd"
-            android:paddingRight="5dp"
+            android:textSize="30sp"
             android:layout_gravity="center_vertical" />
 
         <TextView
@@ -67,6 +51,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="WindFrc"
             android:id="@+id/txtWindFrc"
+            android:textSize="30sp"
             android:layout_gravity="center_vertical" />
     </TableRow>
 
@@ -77,17 +62,54 @@
         android:text="@string/stationName"
         android:id="@+id/txtFirstBig"
         android:textColor="#ffffff"
-        android:layout_marginTop="30dp"
+        android:textSize="45sp"
+        android:layout_marginTop="106dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="(Updated at 12:00)"
-        android:id="@+id/txtUpdateTime"
+        android:text="Small Text"
+        android:id="@+id/txtUpdatetime"
         android:layout_below="@+id/txtFirstBig"
         android:layout_centerHorizontal="true" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/revMid"
+        android:layout_alignBottom="@+id/txtFirstBig"
+        android:gravity="center"
+        android:id="@+id/tblRowTop">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Air°C"
+        android:id="@+id/txtTempAir"
+        android:textSize="30sp"
+        android:layout_gravity="center_vertical"
+        android:textColor="#EEE"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="WindSpd"
+        android:id="@+id/txtWindSpd"
+        android:layout_gravity="center_vertical"
+        android:textSize="30sp"
+        android:layout_marginStart="26dp"
+        android:textColor="#EEE"/>
+
+    </TableRow>
+
+
 </RelativeLayout>
 

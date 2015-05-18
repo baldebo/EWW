@@ -75,7 +75,7 @@ public class DriveActivity extends Activity {
         Parser p = new Parser(this);
 
         txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
-        txtUpdateTime = (TextView) findViewById(R.id.txtUpdateTime);
+        txtUpdateTime = (TextView) findViewById(R.id.txtUpdatetime);
         txtFirstBig = (TextView) findViewById(R.id.txtFirstBig);
         txtWindFrc = (TextView) findViewById(R.id.txtWindFrc);
         txtTempRoad = (TextView) findViewById(R.id.txtTempRoad);
@@ -141,6 +141,8 @@ public class DriveActivity extends Activity {
                 txtFirstBig.setText(stationName[0]);
                 txtTempRoad.setText(roadTemp[0] + "°C");
                 txtTempAir.setText(airTemp[0] + "°C");
+                txtWindSpd.setText("5.4 m/s");
+                txtWindFrc.setText("9.7 m/s");
                 txtUpdateTime.setText(String.format("%.2f", distanceToStation[0]) + " km to station.");
 
                 windSpd[i] = String.format("%.1f", randomWind);
