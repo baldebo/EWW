@@ -60,4 +60,7 @@
     <string name="title_activity_map">Map Activity</string>
     <string name="refresh">Refresh</string>
 
+    // DRIVE ACTIVITY //
+    <string name="stationName">Station Name</string>
+
 </resources>

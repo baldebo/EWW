@@ -52,6 +52,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".DriveActivity"
+            android:label="@string/title_activity_search" >
+            <intent-filter>
+                <action android:name="nu.here.is.teampinez.weatherwarning.DriveActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
 
         <activity

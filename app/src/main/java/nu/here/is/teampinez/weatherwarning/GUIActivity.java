@@ -29,20 +29,18 @@ public class GUIActivity extends Activity {
             updateCoordinates();
             convertCoordsToInt();
         }
-        ImageButton ourButton = (ImageButton) findViewById(R.id.imgBtnInformation);
-        ourButton.setOnClickListener(new View.OnClickListener() {
+        //ImageButton ourButton = (ImageButton) findViewById(R.id.imgBtnInformation);
+        /*ourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * This method was only created to test the GPS locator
-                 */
+
                 if (gps.canGetLocation()) {
                     updateCoordinates();
                     convertCoordsToInt();
                     theTextView.setText("Your location is\nLat: " + locLatInt + "\nLong: " + locLonInt);
                 }
             }
-        });
+        });*/
 
         theTextView = (TextView) findViewById(R.id.textHeader);
     }
@@ -78,6 +76,11 @@ public class GUIActivity extends Activity {
 
     public void openStationView(View view) {
         Intent intent = new Intent(this, StationActivity.class);
+        startActivity(intent);
+    }
+
+    public void openDriveView(View view) {
+        Intent intent = new Intent(this, DriveActivity.class);
         startActivity(intent);
     }
 
