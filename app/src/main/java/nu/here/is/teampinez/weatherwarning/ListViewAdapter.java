@@ -63,7 +63,14 @@ public class ListViewAdapter extends BaseAdapter {
 
         }
 
+
         HashMap<String, String> map=list.get(position);
+        double bob = Double.parseDouble(map.get(THIRD_COLUMN));
+        if (bob > 7){
+            txtFourth.setTextColor(Color.parseColor("#FF0000"));
+        }else {
+            txtFourth.setTextColor(Color.parseColor("#000000"));
+        }
         txtFirst.setText(map.get(FIRST_COLUMN));
         txtSecond.setText(map.get(SECOND_COLUMN));
         txtThird.setText(map.get(THIRD_COLUMN));

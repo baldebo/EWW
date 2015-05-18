@@ -142,11 +142,11 @@ public class StationActivity extends Activity {
                 double roadTempDouble = Double.parseDouble(roadTemp[i]);
                 // Check for BS values
 
-                if (airTempDouble < -50) {
+                /*if (airTempDouble < -50) {
                     airTemp[i] = "N/A";
                 } else {
                     airTemp[i] += "°C";
-                }
+                }*/
                 if (roadTempDouble < -50) {
                     roadTemp[i] = "N/A";
                 } else {
@@ -154,7 +154,7 @@ public class StationActivity extends Activity {
                 }
 
                 windSpd[i] = String.format("%.1f", randomWind);
-                windSpd[i] += " m/s";
+                //windSpd[i] += " m/s";
 
                 HashMap<String,String> temp = new HashMap<String,String>();
                 temp.put(FIRST_COLUMN, stationName[i]);
