@@ -1,5 +1,6 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import android.graphics.Color;
 import android.widget.BaseAdapter;
 
 import static nu.here.is.teampinez.weatherwarning.StationActivity.FIRST_COLUMN;
@@ -24,7 +25,7 @@ public class ListViewAdapter extends BaseAdapter {
     TextView txtFirst;
     TextView txtSecond;
     TextView txtThird;
-    TextView txtFourth;
+    static TextView txtFourth;
 
     public ListViewAdapter(Activity activity,ArrayList<HashMap<String, String>> list){
         super();
@@ -69,6 +70,10 @@ public class ListViewAdapter extends BaseAdapter {
         txtFourth.setText(map.get(FOURTH_COLUMN));
 
         return convertView;
+    }
+
+    public static void changeColor(){
+        txtFourth.setTextColor(Color.parseColor("#FF0000"));
     }
 
 

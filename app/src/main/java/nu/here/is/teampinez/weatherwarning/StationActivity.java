@@ -1,8 +1,10 @@
 package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -32,10 +36,14 @@ public class StationActivity extends Activity {
     String roadTemp[];
     String windSpd[];
 
+    boolean firstRun = true;
+
     public static final String FIRST_COLUMN     ="First";
     public static final String SECOND_COLUMN    ="Second";
     public static final String THIRD_COLUMN     ="Third";
     public static final String FOURTH_COLUMN    ="Fourth";
+
+    TextView txtWind;
     private ArrayList<HashMap<String,String>> list;
 
     public boolean moreThanOne = false;
@@ -81,6 +89,7 @@ public class StationActivity extends Activity {
 
     public void getWeather() {
         Parser p = new Parser(this);
+
         try {
             //TODO Try to make nicer! Perhaps create a method?
             JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
@@ -126,16 +135,40 @@ public class StationActivity extends Activity {
             Log.d("JSON Station > ", "--------");
 
             for (int i = 0; i <stationName.length; i++) {
+                Random rand = new Random();
+                DecimalFormat df = new DecimalFormat("#.00");
+                double randomWind = 0 + (15 - 0) * rand.nextDouble();
+                double airTempDouble = Double.parseDouble(airTemp[i]);
+                double roadTempDouble = Double.parseDouble(roadTemp[i]);
+                // Check for BS values
+
+                if (airTempDouble < -50) {
+                    airTemp[i] = "N/A";
+                } else {
+                    airTemp[i] += "°C";
+                }
+                if (roadTempDouble < -50) {
+                    roadTemp[i] = "N/A";
+                } else {
+                    roadTemp[i] += "°C";
+                }
+
+                windSpd[i] = String.format("%.1f", randomWind);
+                windSpd[i] += " m/s";
+
                 HashMap<String,String> temp = new HashMap<String,String>();
                 temp.put(FIRST_COLUMN, stationName[i]);
                 temp.put(SECOND_COLUMN, roadTemp[i]);
                 temp.put(THIRD_COLUMN, airTemp[i]);
-                temp.put(FOURTH_COLUMN, "5 m/s");
+                temp.put(FOURTH_COLUMN, windSpd[i]);
                 list.add(temp);
             }
 
-            View view = View.inflate(this, R.layout.station_header, null);
-            listView.addHeaderView(view);
+            if (firstRun){
+                View view = View.inflate(this, R.layout.station_header, null);
+                listView.addHeaderView(view);
+                firstRun = false;
+            }
 
             ListViewAdapter adapter = new ListViewAdapter(this, list);
             listView.setAdapter(adapter);
