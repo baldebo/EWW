@@ -123,6 +123,10 @@ public class Parser extends AsyncTask<String, Void, String> {
         sb.append("<INCLUDE>Measurement.Air.Temp</INCLUDE>");
         sb.append("<INCLUDE>Measurement.Road.Temp</INCLUDE>");
         sb.append("<INCLUDE>Measurement.Wind.Force</INCLUDE>");
+        sb.append("<INCLUDE>Geometry.WGS84</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Wind.ForceMax</INCLUDE>");
+        sb.append("<INCLUDE>Measurement.Wind.DirectionText</INCLUDE>");
+        sb.append("<INCLUDE>ModifiedTime</INCLUDE>");
         sb.append("</QUERY></REQUEST>");
 
         //TODO Remove debug logging
