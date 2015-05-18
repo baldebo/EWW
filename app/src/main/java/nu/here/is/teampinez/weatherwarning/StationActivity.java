@@ -29,8 +29,6 @@ import java.util.concurrent.TimeoutException;
 
 public class StationActivity extends Activity {
     final static String authid = "5fe4551a599447929a301bc183b83a26";
-    MyCurrentLocationListener gps;
-
     String stationName[];
     String airTemp[];
     String roadTemp[];
@@ -43,19 +41,14 @@ public class StationActivity extends Activity {
     public static final String THIRD_COLUMN     ="Third";
     public static final String FOURTH_COLUMN    ="Fourth";
 
-    TextView txtWind;
-    private ArrayList<HashMap<String,String>> list;
-
-    public boolean moreThanOne = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_view);
-        gps = new MyCurrentLocationListener(StationActivity.this);
+        getWeather();
 
+        //TODO Remove button? Timed update?
         Button btnSearch = (Button) findViewById(R.id.btnSearch);
-
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,19 +93,10 @@ public class StationActivity extends Activity {
 
             Log.d("JSON", jsonArray.toString());
 
-            if (stationName.length > 1) {
-                moreThanOne = true;
-            } else {
-                moreThanOne = false;
-            }
-
             ListView listView = (ListView) findViewById(R.id.listStations);
-
-            list = new ArrayList<HashMap<String,String>>();
-
+            ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
             for (int i = 0; i < stationName.length; i++) {
-
                 stationName[i] = null;
                 airTemp[i] = null;
                 roadTemp[i] = null;
