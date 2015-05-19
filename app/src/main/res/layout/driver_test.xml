@@ -5,34 +5,19 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@mipmap/roadrino"
+    android:gravity="bottom">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.37"
-        android:background="#ff0066cc">
+        android:background="#A6000000"
+        android:gravity="bottom"
+        android:alpha="112">
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.37"
-        android:background="#ff0099ff">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.37"
-        android:baselineAligned="true"
-        android:background="#ff40e0d0">
     </LinearLayout>
 
 </LinearLayout>

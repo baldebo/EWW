@@ -132,12 +132,12 @@ public class DriveActivity extends Activity {
     public void getWeather() {
         Parser p = new Parser(this);
 
-        txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
+        /*txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
         txtUpdateTime = (TextView) findViewById(R.id.txtUpdateTime);
         txtFirstBig = (TextView) findViewById(R.id.txtFirstBig);
         txtWindFrc = (TextView) findViewById(R.id.txtWindFrc);
         txtTempRoad = (TextView) findViewById(R.id.txtTempRoad);
-        txtTempAir = (TextView) findViewById(R.id.txtTempAir);
+        txtTempAir = (TextView) findViewById(R.id.txtTempAir);*/
 
         try {
             //TODO Try to make nicer! Perhaps create a method?
