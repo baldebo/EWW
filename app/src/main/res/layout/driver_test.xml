@@ -39,12 +39,65 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"></TableRow>
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="12"
+                android:textSize="30dp"
+                android:id="@+id/textView2"
+                android:textColor="#FFFFFF"
+                android:paddingTop="10dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="180dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="°C"
+                android:textSize="15dp"
+                android:id="@+id/textView5"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"
+                android:paddingTop="10dp"
+                android:layout_gravity="left" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"></TableRow>
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="7"
+                android:textSize="30dp"
+                android:id="@+id/textView3"
+                android:textColor="#FFFFFF"
+                android:paddingTop="10dp"
+                android:textStyle="bold"
+
+                android:layout_marginLeft="180dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="°C"
+                android:textSize="15dp"
+                android:id="@+id/textView6"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"
+                android:paddingTop="10dp"
+                android:layout_gravity="left"/>
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -54,34 +107,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="222"
+                android:text="15"
                 android:textSize="30dp"
-                android:id="@+id/textView2"
+                android:id="@+id/textView4"
                 android:textColor="#FFFFFF"
                 android:paddingTop="10dp"
                 android:textStyle="bold"
-                android:layout_gravity="center"
-                />
-
+                android:layout_marginLeft="180dp"/>
             <TextView
-                android:layout_width="20dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="2"
-                android:textSize="30dp"
-                android:id="@+id/textView3"
-                android:textColor="#FFFFFF"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="m/s"
+                android:textSize="15dp"
+                android:id="@+id/textView7"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"
                 android:paddingTop="10dp"
-                android:textStyle="bold"
-                android:layout_gravity="right"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0.1"/>
+                android:layout_gravity="left"/>
         </TableRow>
-
-
-
 
 
         <!--<TextView-->
