@@ -102,12 +102,8 @@ public class MyCurrentLocationListener implements LocationListener {
         return locLon;
     }
 
-    public Coordinate getLoc() {
-        Coordinate c = new Coordinate();
-        c.lat = getLatitude();
-        c.lon = getLongitude();
-
-        return c;
+    public SWEREF99Position getLoc() {
+        return new SWEREF99Position(new WGS84Position(getLatitude(), getLongitude()), SWEREF99Position.SWEREFProjection.sweref_99_tm);
     }
 
     public double getBearing(){
