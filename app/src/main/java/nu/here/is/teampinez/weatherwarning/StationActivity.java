@@ -115,7 +115,11 @@ public class StationActivity extends Activity {
                 } else {
                     roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 }
-                //windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                if(station.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+                    windSpd[i] = "N/A";
+                } else {
+                    windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                }
             }
 
             for (int i = 0; i <stationName.length; i++) {
@@ -148,8 +152,7 @@ public class StationActivity extends Activity {
                     Log.i(getClass().getName(), e.toString());
                 }
 
-                windSpd[i] = String.format("%.1f", randomWind);
-                //windSpd[i] += " m/s";
+                if(!windSpd[i].equals("N/A")) windSpd[i] += " m/s";
 
                 HashMap<String,String> temp = new HashMap<String,String>();
                 temp.put(FIRST_COLUMN, stationName[i]);
