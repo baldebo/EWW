@@ -7,6 +7,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 
 public class MyCurrentLocationListener implements LocationListener {
 
@@ -97,6 +99,14 @@ public class MyCurrentLocationListener implements LocationListener {
         return locLon;
     }
 
+    public Coordinate getLoc() {
+        Coordinate c = new Coordinate();
+        c.lat = getLatitude();
+        c.lon = getLongitude();
+
+        return c;
+    }
+
     public double getBearing(){
         double gpsBearing = location.getBearing();
         return gpsBearing;
@@ -106,6 +116,52 @@ public class MyCurrentLocationListener implements LocationListener {
         double averageBearing[] = new double[5];
         Log.d("Array Length", String.valueOf(averageBearing.length));
         return averageBearing.length;
+    }
+
+    ArrayList<Coordinate> getTriangle() {
+        ArrayList<Coordinate> c = new ArrayList<>();
+
+        Coordinate coord1 = new Coordinate();
+        coord1.lat = getLatitude();
+        coord1.lon = getLongitude();
+
+        Coordinate coord2, coord3;
+        coord2 = distCoord(coord1, getBearing() - 10.0);
+        coord3 = distCoord(coord1, getBearing() + 10.0);
+
+        c.add(coord1);
+        c.add(coord2);
+        c.add(coord3);
+
+        Log.d(getClass().getName()+" Coord1", String.valueOf(c.get(0).lat));
+        Log.d(getClass().getName()+" Coord1", String.valueOf(c.get(0).lon));
+
+        Log.d(getClass().getName()+" Coord2", String.valueOf(c.get(1).lat));
+        Log.d(getClass().getName()+" Coord2", String.valueOf(c.get(1).lon));
+
+        Log.d(getClass().getName()+" Coord3", String.valueOf(c.get(2).lat));
+        Log.d(getClass().getName()+" Coord3", String.valueOf(c.get(2).lon));
+
+        return c;
+    }
+
+    private Coordinate distCoord(Coordinate c, double b) {
+        Coordinate newc = new Coordinate();
+        double dist = 40.0/6371.0;
+        double brng = Math.toRadians(b);
+        double lat1 = Math.toRadians(c.lat);
+        double lon1 = Math.toRadians(c.lon);
+
+        double lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+        double a = Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+        double lon2 = lon1 + a;
+
+        lon2 = (lon2+ 3*Math.PI) % (2*Math.PI) - Math.PI;
+
+        newc.lat = Math.toDegrees(lat2);
+        newc.lon = Math.toDegrees(lon2);
+
+        return newc;
     }
 
     public boolean canGetLocation() {
@@ -131,4 +187,9 @@ public class MyCurrentLocationListener implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
+}
+
+final class Coordinate {
+    double lat;
+    double lon;
 }

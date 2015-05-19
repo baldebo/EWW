@@ -66,10 +66,9 @@ public class Parser extends AsyncTask<String, Void, String> {
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            double locLat = gps.getLatitude();
-            double locLon = gps.getLongitude();
+            Coordinate cor = gps.getLoc();
 
-            writer.write(params(authid, locLat, locLon, "0,1"));
+            writer.write(params(authid, cor, "0,1"));
             writer.flush();
             writer.close();
             os.close();
@@ -104,7 +103,7 @@ public class Parser extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    private String params(String authid, double lat, double lon, String radius) {
+    private String params(String authid, Coordinate cor, String radius) {
         StringBuilder sb = new StringBuilder();
         sb.append("<REQUEST>");
         sb.append("<LOGIN authenticationkey='").append(authid).append("' />");
@@ -113,7 +112,7 @@ public class Parser extends AsyncTask<String, Void, String> {
         /*
          * Values lat and long position will be swapped sometime soon in the API.
          */
-        sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(lon).append(" ").append(lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
+        sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(cor.lon).append(" ").append(cor.lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
 
         /*
          * More datas?

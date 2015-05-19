@@ -28,11 +28,13 @@ import java.util.concurrent.TimeoutException;
 
 
 public class StationActivity extends Activity {
-    final static String authid = "5fe4551a599447929a301bc183b83a26";
     String stationName[];
     String airTemp[];
     String roadTemp[];
     String windSpd[];
+
+    //TODO Remove, debugging only.
+    MyCurrentLocationListener gps;
 
     boolean firstRun = true;
 
@@ -45,6 +47,11 @@ public class StationActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_view);
+
+        //TODO Remove, debugging only.
+        gps = new MyCurrentLocationListener(StationActivity.this);
+        gps.getTriangle();
+
         getWeather();
 
         //TODO Remove button? Timed update?
