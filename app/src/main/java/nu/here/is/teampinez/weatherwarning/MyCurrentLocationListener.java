@@ -1,25 +1,17 @@
 package nu.here.is.teampinez.weatherwarning;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
+import com.github.goober.coordinatetransformation.positions.WGS84Position;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import java.util.ArrayList;
+
 
 public class MyCurrentLocationListener implements LocationListener {
 
@@ -33,7 +25,6 @@ public class MyCurrentLocationListener implements LocationListener {
     Location location;
     double locLat;
     double locLon;
-    String address;
 
     public MyCurrentLocationListener(Context context) {
         this.context = context;
@@ -103,48 +94,73 @@ public class MyCurrentLocationListener implements LocationListener {
         return locLat;
     }
 
-    public String getAddress(){
-
-        //TODO Makes the whole thing crash due to IO Exception. Why????
-
-        double lat1;
-        double long1;
-        StringBuilder strReturnedAddress = new StringBuilder();
-        Geocoder gc = new Geocoder(context, Locale.getDefault());
-
-        try{
-            List<Address> addresses = gc.getFromLocation(locLat, locLon, 1);
-            Log.d("=Address=", addresses.get(0).getAddressLine(0));
-        }catch (IOException e) {
-
-        }
-
-
-        /*try {
-            List<Address> addresses = gc.getFromLocation(locLat, locLon, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0).getAddressLine(0);
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("");
-                }
-                address = strReturnedAddress.toString();
-            } else {
-                address = "No Address Found";
-            }
-        }catch (IOException e) {
-            Toast alert = Toast.makeText(context, "Error!", Toast.LENGTH_LONG);
-            alert.show();
-        }*/
-
-        return address;
-    }
 
     public double getLongitude() {
         if (location != null) {
             locLon = location.getLongitude();
         }
         return locLon;
+    }
+
+    public SWEREF99Position getLoc() {
+        return new SWEREF99Position(new WGS84Position(getLatitude(), getLongitude()), SWEREF99Position.SWEREFProjection.sweref_99_tm);
+    }
+
+    public double getBearing(){
+        double gpsBearing = location.getBearing();
+        return gpsBearing;
+    }
+
+    public double getAverageBearing(){
+        double averageBearing[] = new double[5];
+        Log.d("Array Length", String.valueOf(averageBearing.length));
+        return averageBearing.length;
+    }
+
+    ArrayList<SWEREF99Position> getTriangle() {
+        ArrayList<SWEREF99Position> pos = new ArrayList<>();
+
+        WGS84Position[] positions = new WGS84Position[3];
+        // PLS HELP ME INITIALIZE IN A FOR LOOP. I HAVE BRAIN FART.
+        positions[0] = new WGS84Position();
+        positions[1] = new WGS84Position();
+        positions[2] = new WGS84Position();
+
+        positions[0].setLatitudeFromString(String.valueOf(getLatitude()), WGS84Position.WGS84Format.Degrees);
+        positions[0].setLongitudeFromString(String.valueOf(getLongitude()), WGS84Position.WGS84Format.Degrees);
+
+        positions[1] = distantPos(positions[0], getBearing() - 10.0);
+        positions[2] = distantPos(positions[0], getBearing() + 10.0);
+
+        for(WGS84Position p : positions) {
+            pos.add(new SWEREF99Position(p, SWEREF99Position.SWEREFProjection.sweref_99_tm));
+        }
+
+        for(SWEREF99Position p : pos) {
+            Log.d(getClass().getName(), p.toString());
+            Log.d(getClass().getName(), String.valueOf(p.getLatitude()));
+        }
+
+        return pos;
+    }
+
+    private WGS84Position distantPos(WGS84Position p, double bearing) {
+        WGS84Position newpos = new WGS84Position();
+
+        double dist = 40.0/6371.0;
+        bearing = Math.toRadians(bearing);
+        double lat1 = Math.toRadians(p.getLatitude());
+        double lon1 = Math.toRadians(p.getLongitude());
+
+        double lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(bearing));
+        double a = Math.atan2(Math.sin(bearing) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+        double lon2 = lon1 + a;
+        lon2 = (lon2+ 3*Math.PI) % (2*Math.PI) - Math.PI;
+
+        newpos.setLatitudeFromString(String.valueOf(Math.toDegrees(lat2)), WGS84Position.WGS84Format.Degrees);
+        newpos.setLongitudeFromString(String.valueOf(Math.toDegrees(lon2)), WGS84Position.WGS84Format.Degrees);
+
+        return newpos;
     }
 
     public boolean canGetLocation() {
@@ -170,4 +186,9 @@ public class MyCurrentLocationListener implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
+}
+
+final class Coordinate {
+    double lat;
+    double lon;
 }
