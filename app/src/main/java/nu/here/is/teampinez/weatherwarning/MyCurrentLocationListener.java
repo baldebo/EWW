@@ -7,6 +7,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
+import com.github.goober.coordinatetransformation.positions.WGS84Position;
+
 import java.util.ArrayList;
 
 
@@ -118,50 +121,50 @@ public class MyCurrentLocationListener implements LocationListener {
         return averageBearing.length;
     }
 
-    ArrayList<Coordinate> getTriangle() {
-        ArrayList<Coordinate> c = new ArrayList<>();
+    ArrayList<SWEREF99Position> getTriangle() {
+        ArrayList<SWEREF99Position> pos = new ArrayList<>();
 
-        Coordinate coord1 = new Coordinate();
-        coord1.lat = getLatitude();
-        coord1.lon = getLongitude();
+        WGS84Position[] positions = new WGS84Position[4];
+        positions[0] = new WGS84Position();
+        positions[1] = new WGS84Position();
+        positions[2] = new WGS84Position();
+        positions[3] = new WGS84Position();
 
-        Coordinate coord2, coord3;
-        coord2 = distCoord(coord1, getBearing() - 10.0);
-        coord3 = distCoord(coord1, getBearing() + 10.0);
+        positions[0].setLatitudeFromString(String.valueOf(getLatitude()), WGS84Position.WGS84Format.Degrees);
+        positions[0].setLongitudeFromString(String.valueOf(getLongitude()), WGS84Position.WGS84Format.Degrees);
 
-        c.add(coord1);
-        c.add(coord2);
-        c.add(coord3);
+        positions[1] = distantPos(positions[0], getBearing() - 10.0);
+        positions[2] = distantPos(positions[0], getBearing());
+        positions[3] = distantPos(positions[0], getBearing() + 10.0);
 
-        Log.d(getClass().getName()+" Coord1", String.valueOf(c.get(0).lat));
-        Log.d(getClass().getName()+" Coord1", String.valueOf(c.get(0).lon));
+        for(WGS84Position p : positions) {
+            pos.add(new SWEREF99Position(p, SWEREF99Position.SWEREFProjection.sweref_99_tm));
+        }
 
-        Log.d(getClass().getName()+" Coord2", String.valueOf(c.get(1).lat));
-        Log.d(getClass().getName()+" Coord2", String.valueOf(c.get(1).lon));
+        for(SWEREF99Position p : pos) {
+            Log.d(getClass().getName(), p.toString());
+        }
 
-        Log.d(getClass().getName()+" Coord3", String.valueOf(c.get(2).lat));
-        Log.d(getClass().getName()+" Coord3", String.valueOf(c.get(2).lon));
-
-        return c;
+        return pos;
     }
 
-    private Coordinate distCoord(Coordinate c, double b) {
-        Coordinate newc = new Coordinate();
+    private WGS84Position distantPos(WGS84Position p, double bearing) {
+        WGS84Position newpos = new WGS84Position();
+
         double dist = 40.0/6371.0;
-        double brng = Math.toRadians(b);
-        double lat1 = Math.toRadians(c.lat);
-        double lon1 = Math.toRadians(c.lon);
+        bearing = Math.toRadians(bearing);
+        double lat1 = Math.toRadians(p.getLatitude());
+        double lon1 = Math.toRadians(p.getLongitude());
 
-        double lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
-        double a = Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+        double lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(bearing));
+        double a = Math.atan2(Math.sin(bearing) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
         double lon2 = lon1 + a;
-
         lon2 = (lon2+ 3*Math.PI) % (2*Math.PI) - Math.PI;
 
-        newc.lat = Math.toDegrees(lat2);
-        newc.lon = Math.toDegrees(lon2);
+        newpos.setLatitudeFromString(String.valueOf(Math.toDegrees(lat2)), WGS84Position.WGS84Format.Degrees);
+        newpos.setLongitudeFromString(String.valueOf(Math.toDegrees(lon2)), WGS84Position.WGS84Format.Degrees);
 
-        return newc;
+        return newpos;
     }
 
     public boolean canGetLocation() {
