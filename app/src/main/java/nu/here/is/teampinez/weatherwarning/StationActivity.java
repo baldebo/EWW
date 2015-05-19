@@ -1,18 +1,13 @@
 package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,8 +93,6 @@ public class StationActivity extends Activity {
             roadTemp = new String[jsonArray.length()];
             windSpd = new String[jsonArray.length()];
 
-            Log.d("JSON", jsonArray.toString());
-
             ListView listView = (ListView) findViewById(R.id.listStations);
             ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
@@ -109,39 +102,50 @@ public class StationActivity extends Activity {
                 roadTemp[i] = null;
             }
 
-            Log.d("JSON Station > ", "--------");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject station = jsonArray.getJSONObject(i);
                 stationName[i] = station.getString("Name");
-                airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
-                roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                if(station.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+                    airTemp[i] = "N/A";
+                } else {
+                    airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+                }
+                if(station.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+                    roadTemp[i] = "N/A";
+                } else {
+                    roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                }
                 //windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                //Log.d("JSON Station >", station.getString("Name"));
-                Log.d("JSON New", "------");
-                Log.d("JSON Station > ", station.getString("Name"));
-                Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
-                Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
             }
-            Log.d("JSON Station > ", "--------");
 
             for (int i = 0; i <stationName.length; i++) {
                 Random rand = new Random();
                 DecimalFormat df = new DecimalFormat("#.00");
                 double randomWind = 0 + (15 - 0) * rand.nextDouble();
-                double airTempDouble = Double.parseDouble(airTemp[i]);
-                double roadTempDouble = Double.parseDouble(roadTemp[i]);
-                // Check for BS values
+                try {
+                    if (!roadTemp[i].equals("N/A")) {
+                        double roadTempDouble = Double.parseDouble(roadTemp[i]);
+                        if (roadTempDouble < -50) {
+                            roadTemp[i] = "N/A";
+                        } else {
+                            roadTemp[i] += "°C";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), e+" "+String.valueOf(roadTemp[i]));
+                }
 
-                /*if (airTempDouble < -50) {
-                    airTemp[i] = "N/A";
-                } else {
-                    airTemp[i] += "°C";
-                }*/
-                if (roadTempDouble < -50) {
-                    roadTemp[i] = "N/A";
-                } else {
-                    roadTemp[i] += "°C";
+                try {
+                    if(!airTemp[i].equals("N/A")) {
+                        double airTempDouble = Double.parseDouble(airTemp[i]);
+                        if(airTempDouble < -50) {
+                            airTemp[i] = "N/A";
+                        } else {
+                            airTemp[i] += "°C";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), e.toString());
                 }
 
                 windSpd[i] = String.format("%.1f", randomWind);
