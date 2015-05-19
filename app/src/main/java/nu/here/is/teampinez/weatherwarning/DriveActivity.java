@@ -47,6 +47,7 @@ public class DriveActivity extends Activity {
         gps = new MyCurrentLocationListener(DriveActivity.this);
         setContentView(R.layout.driver_test);
         getWeather();
+        gps.getAverageBearing();
     }
 
     @Override
