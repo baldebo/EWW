@@ -120,18 +120,17 @@ public class MyCurrentLocationListener implements LocationListener {
     ArrayList<SWEREF99Position> getTriangle() {
         ArrayList<SWEREF99Position> pos = new ArrayList<>();
 
-        WGS84Position[] positions = new WGS84Position[4];
+        WGS84Position[] positions = new WGS84Position[3];
+        // PLS HELP ME INITIALIZE IN A FOR LOOP. I HAVE BRAIN FART.
         positions[0] = new WGS84Position();
         positions[1] = new WGS84Position();
         positions[2] = new WGS84Position();
-        positions[3] = new WGS84Position();
 
         positions[0].setLatitudeFromString(String.valueOf(getLatitude()), WGS84Position.WGS84Format.Degrees);
         positions[0].setLongitudeFromString(String.valueOf(getLongitude()), WGS84Position.WGS84Format.Degrees);
 
         positions[1] = distantPos(positions[0], getBearing() - 10.0);
-        positions[2] = distantPos(positions[0], getBearing());
-        positions[3] = distantPos(positions[0], getBearing() + 10.0);
+        positions[2] = distantPos(positions[0], getBearing() + 10.0);
 
         for(WGS84Position p : positions) {
             pos.add(new SWEREF99Position(p, SWEREF99Position.SWEREFProjection.sweref_99_tm));
@@ -139,6 +138,7 @@ public class MyCurrentLocationListener implements LocationListener {
 
         for(SWEREF99Position p : pos) {
             Log.d(getClass().getName(), p.toString());
+            Log.d(getClass().getName(), String.valueOf(p.getLatitude()));
         }
 
         return pos;
