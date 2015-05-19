@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -66,9 +69,9 @@ public class Parser extends AsyncTask<String, Void, String> {
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            Coordinate cor = gps.getLoc();
+            SWEREF99Position position = gps.getLoc();
 
-            writer.write(params(authid, cor, "0,1"));
+            writer.write(paramsRadius(authid, position, "10000"));
             writer.flush();
             writer.close();
             os.close();
@@ -103,7 +106,7 @@ public class Parser extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    private String params(String authid, Coordinate cor, String radius) {
+    private String paramsRadius(String authid, SWEREF99Position position, String radius) {
         StringBuilder sb = new StringBuilder();
         sb.append("<REQUEST>");
         sb.append("<LOGIN authenticationkey='").append(authid).append("' />");
@@ -112,7 +115,7 @@ public class Parser extends AsyncTask<String, Void, String> {
         /*
          * Values lat and long position will be swapped sometime soon in the API.
          */
-        sb.append("<FILTER>").append("<WITHIN name='Geometry.WGS84' shape='center' value='").append(cor.lon).append(" ").append(cor.lat).append("' radius='").append(radius).append("'").append("/></FILTER>");
+        sb.append("<FILTER>").append("<WITHIN name='Geometry.SWEREF99TM' shape='center' value='").append(position.getLongitude()).append(" ").append(position.getLatitude()).append("' radius='").append(radius).append("'").append("/></FILTER>");
 
         /*
          * More datas?
