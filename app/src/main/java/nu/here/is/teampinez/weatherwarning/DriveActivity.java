@@ -1,8 +1,13 @@
 package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.swedspot.automotiveapi.AutomotiveSignal;
+import android.swedspot.automotiveapi.AutomotiveSignalId;
+import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +16,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.drive.Drive;
+import com.swedspot.automotiveapi.AutomotiveFactory;
+import com.swedspot.automotiveapi.AutomotiveListener;
+import com.swedspot.vil.distraction.DriverDistractionLevel;
+import com.swedspot.vil.distraction.DriverDistractionListener;
+import com.swedspot.vil.distraction.LightMode;
+import com.swedspot.vil.distraction.StealthMode;
+import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +59,53 @@ public class DriveActivity extends Activity {
         gps = new MyCurrentLocationListener(DriveActivity.this);
         setContentView(R.layout.driver_test);
         getWeather();
+
+        new AsyncTask() {
+
+            @Override
+            protected Object doInBackground(Object... objects) {
+                AutomotiveFactory.createAutomotiveManagerInstance(
+                        new AutomotiveCertificate(new byte[0]),
+                        new AutomotiveListener() {
+                            @Override
+                            public void receive(final AutomotiveSignal automotiveSignal) {
+
+
+                            }
+
+                            @Override
+                            public void timeout(int i) {
+
+                            }
+
+                            @Override
+                            public void notAllowed(int i) {
+
+                            }
+                        },
+                        new DriverDistractionListener() {
+                            @Override
+                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+
+
+                            }
+
+                            @Override
+                            public void lightModeChanged(LightMode lightMode) {
+
+                            }
+
+                            @Override
+                            public void stealthModeChanged(StealthMode stealthMode) {
+
+                            }
+                        }
+                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
+                return null;
+            }
+        }.execute();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
