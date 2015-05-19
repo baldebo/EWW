@@ -26,7 +26,6 @@ import java.util.concurrent.TimeoutException;
 
 
 public class DriveActivity extends Activity {
-    final static String authid = "5fe4551a599447929a301bc183b83a26";
     String stationName[];
     String airTemp[];
     String roadTemp[];

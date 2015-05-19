@@ -21,8 +21,6 @@ import java.util.concurrent.TimeoutException;
 public class SearchActivity extends Activity {
     MyCurrentLocationListener gps;
 
-
-
     TextView txtStatName1;
     TextView txtAirTemp1;
     TextView txtRdTemp1;
