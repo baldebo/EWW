@@ -11,7 +11,7 @@
     android:id="@+id/relativeLayout">
 
 
-    <TextView
+<!--    <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/metrics"
@@ -22,11 +22,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <!--<ExpandableListView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/expandableListView"-->
-    <!--android:textColor="#FFFFFF"/>-->
+    &lt;!&ndash;<ExpandableListView&ndash;&gt;
+    &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+    &lt;!&ndash;android:id="@+id/expandableListView"&ndash;&gt;
+    &lt;!&ndash;android:textColor="#FFFFFF"/>&ndash;&gt;
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -145,6 +145,19 @@
         android:textSize="14sp"
         android:textColor="#ffffffff"
         android:layout_below="@+id/textNotifications"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true" />-->
 
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:id="@+id/toggle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:elegantTextHeight="true"
+        android:showText="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="26dp"
+        android:onClick="onClick" />
 </RelativeLayout>

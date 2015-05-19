@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GUIActivity extends Activity {
 
     TextView theTextView;
     MyCurrentLocationListener gps;
+    NotificationMain notificationMain = new NotificationMain();
 
     /*
     Variables below this point are used to store coordinates.
@@ -42,7 +44,13 @@ public class GUIActivity extends Activity {
             }
         });*/
 
+
         theTextView = (TextView) findViewById(R.id.textHeader);
+        
+        notificationMain.displayNotification();
+        if (notificationMain.mBuilder.build() == null) {
+            Toast.makeText(this, "its null", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

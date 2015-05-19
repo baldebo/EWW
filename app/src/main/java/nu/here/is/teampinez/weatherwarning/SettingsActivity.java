@@ -1,3 +1,4 @@
+
 package nu.here.is.teampinez.weatherwarning;
 
 import android.content.Context;
@@ -17,16 +18,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 
 
-public class SettingsActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends Activity  {
+
+    Switch toggleNotification;
+    NotificationMain notificationMain = new NotificationMain();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_main);
 
-        CheckBox chkBoxFahrenheit, chkBoxCelcius, chkBoxMiles, chkBoxKilometers, chkBoxWindspeed, chkBoxGusts, chkBoxDirection, chkBoxToggleNotifications, chkBoxShowOnLockscreen;
+
+        /*CheckBox chkBoxFahrenheit, chkBoxCelcius, chkBoxMiles, chkBoxKilometers, chkBoxWindspeed, chkBoxGusts, chkBoxDirection, chkBoxToggleNotifications, chkBoxShowOnLockscreen;
 
         chkBoxFahrenheit = (CheckBox)findViewById(R.id.chkBoxFahrenheit);
         chkBoxFahrenheit.setChecked(getFromSp("chkBoxFahrenheit"));
@@ -63,10 +70,35 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
         chkBoxShowOnLockscreen = (CheckBox)findViewById(R.id.chkBoxShowOnLockscreen);
         chkBoxShowOnLockscreen.setChecked(getFromSp("chkBoxShowOnLockscreen"));
         chkBoxShowOnLockscreen.setOnCheckedChangeListener(this);
+*/        toggleNotification = (Switch) findViewById(R.id.toggle);
+        SharedPreferences sharedPrefs = getSharedPreferences("nu.here.is.team.pinez.weatherwarning", MODE_PRIVATE);
+        toggleNotification.setChecked(sharedPrefs.getBoolean("Notification", true));
 
     }
 
-    private boolean getFromSp(String key){
+
+    public void onClick(View v)
+    {
+        if (toggleNotification.isChecked())
+        {
+            SharedPreferences.Editor editor = getSharedPreferences("nu.here.is.team.pinez.weatherwarning", MODE_PRIVATE).edit();
+            editor.putBoolean("Notification", true);
+            notificationMain.displayNotification();
+            editor.apply();
+        }
+        else
+        {
+            SharedPreferences.Editor editor = getSharedPreferences("nu.here.is.team.pinez.weatherwarning", MODE_PRIVATE).edit();
+            editor.putBoolean("Notification", false);
+            notificationMain.stopNotification();
+            editor.apply();
+        }
+    }
+
+
+
+
+/*    private boolean getFromSp(String key){
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("SharedPreferences_Test",
                 Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
@@ -111,5 +143,6 @@ public class SettingsActivity extends Activity implements CompoundButton.OnCheck
                 saveInSp("chkBoxShowOnLockscreen", isChecked);
                 break;
         }
-    }
+    }*/
 }
+
