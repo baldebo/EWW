@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 
 public class Parser extends AsyncTask<String, Void, String> {
+    private final static String authid = "5fe4551a599447929a301bc183b83a26";
 
     private ProgressDialog progressDialog;
     MyCurrentLocationListener gps;
@@ -65,11 +66,10 @@ public class Parser extends AsyncTask<String, Void, String> {
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            //TODO Make this non-static.
-
             double locLat = gps.getLatitude();
             double locLon = gps.getLongitude();
-            writer.write(params(SearchActivity.authid, locLat, locLon, "0,1"));
+
+            writer.write(params(authid, locLat, locLon, "0,1"));
             writer.flush();
             writer.close();
             os.close();

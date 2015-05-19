@@ -19,7 +19,6 @@ import java.util.concurrent.TimeoutException;
 
 
 public class SearchActivity extends Activity {
-    final static String authid = "5fe4551a599447929a301bc183b83a26";
     MyCurrentLocationListener gps;
 
 
