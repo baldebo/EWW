@@ -103,48 +103,23 @@ public class MyCurrentLocationListener implements LocationListener {
         return locLat;
     }
 
-    public String getAddress(){
-
-        //TODO Makes the whole thing crash due to IO Exception. Why????
-
-        double lat1;
-        double long1;
-        StringBuilder strReturnedAddress = new StringBuilder();
-        Geocoder gc = new Geocoder(context, Locale.getDefault());
-
-        try{
-            List<Address> addresses = gc.getFromLocation(locLat, locLon, 1);
-            Log.d("=Address=", addresses.get(0).getAddressLine(0));
-        }catch (IOException e) {
-
-        }
-
-
-        /*try {
-            List<Address> addresses = gc.getFromLocation(locLat, locLon, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0).getAddressLine(0);
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("");
-                }
-                address = strReturnedAddress.toString();
-            } else {
-                address = "No Address Found";
-            }
-        }catch (IOException e) {
-            Toast alert = Toast.makeText(context, "Error!", Toast.LENGTH_LONG);
-            alert.show();
-        }*/
-
-        return address;
-    }
 
     public double getLongitude() {
         if (location != null) {
             locLon = location.getLongitude();
         }
         return locLon;
+    }
+
+    public double getBearing(){
+        double gpsBearing = location.getBearing();
+        return gpsBearing;
+    }
+
+    public double getAverageBearing(){
+        double averageBearing[] = new double[5];
+        Log.d("Array Length", String.valueOf(averageBearing.length));
+        return averageBearing.length;
     }
 
     public boolean canGetLocation() {
