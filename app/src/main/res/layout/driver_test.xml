@@ -7,7 +7,7 @@
         android:layout_centerHorizontal="true"
     android:weightSum="1"
     android:background="@mipmap/roadrino"
-    android:gravity="bottom">
+    android:gravity="top">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -15,9 +15,18 @@
         android:layout_height="wrap_content"
         android:background="#A6000000"
         android:id="@+id/transparentBackground"
-        android:gravity="bottom"
+        android:gravity="top"
         android:alpha="112"
-        android:weightSum="1">
+        android:layout_weight="0.2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText"
+            android:id="@+id/stationDistance"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,9 +34,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/stationName"
             android:textStyle="bold"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textColor="#FFFFFF"
-            android:id="@+id/textView"
+            android:id="@+id/stationName"
             android:layout_gravity="center_horizontal" />
 
         <ImageView
@@ -35,7 +44,8 @@
             android:id="@+id/warningPic"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/snowyroad" />
+            android:src="@mipmap/snowyroad"
+            android:contentDescription="@string/warningPic"/>
 
         <TableRow
             android:layout_width="match_parent"
@@ -47,24 +57,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Air"
-                android:textSize="24dp"
+                android:text="@string/airTempText"
+                android:textSize="24sp"
                 android:id="@+id/airTempText"
                 android:textColor="#FFF"
                 android:paddingLeft="120dp"
-                android:layout_gravity="left"
-                android:paddingTop="10dp"
+                android:layout_gravity="start"
                 android:width="175dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="15"
-                android:textSize="30dp"
+                android:text="@string/airTemp"
+                android:textSize="30sp"
                 android:id="@+id/airTemp"
                 android:textColor="#FFFFFF"
-                android:paddingTop="10dp"
                 android:paddingLeft="5dp"
                 android:textStyle="bold"
                 android:layout_gravity="right" />
@@ -73,12 +81,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="°C"
-                android:textSize="15dp"
+                android:text="@string/airTempMetric"
+                android:textSize="15sp"
                 android:id="@+id/airTempMetric"
                 android:textColor="#FFF"
                 android:includeFontPadding="false"
-                android:paddingTop="10dp"
                 android:layout_weight="0.1"/>
         </TableRow>
 
@@ -91,24 +98,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Road"
-                android:textSize="24dp"
+                android:text="@string/roadTempText"
+                android:textSize="24sp"
                 android:id="@+id/roadTempText"
                 android:textColor="#FFF"
                 android:paddingLeft="120dp"
                 android:layout_gravity="left"
-                android:paddingTop="10dp"
                 android:width="175dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="15"
-                android:textSize="30dp"
+                android:text="@string/roadTemp"
+                android:textSize="30sp"
                 android:id="@+id/roadTemp"
                 android:textColor="#FFFFFF"
-                android:paddingTop="10dp"
                 android:textStyle="bold"
                 android:paddingLeft="5dp"
                 />
@@ -117,13 +122,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="°C"
-                android:textSize="15dp"
+                android:text="@string/roadTempMetric"
+                android:textSize="15sp"
                 android:id="@+id/roadtempMetric"
                 android:textColor="#FFF"
                 android:includeFontPadding="false"
                 android:layout_weight="0.1"
-                android:paddingTop="10dp"
                 android:layout_gravity="left"/>
         </TableRow>
 
@@ -132,17 +136,16 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal">
 
-            <TextView
+                <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Wind"
-                android:textSize="24dp"
+                android:text="@string/windSpdText"
+                android:textSize="24sp"
                 android:id="@+id/windSpdText"
                 android:textColor="#FFF"
                 android:paddingLeft="120dp"
                 android:layout_gravity="left"
-                android:paddingTop="10dp"
                 android:width="175dp" />
 
 
@@ -150,11 +153,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="15"
-                android:textSize="30dp"
+                android:text="@string/windSpd"
+                android:textSize="30sp"
                 android:id="@+id/windSpd"
                 android:textColor="#FFFFFF"
-                android:paddingTop="10dp"
                 android:textStyle="bold"
                 android:paddingLeft="7dp"
                 android:layout_marginLeft="0dp"/>
@@ -162,45 +164,190 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="m/s"
-                android:textSize="15dp"
+                android:text="@string/windSpdMetric"
+                android:textSize="15sp"
                 android:id="@+id/windSpdMetric"
                 android:textColor="#FFF"
                 android:includeFontPadding="false"
                 android:layout_weight="0.1"
-                android:paddingTop="10dp"
                 android:layout_gravity="left"/>
         </TableRow>
 
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-            <!--android:text="11°C"-->
-            <!--android:textStyle="bold"-->
-            <!--android:textSize="30dp"-->
-            <!--android:gravity="left"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textColor="#FFFFFF"-->
-            <!--android:paddingTop="5dp"-->
-            <!--android:id="@+id/textView3"-->
-            <!--android:layout_marginLeft="165dp" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText2"
+            android:id="@+id/stationDistance2"
+            android:textStyle="bold"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stationName2"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/stationName2"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/warningPic2"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/noun_7702" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="0.3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTemp2"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#FFF"
+                android:id="@+id/airTemp2"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0.1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTemp2"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:textColor="#FFF"
+                android:id="@+id/roadTemp2"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpd2"
+                android:textColor="#FFF"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:id="@+id/windSpd2"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="left"
+                android:layout_gravity="center_vertical" />
+        </TableRow>
 
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-            <!--android:text="4 m/s"-->
-            <!--android:textColor="#FFFFFF"-->
-            <!--android:textSize="30dp"-->
-            <!--android:textStyle="bold"-->
-            <!--android:paddingTop="5dp"-->
-            <!--android:id="@+id/textView4"-->
-            <!--android:layout_gravity="left"-->
-            <!--android:layout_marginLeft="165dp"/>-->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:background="#E6000000"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText3"
+            android:id="@+id/stationDistance3"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stationName3"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/stationName3"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/warningPic3"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/noun_7702" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="0.3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTemp3"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#FFF"
+                android:id="@+id/airTemp3"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0.1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTemp3"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:textColor="#FFF"
+                android:id="@+id/roadTemp3"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpd3"
+                android:textColor="#FFF"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:id="@+id/windSpd3"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="left"
+                android:layout_gravity="center_vertical" />
+        </TableRow>
 
 
     </LinearLayout>
