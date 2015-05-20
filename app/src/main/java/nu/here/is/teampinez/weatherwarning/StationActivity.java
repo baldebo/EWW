@@ -23,10 +23,6 @@ import java.util.concurrent.TimeoutException;
 
 
 public class StationActivity extends Activity {
-    String stationName[];
-    String airTemp[];
-    String roadTemp[];
-    String windSpd[];
 
     //TODO Remove, debugging only.
     MyCurrentLocationListener gps;
@@ -88,78 +84,67 @@ public class StationActivity extends Activity {
         try {
             //TODO Try to make nicer! Perhaps create a method?
             JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
-            stationName = new String[jsonArray.length()];
-            airTemp = new String[jsonArray.length()];
-            roadTemp = new String[jsonArray.length()];
-            windSpd = new String[jsonArray.length()];
-
             ListView listView = (ListView) findViewById(R.id.listStations);
-            ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String, String>> list = new ArrayList<>();
+            
+            for(int i=0; i<jsonArray.length(); i++) {
+                Station s = new Station();
+                JSONObject parsedStation = jsonArray.getJSONObject(i);
 
-            for (int i = 0; i < stationName.length; i++) {
-                stationName[i] = null;
-                airTemp[i] = null;
-                roadTemp[i] = null;
-            }
+                // Parse data.
+                s.name = parsedStation.getString("Name");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject station = jsonArray.getJSONObject(i);
-                stationName[i] = station.getString("Name");
-                if(station.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
-                    airTemp[i] = "N/A";
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+                    s.airTemp = "N/A";
                 } else {
-                    airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+                    s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 }
-                if(station.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
-                    roadTemp[i] = "N/A";
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+                    s.roadTemp = "N/A";
                 } else {
-                    roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                    s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 }
-                if(station.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
-                    windSpd[i] = "N/A";
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+                    s.windSpeed = "N/A";
                 } else {
-                    windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                    s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 }
-            }
 
-            for (int i = 0; i <stationName.length; i++) {
-                Random rand = new Random();
-                DecimalFormat df = new DecimalFormat("#.00");
-                double randomWind = 0 + (15 - 0) * rand.nextDouble();
                 try {
-                    if (!roadTemp[i].equals("N/A")) {
-                        double roadTempDouble = Double.parseDouble(roadTemp[i]);
+                    if (!s.roadTemp.equals("N/A")) {
+                        double roadTempDouble = Double.parseDouble(s.roadTemp);
                         if (roadTempDouble < -50) {
-                            roadTemp[i] = "N/A";
+                            s.roadTemp = "N/A";
                         } else {
-                            roadTemp[i] += "°C";
+                            s.roadTemp += "°C";
                         }
                     }
                 } catch (NumberFormatException e) {
-                    Log.i(getClass().getName(), e+" "+String.valueOf(roadTemp[i]));
+                    Log.i(getClass().getName(), String.valueOf(e));
+
                 }
 
                 try {
-                    if(!airTemp[i].equals("N/A")) {
-                        double airTempDouble = Double.parseDouble(airTemp[i]);
+                    if(!s.airTemp.equals("N/A")) {
+                        double airTempDouble = Double.parseDouble(s.airTemp);
                         if(airTempDouble < -50) {
-                            airTemp[i] = "N/A";
+                            s.airTemp = "N/A";
                         } else {
-                            airTemp[i] += "°C";
+                            s.airTemp += "°C";
                         }
                     }
                 } catch (NumberFormatException e) {
                     Log.i(getClass().getName(), e.toString());
                 }
 
-                if(!windSpd[i].equals("N/A")) windSpd[i] += " m/s";
+                if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
 
-                HashMap<String,String> temp = new HashMap<String,String>();
-                temp.put(FIRST_COLUMN, stationName[i]);
-                temp.put(SECOND_COLUMN, roadTemp[i]);
-                temp.put(THIRD_COLUMN, airTemp[i]);
-                temp.put(FOURTH_COLUMN, windSpd[i]);
-                list.add(temp);
+                HashMap<String, String> tmp = new HashMap<>();
+                tmp.put(FIRST_COLUMN, s.name);
+                tmp.put(SECOND_COLUMN, s.roadTemp);
+                tmp.put(THIRD_COLUMN, s.airTemp);
+                tmp.put(FOURTH_COLUMN, s.windSpeed);
+                list.add(tmp);
             }
 
             if (firstRun){
@@ -183,8 +168,8 @@ public class StationActivity extends Activity {
 
 final class Station {
     String name;
-    double roadTemp;
-    double airTemp;
-    double windSpeed;
+    String roadTemp;
+    String airTemp;
+    String windSpeed;
     // More data?
 }
