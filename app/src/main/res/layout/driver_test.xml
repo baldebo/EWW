@@ -35,7 +35,7 @@
             android:id="@+id/warningPic"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/Road" />
+            android:src="@mipmap/snowyroad" />
 
         <TableRow
             android:layout_width="match_parent"

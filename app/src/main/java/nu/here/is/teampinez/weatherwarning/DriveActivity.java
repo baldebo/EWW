@@ -60,51 +60,8 @@ public class DriveActivity extends Activity {
         setContentView(R.layout.driver_test);
         getWeather();
 
-        new AsyncTask() {
 
-            @Override
-            protected Object doInBackground(Object... objects) {
-                AutomotiveFactory.createAutomotiveManagerInstance(
-                        new AutomotiveCertificate(new byte[0]),
-                        new AutomotiveListener() {
-                            @Override
-                            public void receive(final AutomotiveSignal automotiveSignal) {
-
-
-                            }
-
-                            @Override
-                            public void timeout(int i) {
-
-                            }
-
-                            @Override
-                            public void notAllowed(int i) {
-
-                            }
-                        },
-                        new DriverDistractionListener() {
-                            @Override
-                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
-
-
-                            }
-
-                            @Override
-                            public void lightModeChanged(LightMode lightMode) {
-
-                            }
-
-                            @Override
-                            public void stealthModeChanged(StealthMode stealthMode) {
-
-                            }
-                        }
-                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
-                return null;
             }
-        }.execute();
-    }
 
 
     @Override
