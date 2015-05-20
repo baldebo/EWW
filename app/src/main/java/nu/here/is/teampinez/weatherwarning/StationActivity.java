@@ -24,10 +24,15 @@ import java.util.concurrent.TimeoutException;
 
 public class StationActivity extends Activity {
 
+    // Station Array.
+    ArrayList<Station> stations = new ArrayList<>();
+    ArrayList<HashMap<String, String>> list = new ArrayList<>();
+
+    ListViewAdapter adapter;
+    ListView listView;
+
     //TODO Remove, debugging only.
     MyCurrentLocationListener gps;
-
-    boolean firstRun = true;
 
     public static final String FIRST_COLUMN     ="First";
     public static final String SECOND_COLUMN    ="Second";
@@ -38,6 +43,15 @@ public class StationActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_view);
+
+        /*
+         * Setting up the ListView.
+         * Adding adapter and setting header.
+         */
+        listView = (ListView) findViewById(R.id.listStations);
+        adapter = new ListViewAdapter(this, list);
+        listView.addHeaderView(View.inflate(this,R.layout.station_header, null));
+        listView.setAdapter(adapter);
 
         //TODO Remove, debugging only.
         gps = new MyCurrentLocationListener(StationActivity.this);
@@ -84,9 +98,6 @@ public class StationActivity extends Activity {
         try {
             //TODO Try to make nicer! Perhaps create a method?
             JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
-            ListView listView = (ListView) findViewById(R.id.listStations);
-            ArrayList<HashMap<String, String>> list = new ArrayList<>();
-            
             for(int i=0; i<jsonArray.length(); i++) {
                 Station s = new Station();
                 JSONObject parsedStation = jsonArray.getJSONObject(i);
@@ -139,6 +150,12 @@ public class StationActivity extends Activity {
 
                 if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
 
+                // Add object to ArrayList
+                stations.add(s);
+            }
+
+            // Do fun stuff for each Object in the ArrayList
+            for(Station s : stations) {
                 HashMap<String, String> tmp = new HashMap<>();
                 tmp.put(FIRST_COLUMN, s.name);
                 tmp.put(SECOND_COLUMN, s.roadTemp);
@@ -146,16 +163,6 @@ public class StationActivity extends Activity {
                 tmp.put(FOURTH_COLUMN, s.windSpeed);
                 list.add(tmp);
             }
-
-            if (firstRun){
-                View view = View.inflate(this, R.layout.station_header, null);
-                listView.addHeaderView(view);
-                firstRun = false;
-            }
-
-            ListViewAdapter adapter = new ListViewAdapter(this, list);
-            listView.setAdapter(adapter);
-
             //ListAdapter stationListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , stationName);
             //ListView listStations = (ListView) findViewById(R.id.listStations);
             //listStations.setAdapter(stationListAdapter);
