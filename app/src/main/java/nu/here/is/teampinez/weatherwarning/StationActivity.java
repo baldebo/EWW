@@ -179,5 +179,12 @@ public class StationActivity extends Activity {
             e.printStackTrace();
         }
     }
+}
 
+final class Station {
+    String name;
+    double roadTemp;
+    double airTemp;
+    double windSpeed;
+    // More data?
 }
