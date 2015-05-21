@@ -47,6 +47,8 @@ public class DriveActivity extends Activity {
     String windSpd[];
     String stationCoords[];
 
+    ArrayList<Station> stations = new ArrayList<>();
+
     TextView txtStationName0;
     TextView txtStationDistance0;
     TextView txtAirTemp0;
@@ -183,64 +185,75 @@ public class DriveActivity extends Activity {
         try {
             //TODO Try to make nicer! Perhaps create a method?
             JSONArray jsonArray = new JSONObject(p.execute(param, 10000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
-            stationName = new String[jsonArray.length()];
-            airTemp = new String[jsonArray.length()];
-            roadTemp = new String[jsonArray.length()];
-            windSpd = new String[jsonArray.length()];
-            stationCoords = new String[jsonArray.length()];
 
-            Log.d("JSON", jsonArray.toString());
+            //Parse data.
 
-
-
-            for (int i = 0; i < stationName.length; i++) {
-                stationName[i] = null;
-                airTemp[i] = null;
-                roadTemp[i] = null;
-            }
-
-            Log.d("JSON Station > ", "--------");
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject station = jsonArray.getJSONObject(i);
-                String coordSplitter = station.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT");
-                String coordArray[] = coordSplitter.split(" ");
+                Station s = new Station();
+                JSONObject parsedStation = jsonArray.getJSONObject(i);
+                String cordSplitter = parsedStation.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT");
 
-                double statLon = Double.parseDouble(coordArray[0]);
-                double statLat = Double.parseDouble(coordArray[1]);
 
-                stationName[i] = station.getString("Name");
-                airTemp[i] = station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
-                roadTemp[i] = station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                //stationCoords[i] = station.getString("Geometry.WGS84");
-                //windSpd[i] = station.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                //Log.d("JSON Station >", station.getString("Name"));
-                Log.d("JSON New", "------");
-                Log.d("JSON Station > ", station.getString("Name"));
-                Log.d("JSON Air Temp > ", station.getJSONObject("Measurement").getJSONObject("Air").getString("Temp"));
-                Log.d("JSON Road Temp > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                Log.d("JSON Wind Force > ", station.getJSONObject("Measurement").getJSONObject("Road").getString("Temp"));
-                Log.d("JSON GPS > ", station.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT"));
+                // Parse data
+
+                s.name = parsedStation.getString("Name");
+
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+                    s.airTemp = "N/A";
+                } else {
+                    s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+                }
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+                    s.roadTemp = "N/A";
+                } else {
+                    s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                }
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+                    s.windSpeed = "N/A";
+                } else {
+                    s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                }
+
+
+                // Catch faulty road temperatures
+
+                try {
+                    if (!s.roadTemp.equals("N/A")) {
+                        double roadTempDouble = Double.parseDouble(s.roadTemp);
+                        if (roadTempDouble < -50) {
+                            s.roadTemp = "N/A";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), String.valueOf(e));
+                }
+
+                // Catch faulty air temperatures
+
+                try {
+                    if(!s.airTemp.equals("N/A")) {
+                        double airTempDouble = Double.parseDouble(s.airTemp);
+                        if(airTempDouble < -50) {
+                            s.airTemp = "N/A";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), e.toString());
+                }
+
+                // Add object to ArrayList
+                stations.add(s);
             }
-            Log.d("JSON Station > ", "--------");
-
-            for (int i = 0; i <stationName.length; i++) {
-                Random rand = new Random();
-                DecimalFormat df = new DecimalFormat("#.00");
-                double randomWind = 0 + (15 - 0) * rand.nextDouble();
-                double airTempDouble = Double.parseDouble(airTemp[i]);
-                double roadTempDouble = Double.parseDouble(roadTemp[i]);
-                // Check for BS values
-
-                txtStationName0.setText(stationName[0]);
-                txtRoadtemp0.setText(roadTemp[0] + "°C");
-                txtAirTemp0.setText(airTemp[0] + "°C");
-
-                windSpd[i] = String.format("%.1f", randomWind);
-            }
-
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        String printAll = "";
+        for (int i = 0; i < stations.size(); i++){
+            printAll += stations.get(i).name;
+            printAll += "\n";
+        }
+        txtStationDistance0.setText(printAll);
+
     }
 
     public double getDistance(double statLat, double statLon) {
@@ -329,7 +342,12 @@ public class DriveActivity extends Activity {
         }
     }
 
-
+    final class Station {
+        String name;
+        String roadTemp;
+        String airTemp;
+        String windSpeed;
+    }
 }
 
 
