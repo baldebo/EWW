@@ -1,178 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
+    android:weightSum="0.75"
     android:background="#ff272a2b"
-    android:id="@+id/relativeLayout">
-
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnSearch"
-        android:background="@android:drawable/ic_menu_search"
-        android:contentDescription="@string/searchbutton"
-        android:layout_above="@+id/textSearch"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="38dp"
-        android:clickable="true"
-        android:onClick="openStationView" />
-
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnSettings"
-        android:background="@android:drawable/ic_menu_manage"
-        android:contentDescription="@string/settingsbutton"
-        android:clickable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/textSearch"
-        android:onClick="openSettings" />
+    android:id="@+id/LinearLayout">
 
 
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnHelp"
-        android:background="@android:drawable/ic_menu_help"
-        android:layout_marginStart="38dp"
-        android:contentDescription="@string/mapbutton"
-        android:layout_above="@+id/textHelp"
-        android:layout_toEndOf="@+id/textInformation"
-        android:clickable="true"
-        android:onClick="openHelp" />
-
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnFavorites"
-        android:background="@android:drawable/ic_menu_myplaces"
-        android:contentDescription="@string/favoritesbutton"
-        android:layout_centerHorizontal="true"
-        android:layout_alignTop="@+id/imgBtnInformation"
-        android:layout_alignStart="@+id/textSearch"
-        android:clickable="true"
-        android:onClick="openFavorites"/>
-
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnInformation"
-        android:background="@android:drawable/ic_menu_info_details"
-        android:contentDescription="@string/informationbutton"
-        android:clickable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignTop="@+id/imgBtnHelp"
-        android:layout_alignStart="@+id/imgBtnSettings"
-        android:onClick="openDriveView"/>
-
-    <ImageButton
-        android:layout_width="@android:dimen/notification_large_icon_width"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/imgBtnMap"
-        android:background="@android:drawable/ic_menu_mapmode"
-        android:layout_alignTop="@+id/imgBtnSettings"
-        android:layout_alignStart="@+id/imgBtnHelp"
-        android:contentDescription="@string/helpbutton"
-        android:clickable="true"
-        android:onClick="openMap"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search"
-        android:id="@+id/textSearch"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_above="@+id/imgBtnFavorites"
-        android:layout_alignStart="@+id/imgBtnSearch"
-        android:layout_alignEnd="@+id/imgBtnSearch" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.25"
+        android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:id="@+id/imgBtnDriveView"
+            android:src="@mipmap/truck"
+            android:clickable="true"
+            android:onClick="openDriveView"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
-        android:id="@+id/textSettings"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_below="@+id/imgBtnSettings"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:id="@+id/imgBtnStationView"
+            android:src="@mipmap/therm"
+            android:clickable="true"
+            android:onClick="openStationView"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/map"
-        android:id="@+id/textMap"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_alignTop="@+id/textSettings"
-        android:layout_alignStart="@+id/imgBtnMap"
-        android:layout_alignEnd="@+id/imgBtnMap" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.25">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/favorites"
-        android:id="@+id/textFavorites"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/imgBtnFavorites"
-        android:layout_marginBottom="42dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/information"
-        android:id="@+id/textInformation"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_alignTop="@+id/textFavorites"
-        android:layout_alignStart="@+id/imgBtnInformation" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/help"
-        android:id="@+id/textHelp"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:layout_alignTop="@+id/textInformation"
-        android:layout_alignStart="@+id/imgBtnHelp"
-        android:layout_alignEnd="@+id/imgBtnHelp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imgHeader"
-        android:src="@mipmap/logo"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/space"
-        android:contentDescription="" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/space"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_above="@+id/imgBtnSearch"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logotext"
-        android:id="@+id/textHeader"
-        android:textColor="#ffffffff"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:minHeight="60sp"
-        android:layout_below="@+id/imgHeader"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:id="@+id/imgBtnMap"
+            android:src="@mipmap/map"
+            android:clickable="true"
+            android:onClick="openMap"/>
+    </TableRow>
+</LinearLayout>
