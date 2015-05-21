@@ -115,7 +115,7 @@ public class DriveActivity extends Activity {
         txtWindSpd2 = (TextView) findViewById(R.id.windSpd3);
 
         getWeather(0);
-        for (int i = 0; i < averageBearing.length; i++){
+        for (int i = 0; i < averageBearing.length; i++) {
             averageBearing[i] = gps.getBearing();
         }
         /*new AsyncTask() {
@@ -156,7 +156,7 @@ public class DriveActivity extends Activity {
         }.execute();*/
         averageBearing();
 
-            }
+    }
 
 
     @Override
@@ -181,58 +181,58 @@ public class DriveActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendNotification(String title, Double airTemperature, Double roadTemperature, Double windSpeed){
+    public void sendNotification(String title, Double airTemperature, Double roadTemperature, Double windSpeed) {
         final int mId = 12345;
         final int PRIORITY_MAX = 2;
         final NotificationCompat.Builder mBuilder;
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         String[] jsonOutput = new String[5];
 
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            mBuilder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle(title)
-                    .setContentText("Nothing dangerous at this time")
-                    .setOngoing(true);
+        mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText("Nothing dangerous at this time")
+                .setOngoing(true);
 
-            //extended notification view
-            jsonOutput[0] = "Station";
-            inboxStyle.setBigContentTitle("Drag down for more info");
+        //extended notification view
+        jsonOutput[0] = "Station";
+        inboxStyle.setBigContentTitle("Drag down for more info");
 
-            for (String jsonResult : jsonOutput) {
+        for (String jsonResult : jsonOutput) {
 
-                inboxStyle.addLine(jsonResult);
-                jsonOutput[1] = ("Air Temperature: " + airTemperature);
-                jsonOutput[2] = ("Road Temperature: " + roadTemperature);
-                jsonOutput[3] = ("Wind Speed: " + windSpeed);
-            }
-
-            mBuilder.setStyle(inboxStyle);
-            // Creates an explicit intent for an Activity in your app
-            Intent resultIntent = new Intent(this, DriveActivity.class);
-
-            // The stack builder object will contain an artificial back stack for the
-            // started Activity.
-            // This ensures that navigating backward from the Activity leads out of
-            // your application to the Home screen.
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            // Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(GUIActivity.class);
-            // Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-
-                    );
-
-            mBuilder.setContentIntent(resultPendingIntent);
-            mNotificationManager.notify(mId, mBuilder.build());
-            mBuilder.setOngoing(true);
-
+            inboxStyle.addLine(jsonResult);
+            jsonOutput[1] = ("Air Temperature: " + airTemperature);
+            jsonOutput[2] = ("Road Temperature: " + roadTemperature);
+            jsonOutput[3] = ("Wind Speed: " + windSpeed);
         }
+
+        mBuilder.setStyle(inboxStyle);
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, DriveActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(GUIActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+
+                );
+
+        mBuilder.setContentIntent(resultPendingIntent);
+        mNotificationManager.notify(mId, mBuilder.build());
+        mBuilder.setOngoing(true);
+
+    }
 
     public void getWeather(Integer param) {
         Parser p = new Parser(this);
@@ -257,7 +257,7 @@ public class DriveActivity extends Activity {
                 String coordSplitter = parsedStation.getJSONObject("Geometry").getString("WGS84");
                 coordSplitter = coordSplitter.replace("POINT", "");
                 coordSplitter = coordSplitter.replace("(", "");
-                coordSplitter = coordSplitter.replace(")","");
+                coordSplitter = coordSplitter.replace(")", "");
 
                 String coordArray[] = coordSplitter.split(" ");
 
@@ -270,34 +270,31 @@ public class DriveActivity extends Activity {
 
                 s.name = parsedStation.getString("Name");
 
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
-                    s.airTemp = "N/A";
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+                    s.airTemp = "777";
                 } else {
                     s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 }
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
-                    s.roadTemp = "N/A";
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+                    s.roadTemp = "777";
                 } else {
                     s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 }
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
-                    s.windSpeed = "N/A";
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+                    s.windSpeed = "777";
                 } else {
                     s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 }
 
-<<<<<<< HEAD
-
                 Log.d("Bob - ", s.name + " - " + String.valueOf(statDist));
-=======
->>>>>>> a2c0e4d20397e2d2e8955ac7fb94e0e478b97880
+
                 // Catch faulty road temperatures
 
                 try {
-                    if (!s.roadTemp.equals("N/A")) {
+                    if (!s.roadTemp.equals("777")) {
                         double roadTempDouble = Double.parseDouble(s.roadTemp);
                         if (roadTempDouble < -50) {
-                            s.roadTemp = "N/A";
+                            s.roadTemp = "777";
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -307,10 +304,10 @@ public class DriveActivity extends Activity {
                 // Catch faulty air temperatures
 
                 try {
-                    if(!s.airTemp.equals("N/A")) {
+                    if (!s.airTemp.equals("777")) {
                         double airTempDouble = Double.parseDouble(s.airTemp);
-                        if(airTempDouble < -50) {
-                            s.airTemp = "N/A";
+                        if (airTempDouble < -50) {
+                            s.airTemp = "777";
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -322,35 +319,30 @@ public class DriveActivity extends Activity {
             }
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
-            //sendNotification("Something is wrong", 9999.9, 9999.9, 9999.9);
         }
 
         String printAll = "";
         Station temp = new Station();
-        for (int i = 1; i < stations.size(); i++){
+        for (int i = 1; i < stations.size(); i++) {
             printAll += String.valueOf(stations.get(i).statDist);
             printAll += "\n";
 
             Collections.sort(stations, new Comparator<Station>() {
-                    @Override
-                    public int compare(Station c1, Station c2){
-                        return Double.compare(c1.statDist, c2.statDist);
-                    }
+                @Override
+                public int compare(Station c1, Station c2) {
+                    return Double.compare(c1.statDist, c2.statDist);
+                }
             });
 
         }
         for (Station s : stations) {
             Log.d("Distance", String.valueOf(s.statDist));
         }
-<<<<<<< HEAD
+
         txtStationName0.setText(stations.get(0).name);
         txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
-=======
 
-        txtStationDistance0.setText(printAll);
->>>>>>> a2c0e4d20397e2d2e8955ac7fb94e0e478b97880
-
-/*        for (int i = 0; i < stations.size(); i++){
+       for (int i = 0; i < stations.size(); i++){
 
         double numAirTemp = Double.parseDouble(stations.get(i).airTemp);
         double numRoadTemp = Double.parseDouble(stations.get(i).roadTemp);
@@ -358,14 +350,14 @@ public class DriveActivity extends Activity {
 
         sendNotification(stations.get(i).name, numAirTemp, numRoadTemp, numWindSpeed);
 
-        }*/
+        }
 
 
-        sendNotification(stations.get(0).name, 12.2, 12.2, 12.2);
+        //sendNotification(stations.get(0).name, 12.2, 12.2, 12.2);
     }
 
     public double getDistance(double statLat, double statLon) {
-        Log.d("Notification","Starting getDistance");
+        Log.d("Notification", "Starting getDistance");
         double v = 6372.8;
 
         double gpsLat = gps.getLatitude(); //lat1
@@ -413,9 +405,6 @@ public class DriveActivity extends Activity {
         }, 0, 5000);
     }
 
-
-
-
     private class getAverageBearingTask extends AsyncTask<Double, Void, Double> {
 
         @Override
@@ -433,19 +422,19 @@ public class DriveActivity extends Activity {
 
             averageBearing[counter] = gps.getBearing();
             calcAverage = 0;
-            for(int i = 0; i < averageBearing.length; i++){
-                if (averageBearing[i] != 0){
+            for (int i = 0; i < averageBearing.length; i++) {
+                if (averageBearing[i] != 0) {
                     averageCounter++;
                     calcAverage += averageBearing[i];
-                }else {
+                } else {
                     i++;
                 }
             }
-            if (averageCounter > 5){
+            if (averageCounter > 5) {
                 averageCounter = 5;
             }
 
-            avgBearing = (calcAverage / averageCounter)%360;
+            avgBearing = (calcAverage / averageCounter) % 360;
             counter++;
             return avgBearing;
         }
@@ -467,6 +456,10 @@ public class DriveActivity extends Activity {
         Double statDist;
     }
 }
+
+
+
+
 
 
 
