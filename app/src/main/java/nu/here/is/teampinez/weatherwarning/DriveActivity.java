@@ -30,6 +30,8 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
@@ -184,7 +186,7 @@ public class DriveActivity extends Activity {
 
         try {
             //TODO Try to make nicer! Perhaps create a method?
-            JSONArray jsonArray = new JSONObject(p.execute(param, 10000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+            JSONArray jsonArray = new JSONObject(p.execute(param, 70000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
 
             //Parse data.
 
@@ -257,18 +259,26 @@ public class DriveActivity extends Activity {
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+
         String printAll = "";
-        Station temp = new Station;
+        Station temp = new Station();
         for (int i = 1; i < stations.size(); i++){
             printAll += String.valueOf(stations.get(i).statDist);
             printAll += "\n";
 
-            /*if (stations.get(i-1).statDist < stations.get(i).statDist){
-                temp.add(i) = stations.get(i);
-                temp.
-            }*/
+            Collections.sort(stations, new Comparator<Station>() {
+                    @Override
+                    public int compare(Station c1, Station c2){
+                        return Double.compare(c1.statDist, c2.statDist);
+                    }
+            });
 
         }
+        for (Station s : stations) {
+            Log.d("Distance", String.valueOf(s.statDist));
+        }
+        txtStationName0.setText(stations.get(0).name);
+        txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
 
     }
 
