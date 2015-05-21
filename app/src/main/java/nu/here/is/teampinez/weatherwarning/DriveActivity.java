@@ -408,6 +408,29 @@ public class DriveActivity extends Activity {
 //        Log.d("Bearing - D", stations.get(1).statDist);
     }
 
+    public void printStations() {
+        getWeather(0);
+        if (stations.size() > 2){
+            txtStationName0.setText(stations.get(0).name);
+            txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
+            txtAirTemp0.setText(stations.get(0).airTemp);
+            txtRoadtemp0.setText(stations.get(0).roadTemp);
+            txtWindSpd0.setText(stations.get(0).windSpeed);
+
+            txtStationName1.setText(stations.get(1).name);
+            txtStationDistance1.setText(String.format("%.1f", stations.get(1).statDist) + " km");
+            txtAirTemp1.setText(stations.get(1).airTemp);
+            txtRoadtemp1.setText(stations.get(1).roadTemp);
+            txtWindSpd1.setText(stations.get(1).windSpeed);
+            Log.d("Station 1 - AirTemp ", stations.get(1).airTemp);
+            txtStationName2.setText(stations.get(2).name);
+            txtStationDistance2.setText(String.format("%.1f", stations.get(2).statDist) + " km");
+            txtAirTemp2.setText(stations.get(2).airTemp);
+            txtRoadtemp2.setText(stations.get(2).roadTemp);
+            txtWindSpd2.setText(stations.get(2).windSpeed);
+        }
+    }
+
 
     public void averageBearing() {
         new Timer().scheduleAtFixedRate(new TimerTask() {
