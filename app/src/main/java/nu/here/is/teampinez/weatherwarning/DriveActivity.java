@@ -11,11 +11,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
+import android.swedspot.automotiveapi.AutomotiveSignal;
+import android.swedspot.automotiveapi.AutomotiveSignalId;
+import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+
+import com.swedspot.automotiveapi.AutomotiveFactory;
+import com.swedspot.automotiveapi.AutomotiveListener;
+import com.swedspot.vil.distraction.DriverDistractionLevel;
+import com.swedspot.vil.distraction.DriverDistractionListener;
+import com.swedspot.vil.distraction.LightMode;
+import com.swedspot.vil.distraction.StealthMode;
+import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,7 +118,7 @@ public class DriveActivity extends Activity {
 //        for (int i = 0; i < averageBearing.length; i++) {
 //            averageBearing[i] = gps.getBearing();
 //        }
-        /*new AsyncTask() {
+        new AsyncTask() {
             @Override
             protected Object doInBackground(Object... objects) {
                 AutomotiveFactory.createAutomotiveManagerInstance(
@@ -142,7 +153,7 @@ public class DriveActivity extends Activity {
                 ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
                 return null;
             }
-        }.execute();*/
+        }.execute();
 //        averageBearing();
 
         /**
@@ -157,7 +168,9 @@ public class DriveActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            if (speed >= 50) {
+                                stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            } else {stations = new Parser(DriveActivity.this).execute(0, 7500, null).get();}
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
