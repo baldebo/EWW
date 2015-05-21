@@ -47,12 +47,24 @@ public class DriveActivity extends Activity {
     String windSpd[];
     String stationCoords[];
 
-    TextView txtWindSpd;
-    TextView txtUpdateTime;
-    TextView txtFirstBig;
-    TextView txtWindFrc;
-    TextView txtTempRoad;
-    TextView txtTempAir;
+    TextView txtStationName0;
+    TextView txtStationDistance0;
+    TextView txtAirTemp0;
+    TextView txtRoadtemp0;
+    TextView txtWindSpd0;
+
+    TextView txtStationName1;
+    TextView txtStationDistance1;
+    TextView txtAirTemp1;
+    TextView txtRoadtemp1;
+    TextView txtWindSpd1;
+
+    TextView txtStationName2;
+    TextView txtStationDistance2;
+    TextView txtAirTemp2;
+    TextView txtRoadtemp2;
+    TextView txtWindSpd2;
+
     MyCurrentLocationListener gps;
 
     // AverageBearing Variables
@@ -69,7 +81,28 @@ public class DriveActivity extends Activity {
         super.onCreate(savedInstanceState);
         gps = new MyCurrentLocationListener(DriveActivity.this);
         setContentView(R.layout.driver_test);
-        //getWeather();
+
+        // Assign TextViews
+
+        txtStationName0 = (TextView) findViewById(R.id.stationName);
+        txtStationDistance0 = (TextView) findViewById(R.id.stationDistance);
+        txtAirTemp0 = (TextView) findViewById(R.id.airTemp);
+        txtRoadtemp0 = (TextView) findViewById(R.id.roadTemp);
+        txtWindSpd0 = (TextView) findViewById(R.id.windSpd);
+
+        txtStationName1 = (TextView) findViewById(R.id.stationName2);
+        txtStationDistance1 = (TextView) findViewById(R.id.stationDistance2);
+        txtAirTemp1 = (TextView) findViewById(R.id.airTemp2);
+        txtRoadtemp1 = (TextView) findViewById(R.id.roadTemp2);
+        txtWindSpd1 = (TextView) findViewById(R.id.windSpd2);
+
+        txtStationName2 = (TextView) findViewById(R.id.stationName3);
+        txtStationDistance2 = (TextView) findViewById(R.id.stationDistance3);
+        txtAirTemp2 = (TextView) findViewById(R.id.airTemp3);
+        txtRoadtemp2 = (TextView) findViewById(R.id.roadTemp3);
+        txtWindSpd2 = (TextView) findViewById(R.id.windSpd3);
+
+        getWeather();
         for (int i = 0; i < averageBearing.length; i++){
             averageBearing[i] = gps.getBearing();
         }
@@ -161,9 +194,9 @@ public class DriveActivity extends Activity {
                 double roadTempDouble = Double.parseDouble(roadTemp[i]);
                 // Check for BS values
 
-                txtFirstBig.setText(stationName[0]);
-                txtTempRoad.setText(roadTemp[0] + "°C");
-                txtTempAir.setText(airTemp[0] + "°C");
+                txtStationName0.setText(stationName[0]);
+                txtRoadtemp0.setText(roadTemp[0] + "°C");
+                txtAirTemp0.setText(airTemp[0] + "°C");
 
                 windSpd[i] = String.format("%.1f", randomWind);
             }
