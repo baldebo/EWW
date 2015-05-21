@@ -6,42 +6,24 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.swedspot.automotiveapi.AutomotiveSignal;
-import android.swedspot.automotiveapi.AutomotiveSignalId;
-import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.drive.Drive;
-import com.swedspot.automotiveapi.AutomotiveFactory;
-import com.swedspot.automotiveapi.AutomotiveListener;
-import com.swedspot.vil.distraction.DriverDistractionLevel;
-import com.swedspot.vil.distraction.DriverDistractionListener;
-import com.swedspot.vil.distraction.LightMode;
-import com.swedspot.vil.distraction.StealthMode;
-import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +32,6 @@ import java.util.concurrent.TimeoutException;
 
 
 public class DriveActivity extends Activity {
-    final static String authid = "5fe4551a599447929a301bc183b83a26";
     //String stationName[];
     //String airTemp[];
     //String roadTemp[];
@@ -90,10 +71,14 @@ public class DriveActivity extends Activity {
     Double averageBearing[] = new Double[5];
     MediaPlayer notificationSound;
 
+    // Updating things
+    Handler handler;
+    LocationHandler locationHandler;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gps = new MyCurrentLocationListener(DriveActivity.this);
+        locationHandler = new LocationHandler(this);
         setContentView(R.layout.driver_test);
 
         notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
@@ -118,10 +103,10 @@ public class DriveActivity extends Activity {
         txtRoadtemp2 = (TextView) findViewById(R.id.roadTemp3);
         txtWindSpd2 = (TextView) findViewById(R.id.windSpd3);
 
-        getWeather(0);
-        for (int i = 0; i < averageBearing.length; i++) {
-            averageBearing[i] = gps.getBearing();
-        }
+//        getWeather(0);
+//        for (int i = 0; i < averageBearing.length; i++) {
+//            averageBearing[i] = gps.getBearing();
+//        }
         /*new AsyncTask() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -158,8 +143,31 @@ public class DriveActivity extends Activity {
                 return null;
             }
         }.execute();*/
-        averageBearing();
+//        averageBearing();
 
+        /**
+         * This is for updating every something minutes
+         */
+        handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        // 5 minutes, Milliseconds?
+        //timer.schedule(timerTask, 0, 300000);
+        timer.schedule(timerTask, 0, 30000);
     }
 
 
@@ -238,143 +246,143 @@ public class DriveActivity extends Activity {
 
     }
 
-    public void getWeather(Integer param) {
-        Parser p = new Parser(this);
-
-        /*txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
-        txtUpdateTime = (TextView) findViewById(R.id.txtUpdateTime);
-        txtFirstBig = (TextView) findViewById(R.id.txtFirstBig);
-        txtWindFrc = (TextView) findViewById(R.id.txtWindFrc);
-        txtTempRoad = (TextView) findViewById(R.id.txtTempRoad);
-        txtTempAir = (TextView) findViewById(R.id.txtTempAir);*/
-
-        try {
-            //TODO Try to make nicer! Perhaps create a method?
-            JSONArray jsonArray = new JSONObject(p.execute(param, 70000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
-
-            //Parse data.
-
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                Station s = new Station();
-                JSONObject parsedStation = jsonArray.getJSONObject(i);
-                String coordSplitter = parsedStation.getJSONObject("Geometry").getString("WGS84");
-                coordSplitter = coordSplitter.replace("POINT", "");
-                coordSplitter = coordSplitter.replace("(", "");
-                coordSplitter = coordSplitter.replace(")", "");
-
-                String coordArray[] = coordSplitter.split(" ");
-
-                double statLon = Double.parseDouble(coordArray[1]);
-                double statLat = Double.parseDouble(coordArray[2]);
-                Double statDist = (getDistance(statLat, statLon));
-                s.statDist = statDist;
-
-                // Parse data
-
-                s.name = parsedStation.getString("Name");
-
-                if (parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
-                    s.airTemp = "777";
-                } else {
-                    s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
-                }
-                if (parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
-                    s.roadTemp = "777";
-                } else {
-                    s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
-                }
-                if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
-                    s.windSpeed = "777";
-                } else {
-                    s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
-                }
-
-                Log.d("Bob - ", s.name + " - " + String.valueOf(statDist));
-
-                // Catch faulty road temperatures
-
-                try {
-                    if (!s.roadTemp.equals("777")) {
-                        double roadTempDouble = Double.parseDouble(s.roadTemp);
-                        if (roadTempDouble < -50) {
-                            s.roadTemp = "777";
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    Log.i(getClass().getName(), String.valueOf(e));
-                }
-
-                // Catch faulty air temperatures
-
-                try {
-                    if (!s.airTemp.equals("777")) {
-                        double airTempDouble = Double.parseDouble(s.airTemp);
-                        if (airTempDouble < -50) {
-                            s.airTemp = "777";
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    Log.i(getClass().getName(), e.toString());
-                }
-
-                // Add object to ArrayList
-                stations.add(s);
-            }
-        } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String printAll = "";
-        Station temp = new Station();
-        for (int i = 1; i < stations.size(); i++) {
-            printAll += String.valueOf(stations.get(i).statDist);
-            printAll += "\n";
-
-            Collections.sort(stations, new Comparator<Station>() {
-                @Override
-                public int compare(Station c1, Station c2) {
-                    return Double.compare(c1.statDist, c2.statDist);
-                }
-            });
-
-        }
-        for (Station s : stations) {
-            Log.d("Distance", String.valueOf(s.statDist));
-        }
-
-        txtStationName0.setText(stations.get(0).name);
-        txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
-
-        String notificationString = "";
-        boolean alertFlag = false;
-
-       for (int i = 0; i < stations.size(); i++){
-
-           double numAirTemp = Double.parseDouble(stations.get(i).airTemp);
-           double numRoadTemp = Double.parseDouble(stations.get(i).roadTemp);
-           double numWindSpeed = Double.parseDouble(stations.get(i).windSpeed);
-
-           if (numAirTemp < 3){
-               notificationString += "Air Temperature Low!";
-           }
-           if (numRoadTemp < 3){
-               notificationString += "Road Temperature Low!";
-           }
-           if (numWindSpeed > 15){
-               notificationString += "Wind Speed High!";
-           }
-
-        sendNotification(stations.get(i).name, numAirTemp, numRoadTemp, numWindSpeed);
-
-        }
-
-        Log.d("StationD - 50", stations.get(findStationByDistance(50)).name + " - " + stations.get(findStationByDistance(50)).statDist);
-        Log.d("StationD - 30", stations.get(findStationByDistance(30)).name + " - " + stations.get(findStationByDistance(30)).statDist);
-        Log.d("StationD - 10", stations.get(findStationByDistance(10)).name + " - " + stations.get(findStationByDistance(10)).statDist);
-
-        //sendNotification(stations.get(0).name, 12.2, 12.2, 12.2);
-    }
+//    public void getWeather(Integer param) {
+//        Parser p = new Parser(this);
+//
+//        /*txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
+//        txtUpdateTime = (TextView) findViewById(R.id.txtUpdateTime);
+//        txtFirstBig = (TextView) findViewById(R.id.txtFirstBig);
+//        txtWindFrc = (TextView) findViewById(R.id.txtWindFrc);
+//        txtTempRoad = (TextView) findViewById(R.id.txtTempRoad);
+//        txtTempAir = (TextView) findViewById(R.id.txtTempAir);*/
+//
+//        try {
+//            //TODO Try to make nicer! Perhaps create a method?
+//            JSONArray jsonArray = new JSONObject(p.execute(param, 70000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+//
+//            //Parse data.
+//
+//
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                Station s = new Station();
+//                JSONObject parsedStation = jsonArray.getJSONObject(i);
+//                String coordSplitter = parsedStation.getJSONObject("Geometry").getString("WGS84");
+//                coordSplitter = coordSplitter.replace("POINT", "");
+//                coordSplitter = coordSplitter.replace("(", "");
+//                coordSplitter = coordSplitter.replace(")", "");
+//
+//                String coordArray[] = coordSplitter.split(" ");
+//
+//                double statLon = Double.parseDouble(coordArray[1]);
+//                double statLat = Double.parseDouble(coordArray[2]);
+//                Double statDist = (getDistance(statLat, statLon));
+//                s.statDist = statDist;
+//
+//                // Parse data
+//
+//                s.name = parsedStation.getString("Name");
+//
+//                if (parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+//                    s.airTemp = "777";
+//                } else {
+//                    s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+//                }
+//                if (parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+//                    s.roadTemp = "777";
+//                } else {
+//                    s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+//                }
+//                if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+//                    s.windSpeed = "777";
+//                } else {
+//                    s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+//                }
+//
+//                Log.d("Bob - ", s.name + " - " + String.valueOf(statDist));
+//
+//                // Catch faulty road temperatures
+//
+//                try {
+//                    if (!s.roadTemp.equals("777")) {
+//                        double roadTempDouble = Double.parseDouble(s.roadTemp);
+//                        if (roadTempDouble < -50) {
+//                            s.roadTemp = "777";
+//                        }
+//                    }
+//                } catch (NumberFormatException e) {
+//                    Log.i(getClass().getName(), String.valueOf(e));
+//                }
+//
+//                // Catch faulty air temperatures
+//
+//                try {
+//                    if (!s.airTemp.equals("777")) {
+//                        double airTempDouble = Double.parseDouble(s.airTemp);
+//                        if (airTempDouble < -50) {
+//                            s.airTemp = "777";
+//                        }
+//                    }
+//                } catch (NumberFormatException e) {
+//                    Log.i(getClass().getName(), e.toString());
+//                }
+//
+//                // Add object to ArrayList
+//                stations.add(s);
+//            }
+//        } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String printAll = "";
+//        Station temp = new Station();
+//        for (int i = 1; i < stations.size(); i++) {
+//            printAll += String.valueOf(stations.get(i).statDist);
+//            printAll += "\n";
+//
+//            Collections.sort(stations, new Comparator<Station>() {
+//                @Override
+//                public int compare(Station c1, Station c2) {
+//                    return Double.compare(c1.statDist, c2.statDist);
+//                }
+//            });
+//
+//        }
+//        for (Station s : stations) {
+//            Log.d("Distance", String.valueOf(s.statDist));
+//        }
+//
+//        txtStationName0.setText(stations.get(0).name);
+//        txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
+//
+//        String notificationString = "";
+//        boolean alertFlag = false;
+//
+//       for (int i = 0; i < stations.size(); i++){
+//
+//           double numAirTemp = Double.parseDouble(stations.get(i).airTemp);
+//           double numRoadTemp = Double.parseDouble(stations.get(i).roadTemp);
+//           double numWindSpeed = Double.parseDouble(stations.get(i).windSpeed);
+//
+//           if (numAirTemp < 3){
+//               notificationString += "Air Temperature Low!";
+//           }
+//           if (numRoadTemp < 3){
+//               notificationString += "Road Temperature Low!";
+//           }
+//           if (numWindSpeed > 15){
+//               notificationString += "Wind Speed High!";
+//           }
+//
+//        sendNotification(stations.get(i).name, numAirTemp, numRoadTemp, numWindSpeed);
+//
+//        }
+//
+//        Log.d("StationD - 50", stations.get(findStationByDistance(50)).name + " - " + stations.get(findStationByDistance(50)).statDist);
+//        Log.d("StationD - 30", stations.get(findStationByDistance(30)).name + " - " + stations.get(findStationByDistance(30)).statDist);
+//        Log.d("StationD - 10", stations.get(findStationByDistance(10)).name + " - " + stations.get(findStationByDistance(10)).statDist);
+//
+//        //sendNotification(stations.get(0).name, 12.2, 12.2, 12.2);
+//    }
 
     public double getDistance(double statLat, double statLon) {
         Log.d("Notification", "Starting getDistance");
@@ -409,7 +417,7 @@ public class DriveActivity extends Activity {
     }
 
     public void printStations() {
-        getWeather(0);
+        //getWeather(0);
         if (stations.size() > 2){
             txtStationName0.setText(stations.get(0).name);
             txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
@@ -503,14 +511,6 @@ public class DriveActivity extends Activity {
         }
 
         return iKeeper;
-    }
-
-    final class Station {
-        String name;
-        String roadTemp;
-        String airTemp;
-        String windSpeed;
-        Double statDist;
     }
 }
 

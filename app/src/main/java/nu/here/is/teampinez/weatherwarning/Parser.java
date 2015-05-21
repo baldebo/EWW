@@ -279,5 +279,6 @@ final class Station {
     String roadTemp;
     String airTemp;
     String windSpeed;
+    Double statDist;
     // More data?
 }
