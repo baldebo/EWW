@@ -1,115 +1,358 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#4C688B"
-    android:layout_alignParentTop="true"
-    android:elevation="15dp"
-    android:id="@+id/revTop">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="#143054"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/revMid">
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#051B38"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:id="@+id/revBottom">
-    </RelativeLayout>
-
-    <TableRow
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/revMid"
-        android:layout_alignTop="@+id/txtFirstBig"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:id="@+id/tableRow">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Road°C"
-            android:id="@+id/txtTempRoad"
-            android:paddingRight="5dp"
-            android:textSize="30sp"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="WindFrc"
-            android:id="@+id/txtWindFrc"
-            android:textSize="30sp"
-            android:layout_gravity="center_vertical" />
-    </TableRow>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/stationName"
-        android:id="@+id/txtFirstBig"
-        android:textColor="#ffffff"
-        android:textSize="45sp"
-        android:layout_marginTop="106dp"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
+    android:weightSum="1"
+    android:background="@mipmap/roadrino"
+    android:gravity="top">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/txtUpdatetime"
-        android:layout_below="@+id/txtFirstBig"
-        android:layout_centerHorizontal="true" />
-
-    <TableRow
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="55dp"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/revMid"
-        android:layout_alignBottom="@+id/txtFirstBig"
-        android:gravity="center"
-        android:id="@+id/tblRowTop">
-
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Air°C"
-        android:id="@+id/txtTempAir"
-        android:textSize="30sp"
-        android:layout_gravity="center_vertical"
-        android:textColor="#EEE"/>
+        android:background="#A6000000"
+        android:id="@+id/transparentBackground"
+        android:gravity="top"
+        android:alpha="112"
+        android:layout_weight="0.2">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText"
+            android:id="@+id/stationDistance"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stationName"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/stationName"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="64dp"
+            android:id="@+id/warningPic"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/snowyroad"
+            android:contentDescription="@string/warningPic"/>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTempText"
+                android:textSize="24sp"
+                android:id="@+id/airTempText"
+                android:textColor="#FFF"
+                android:paddingLeft="120dp"
+                android:layout_gravity="start"
+                android:width="175dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTemp"
+                android:textSize="30sp"
+                android:id="@+id/airTemp"
+                android:textColor="#FFFFFF"
+                android:paddingLeft="5dp"
+                android:textStyle="bold"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/airTempMetric"
+                android:textSize="15sp"
+                android:id="@+id/airTempMetric"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTempText"
+                android:textSize="24sp"
+                android:id="@+id/roadTempText"
+                android:textColor="#FFF"
+                android:paddingLeft="120dp"
+                android:layout_gravity="left"
+                android:width="175dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTemp"
+                android:textSize="30sp"
+                android:id="@+id/roadTemp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:paddingLeft="5dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/roadTempMetric"
+                android:textSize="15sp"
+                android:id="@+id/roadtempMetric"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"
+                android:layout_gravity="left"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal">
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpdText"
+                android:textSize="24sp"
+                android:id="@+id/windSpdText"
+                android:textColor="#FFF"
+                android:paddingLeft="120dp"
+                android:layout_gravity="left"
+                android:width="175dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpd"
+                android:textSize="30sp"
+                android:id="@+id/windSpd"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:paddingLeft="7dp"
+                android:layout_marginLeft="0dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/windSpdMetric"
+                android:textSize="15sp"
+                android:id="@+id/windSpdMetric"
+                android:textColor="#FFF"
+                android:includeFontPadding="false"
+                android:layout_weight="0.1"
+                android:layout_gravity="left"/>
+        </TableRow>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="WindSpd"
-        android:id="@+id/txtWindSpd"
-        android:layout_gravity="center_vertical"
-        android:textSize="30sp"
-        android:layout_marginStart="26dp"
-        android:textColor="#EEE"/>
+        android:layout_weight="0.4"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    </TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText2"
+            android:id="@+id/stationDistance2"
+            android:textStyle="bold"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stationName2"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/stationName2"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/warningPic2"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/noun_7702" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="0.3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTemp2"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#FFF"
+                android:id="@+id/airTemp2"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0.1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTemp2"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:textColor="#FFF"
+                android:id="@+id/roadTemp2"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpd2"
+                android:textColor="#FFF"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:id="@+id/windSpd2"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="left"
+                android:layout_gravity="center_vertical" />
+        </TableRow>
 
 
-</RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:background="#E6000000"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/distanceText3"
+            android:id="@+id/stationDistance3"
+            android:textColor="#FFF"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stationName3"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
+            android:id="@+id/stationName3"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/warningPic3"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/noun_7702" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="0.3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/airTemp3"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#FFF"
+                android:id="@+id/airTemp3"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0.1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/roadTemp3"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:textColor="#FFF"
+                android:id="@+id/roadTemp3"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/windSpd3"
+                android:textColor="#FFF"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:id="@+id/windSpd3"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="15dp"
+                android:gravity="left"
+                android:layout_gravity="center_vertical" />
+        </TableRow>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
 
