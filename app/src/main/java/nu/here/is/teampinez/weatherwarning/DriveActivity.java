@@ -168,9 +168,13 @@ public class DriveActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            if (speed >= 50) {
+                            // Commented out for now, gives NullPointerException if not running AGA.
+                            //if (speed >= 50) {
                                 stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
-                            } else {stations = new Parser(DriveActivity.this).execute(0, 7500, null).get();}
+                            //} else {
+                            //    stations = new Parser(DriveActivity.this).execute(0, 7500, null).get();
+                            //}
+                            sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
