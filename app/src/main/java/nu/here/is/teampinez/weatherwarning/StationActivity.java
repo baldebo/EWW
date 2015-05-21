@@ -93,11 +93,3 @@ public class StationActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-final class Station {
-    String name;
-    String roadTemp;
-    String airTemp;
-    String windSpeed;
-    // More data?
-}

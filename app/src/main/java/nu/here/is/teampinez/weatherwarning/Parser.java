@@ -273,3 +273,11 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
         return sb.toString();
     }
 }
+
+final class Station {
+    String name;
+    String roadTemp;
+    String airTemp;
+    String windSpeed;
+    // More data?
+}
