@@ -1,34 +1,25 @@
 package nu.here.is.teampinez.weatherwarning;
 
-import android.graphics.Color;
-import android.util.Log;
 import android.widget.BaseAdapter;
-
-import static nu.here.is.teampinez.weatherwarning.StationActivity.FIRST_COLUMN;
-import static nu.here.is.teampinez.weatherwarning.StationActivity.SECOND_COLUMN;
-import static nu.here.is.teampinez.weatherwarning.StationActivity.THIRD_COLUMN;
-import static nu.here.is.teampinez.weatherwarning.StationActivity.FOURTH_COLUMN;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ListViewAdapter extends BaseAdapter {
 
-    public ArrayList<HashMap<String, String>> list;
+    public ArrayList<Station> list;
     Activity activity;
-    TextView txtFirst;
-    TextView txtSecond;
-    TextView txtThird;
-    static TextView txtFourth;
+    TextView stationName;
+    TextView tempRoad;
+    TextView tempAir;
+    TextView windSpeed;
 
-    public ListViewAdapter(Activity activity,ArrayList<HashMap<String, String>> list){
+    public ListViewAdapter(Activity activity,ArrayList<Station> list){
         super();
         this.activity   = activity;
         this.list       = list;
@@ -57,38 +48,34 @@ public class ListViewAdapter extends BaseAdapter {
 
             convertView=inflater.inflate(R.layout.station_view_list, null);
 
-            txtFirst=(TextView) convertView.findViewById(R.id.stationName);
-            txtSecond=(TextView) convertView.findViewById(R.id.tempRoad);
-            txtThird=(TextView) convertView.findViewById(R.id.tempAir);
-            txtFourth=(TextView) convertView.findViewById(R.id.windSpeed);
+            stationName=(TextView) convertView.findViewById(R.id.stationName);
+            tempRoad=(TextView) convertView.findViewById(R.id.tempRoad);
+            tempAir=(TextView) convertView.findViewById(R.id.tempAir);
+            windSpeed=(TextView) convertView.findViewById(R.id.windSpeed);
 
         }
 
 
-        HashMap<String, String> map=list.get(position);
-        try {
-            if(!map.get(THIRD_COLUMN).equals("N/A")) {
-                double bob = Double.parseDouble(map.get(THIRD_COLUMN).substring(0, map.get(THIRD_COLUMN).length()-2));
-                if (bob < 9){
-                    txtThird.setTextColor(Color.parseColor("#FF0000"));
-                }else {
-                    txtThird.setTextColor(Color.parseColor("#000000"));
-                }
-            }
-        } catch (NumberFormatException e) {
-            Log.i(getClass().getName(), e.toString());
-        }
-        txtFirst.setText(map.get(FIRST_COLUMN));
-        txtSecond.setText(map.get(SECOND_COLUMN));
-        txtThird.setText(map.get(THIRD_COLUMN));
-        txtFourth.setText(map.get(FOURTH_COLUMN));
+//        HashMap<String, String> map=list.get(position);
+//        try {
+//            if(!map.get(THIRD_COLUMN).equals("N/A")) {
+//                double bob = Double.parseDouble(map.get(THIRD_COLUMN).substring(0, map.get(THIRD_COLUMN).length()-2));
+//                if (bob < 9){
+//                    tempAir.setTextColor(Color.parseColor("#FF0000"));
+//                }else {
+//                    tempAir.setTextColor(Color.parseColor("#000000"));
+//                }
+//            }
+//        } catch (NumberFormatException e) {
+//            Log.i(getClass().getName(), e.toString());
+//        }
+
+        Station s = list.get(position);
+        stationName.setText(s.name);
+        tempRoad.setText(s.roadTemp);
+        tempAir.setText(s.airTemp);
+        windSpeed.setText(s.windSpeed);
 
         return convertView;
     }
-
-    public static void changeColor(){
-        txtFourth.setTextColor(Color.parseColor("#FF0000"));
-    }
-
-
 }

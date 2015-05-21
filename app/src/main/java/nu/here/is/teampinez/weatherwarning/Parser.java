@@ -3,6 +3,7 @@ package nu.here.is.teampinez.weatherwarning;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
@@ -14,13 +15,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Parser extends AsyncTask<String, Void, String> {
+public class Parser extends AsyncTask<Integer, Void, String> {
     private final static String authid = "5fe4551a599447929a301bc183b83a26";
 
     private ProgressDialog progressDialog;
@@ -41,9 +43,25 @@ public class Parser extends AsyncTask<String, Void, String> {
         progressDialog.show();
     }
 
+    /**
+     * (non-Javadoc)
+     * @see android.os.AsyncTask#doInBackground(Object[])
+     *
+     * Set params[0] to 1 for cone search. 0 for radius search.
+     * Set params[1] when using radius to set the size.
+     */
     @Override
-    protected String doInBackground(String... params) {
-        return getJson(500);
+    protected String doInBackground(Integer... params) {
+        try {
+            if(params[0] == 1) {
+                return getJson(1, null, 1000);
+            } else {
+                return getJson(0, params[1], 1000);
+            }
+        } catch (SocketTimeoutException e) {
+            Log.e(getClass().getName(), String.valueOf(e));
+        }
+        return null;
     }
 
     @Override
@@ -53,7 +71,13 @@ public class Parser extends AsyncTask<String, Void, String> {
         Log.d("Post Execute", v);
     }
 
-    private String getJson(int timeout) {
+    /**
+     * @param searchType For a cone search use 1. For radius search use 0.
+     * @param timeout Timeout in milliseconds
+     *
+     * @throws SocketTimeoutException
+     */
+    private String getJson(Integer searchType, @Nullable Integer radius, int timeout) throws SocketTimeoutException {
         HttpURLConnection c = null;
         try {
             URL url = new URL("http://api.trafikinfo.trafikverket.se/v1/data.json");
@@ -72,8 +96,12 @@ public class Parser extends AsyncTask<String, Void, String> {
 
             SWEREF99Position position = gps.getLoc();
 
-            // writer.write(paramsRadius(authid, position, "10000"));
-            writer.write(paramsCone(authid, gps.getTriangle()));
+            if(searchType == 1) {
+                writer.write(paramsCone(authid, gps.getTriangle()));
+            } else {
+                writer.write(paramsRadius(authid, position, radius));
+            }
+
             writer.flush();
             writer.close();
             os.close();
@@ -108,7 +136,7 @@ public class Parser extends AsyncTask<String, Void, String> {
         return null;
     }
 
-    private String paramsRadius(String authid, SWEREF99Position position, String radius) {
+    private String paramsRadius(String authid, SWEREF99Position position, Integer radius) {
         StringBuilder sb = new StringBuilder();
         sb.append("<REQUEST>");
         sb.append("<LOGIN authenticationkey='").append(authid).append("' />");

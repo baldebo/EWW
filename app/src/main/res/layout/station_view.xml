@@ -4,12 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Stations"
-        android:id="@+id/btnSearch"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Radius"
+            android:id="@+id/radiusSearch" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Cone"
+            android:id="@+id/coneSearch" />
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
@@ -17,4 +30,5 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:id="@+id/listStations" />
+
 </LinearLayout>

@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -26,18 +27,9 @@ public class StationActivity extends Activity {
 
     // Station Array.
     ArrayList<Station> stations = new ArrayList<>();
-    ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
     ListViewAdapter adapter;
     ListView listView;
-
-    //TODO Remove, debugging only.
-    MyCurrentLocationListener gps;
-
-    public static final String FIRST_COLUMN     ="First";
-    public static final String SECOND_COLUMN    ="Second";
-    public static final String THIRD_COLUMN     ="Third";
-    public static final String FOURTH_COLUMN    ="Fourth";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,26 +41,31 @@ public class StationActivity extends Activity {
          * Adding adapter and setting header.
          */
         listView = (ListView) findViewById(R.id.listStations);
-        adapter = new ListViewAdapter(this, list);
-        listView.addHeaderView(View.inflate(this,R.layout.station_header, null));
+        adapter = new ListViewAdapter(this, stations);
+        listView.addHeaderView(View.inflate(this, R.layout.station_header, null));
         listView.setAdapter(adapter);
 
-        //TODO Remove, debugging only.
-        gps = new MyCurrentLocationListener(StationActivity.this);
-        gps.getTriangle();
-
-        getWeather();
 
         //TODO Remove button? Timed update?
-        Button btnSearch = (Button) findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        Button radius = (Button) findViewById(R.id.radiusSearch);
+        Button cone = (Button) findViewById(R.id.coneSearch);
+        cone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getWeather();
+                stations.clear();
+                getWeather(1);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        radius.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stations.clear();
+                getWeather(0);
+                adapter.notifyDataSetChanged();
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,12 +89,12 @@ public class StationActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getWeather() {
+    public void getWeather(Integer param) {
         Parser p = new Parser(this);
 
         try {
             //TODO Try to make nicer! Perhaps create a method?
-            JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+            JSONArray jsonArray = new JSONObject(p.execute(param, 10000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
             for(int i=0; i<jsonArray.length(); i++) {
                 Station s = new Station();
                 JSONObject parsedStation = jsonArray.getJSONObject(i);
@@ -153,19 +150,10 @@ public class StationActivity extends Activity {
                 // Add object to ArrayList
                 stations.add(s);
             }
-
-            // Do fun stuff for each Object in the ArrayList
-            for(Station s : stations) {
-                HashMap<String, String> tmp = new HashMap<>();
-                tmp.put(FIRST_COLUMN, s.name);
-                tmp.put(SECOND_COLUMN, s.roadTemp);
-                tmp.put(THIRD_COLUMN, s.airTemp);
-                tmp.put(FOURTH_COLUMN, s.windSpeed);
-                list.add(tmp);
-            }
             //ListAdapter stationListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , stationName);
             //ListView listStations = (ListView) findViewById(R.id.listStations);
             //listStations.setAdapter(stationListAdapter);
+            // adapter.notifyDataSetChanged();
 
         } catch (JSONException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
