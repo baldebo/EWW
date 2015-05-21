@@ -82,6 +82,7 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
 
                 // Parse data.
                 s.name = parsedStation.getString("Name");
+                s.wgs84 = parsedStation.getJSONObject("Geometry").getString("WGS84");
 
                 if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
                     s.airTemp = "N/A";
@@ -279,6 +280,7 @@ final class Station {
     String roadTemp;
     String airTemp;
     String windSpeed;
+    String wgs84;
     Double statDist;
     // More data?
 }
