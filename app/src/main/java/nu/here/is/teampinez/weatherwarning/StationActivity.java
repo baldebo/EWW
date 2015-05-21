@@ -2,6 +2,7 @@ package nu.here.is.teampinez.weatherwarning;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -31,10 +28,14 @@ public class StationActivity extends Activity {
     ListViewAdapter adapter;
     ListView listView;
 
+    Bearing bearing;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_view);
+
+        bearing = new Bearing(this);
 
         /*
          * Setting up the ListView.
@@ -53,7 +54,8 @@ public class StationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 stations.clear();
-                getWeather(1);
+                adapter.notifyDataSetChanged();
+                getWeather(1, null, bearing.activeBearing);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -61,7 +63,8 @@ public class StationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 stations.clear();
-                getWeather(0);
+                adapter.notifyDataSetChanged();
+                getWeather(0, 10000, null);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -89,12 +92,12 @@ public class StationActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getWeather(Integer param) {
+    public void getWeather(Integer param, @Nullable Integer searchRadius, @Nullable Integer bearing) {
         Parser p = new Parser(this);
 
         try {
             //TODO Try to make nicer! Perhaps create a method?
-            JSONArray jsonArray = new JSONObject(p.execute(param, 10000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+            JSONArray jsonArray = new JSONObject(p.execute(param, searchRadius, bearing).get(5000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
             for(int i=0; i<jsonArray.length(); i++) {
                 Station s = new Station();
                 JSONObject parsedStation = jsonArray.getJSONObject(i);

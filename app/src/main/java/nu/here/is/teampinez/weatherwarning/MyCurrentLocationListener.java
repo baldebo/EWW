@@ -114,7 +114,7 @@ public class MyCurrentLocationListener implements LocationListener {
         return gpsBearing;
     }
 
-    ArrayList<SWEREF99Position> getTriangle() {
+    ArrayList<SWEREF99Position> getTriangle(Integer bearing) {
         ArrayList<SWEREF99Position> pos = new ArrayList<>();
 
         WGS84Position[] positions = new WGS84Position[3];
@@ -126,8 +126,8 @@ public class MyCurrentLocationListener implements LocationListener {
         positions[0].setLatitudeFromString(String.valueOf(getLatitude()), WGS84Position.WGS84Format.Degrees);
         positions[0].setLongitudeFromString(String.valueOf(getLongitude()), WGS84Position.WGS84Format.Degrees);
 
-        positions[1] = distantPos(positions[0], getBearing() - 10.0);
-        positions[2] = distantPos(positions[0], getBearing() + 10.0);
+        positions[1] = distantPos(positions[0], bearing - 20.0);
+        positions[2] = distantPos(positions[0], bearing + 20.0);
 
         for(WGS84Position p : positions) {
             pos.add(new SWEREF99Position(p, SWEREF99Position.SWEREFProjection.sweref_99_tm));

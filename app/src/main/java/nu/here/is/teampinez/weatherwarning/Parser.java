@@ -54,9 +54,10 @@ public class Parser extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... params) {
         try {
             if(params[0] == 1) {
-                return getJson(1, null, 1000);
+                Log.d(getClass().getName(), String.valueOf(params[2]));
+                return getJson(1, null, params[2], 5000);
             } else {
-                return getJson(0, params[1], 1000);
+                return getJson(0, params[1], null, 5000);
             }
         } catch (SocketTimeoutException e) {
             Log.e(getClass().getName(), String.valueOf(e));
@@ -77,7 +78,7 @@ public class Parser extends AsyncTask<Integer, Void, String> {
      *
      * @throws SocketTimeoutException
      */
-    private String getJson(Integer searchType, @Nullable Integer radius, int timeout) throws SocketTimeoutException {
+    private String getJson(Integer searchType, @Nullable Integer radius, @Nullable Integer bearing, int timeout) throws SocketTimeoutException {
         HttpURLConnection c = null;
         try {
             URL url = new URL("http://api.trafikinfo.trafikverket.se/v1/data.json");
@@ -88,8 +89,8 @@ public class Parser extends AsyncTask<Integer, Void, String> {
             c.setDoOutput(true);
             c.setDoInput(true);
             c.setRequestProperty("Content-Type", "text/xml");
-            c.setConnectTimeout(timeout);
-            c.setReadTimeout(timeout);
+//            c.setConnectTimeout(timeout);
+//            c.setReadTimeout(timeout);
 
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
@@ -97,7 +98,7 @@ public class Parser extends AsyncTask<Integer, Void, String> {
             SWEREF99Position position = gps.getLoc();
 
             if(searchType == 1) {
-                writer.write(paramsCone(authid, gps.getTriangle()));
+                writer.write(paramsCone(authid, gps.getTriangle(bearing)));
             } else {
                 writer.write(paramsRadius(authid, position, radius));
             }
