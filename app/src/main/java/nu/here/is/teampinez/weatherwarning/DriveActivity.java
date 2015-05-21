@@ -70,6 +70,7 @@ public class DriveActivity extends Activity {
     // AverageBearing Variables
 
     double currentBearing = 0;
+    float speed = 0f;
     int averageCounter = 0;
     int counter = 0;
     double calcAverage;
@@ -106,6 +107,42 @@ public class DriveActivity extends Activity {
         for (int i = 0; i < averageBearing.length; i++){
             averageBearing[i] = gps.getBearing();
         }
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                AutomotiveFactory.createAutomotiveManagerInstance(
+                        new AutomotiveCertificate(new byte[0]),
+                        new AutomotiveListener() {
+                            @Override
+                            public void receive(final AutomotiveSignal automotiveSignal) {
+                                speed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
+                            }
+
+                            @Override
+                            public void timeout(int i) {
+                            }
+
+                            @Override
+                            public void notAllowed(int i) {
+                            }
+                        },
+                        new DriverDistractionListener() {
+                            @Override
+                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+                            }
+
+                            @Override
+                            public void lightModeChanged(LightMode lightMode) {
+                            }
+
+                            @Override
+                            public void stealthModeChanged(StealthMode stealthMode) {
+                            }
+                        }
+                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
+                return null;
+            }
+        }.execute();
         averageBearing();
 
             }
@@ -291,6 +328,8 @@ public class DriveActivity extends Activity {
 
         }
     }
+
+
 }
 
 
