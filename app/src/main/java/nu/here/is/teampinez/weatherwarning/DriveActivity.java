@@ -103,11 +103,11 @@ public class DriveActivity extends Activity {
         txtRoadtemp2 = (TextView) findViewById(R.id.roadTemp3);
         txtWindSpd2 = (TextView) findViewById(R.id.windSpd3);
 
-        getWeather();
+        getWeather(0);
         for (int i = 0; i < averageBearing.length; i++){
             averageBearing[i] = gps.getBearing();
         }
-        new AsyncTask() {
+        /*new AsyncTask() {
             @Override
             protected Object doInBackground(Object... objects) {
                 AutomotiveFactory.createAutomotiveManagerInstance(
@@ -142,7 +142,7 @@ public class DriveActivity extends Activity {
                 ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
                 return null;
             }
-        }.execute();
+        }.execute();*/
         averageBearing();
 
             }
@@ -170,7 +170,7 @@ public class DriveActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getWeather() {
+    public void getWeather(Integer param) {
         Parser p = new Parser(this);
 
         /*txtWindSpd = (TextView) findViewById(R.id.txtWindSpd);
@@ -182,7 +182,7 @@ public class DriveActivity extends Activity {
 
         try {
             //TODO Try to make nicer! Perhaps create a method?
-            JSONArray jsonArray = new JSONObject(p.execute().get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
+            JSONArray jsonArray = new JSONObject(p.execute(param, 10000).get(1000, TimeUnit.MILLISECONDS)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
             stationName = new String[jsonArray.length()];
             airTemp = new String[jsonArray.length()];
             roadTemp = new String[jsonArray.length()];
