@@ -7,6 +7,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -87,12 +88,15 @@ public class DriveActivity extends Activity {
     double calcAverage;
     double avgBearing;
     Double averageBearing[] = new Double[5];
+    MediaPlayer notificationSound;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gps = new MyCurrentLocationListener(DriveActivity.this);
         setContentView(R.layout.driver_test);
+
+        notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
 
         // Assign TextViews
 
@@ -398,6 +402,7 @@ public class DriveActivity extends Activity {
                     public void run() {
                         getAverageBearingTask startTask = new getAverageBearingTask();
                         startTask.execute();
+                        notificationSound.start();
 
                     }
                 });
