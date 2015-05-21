@@ -191,8 +191,17 @@ public class DriveActivity extends Activity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 Station s = new Station();
                 JSONObject parsedStation = jsonArray.getJSONObject(i);
-                String cordSplitter = parsedStation.getJSONObject("Geometry").getJSONObject("WGS84").getString("POINT");
+                String coordSplitter = parsedStation.getJSONObject("Geometry").getString("WGS84");
+                coordSplitter = coordSplitter.replace("POINT", "");
+                coordSplitter = coordSplitter.replace("(", "");
+                coordSplitter = coordSplitter.replace(")","");
 
+                String coordArray[] = coordSplitter.split(" ");
+
+                double statLon = Double.parseDouble(coordArray[1]);
+                double statLat = Double.parseDouble(coordArray[2]);
+                Double statDist = (getDistance(statLat, statLon));
+                s.statDist = statDist;
 
                 // Parse data
 
@@ -215,6 +224,7 @@ public class DriveActivity extends Activity {
                 }
 
 
+                Log.d("Bob - ", s.name + " - " + String.valueOf(statDist));
                 // Catch faulty road temperatures
 
                 try {
@@ -248,16 +258,24 @@ public class DriveActivity extends Activity {
             e.printStackTrace();
         }
         String printAll = "";
-        for (int i = 0; i < stations.size(); i++){
-            printAll += stations.get(i).name;
+        Station temp = new Station;
+        for (int i = 1; i < stations.size(); i++){
+            printAll += String.valueOf(stations.get(i).statDist);
             printAll += "\n";
+
+            /*if (stations.get(i-1).statDist < stations.get(i).statDist){
+                temp.add(i) = stations.get(i);
+                temp.
+            }*/
+
         }
-        txtStationDistance0.setText(printAll);
 
     }
 
     public double getDistance(double statLat, double statLon) {
-        double distanceInKm = 0;
+        Log.d("Notification","Starting getDistance");
+        double v = 6372.8;
+
         double gpsLat = gps.getLatitude(); //lat1
         double gpsLon = gps.getLongitude(); //lon1
 
@@ -267,7 +285,10 @@ public class DriveActivity extends Activity {
         gpsLat = Math.toRadians(gpsLat);
         statLat = Math.toRadians(statLat);
 
-        return distanceInKm;
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(gpsLat) * Math.cos(statLat);
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        return v * c;
     }
 
     public void displayBearing(double avgBearing) {
@@ -279,7 +300,8 @@ public class DriveActivity extends Activity {
         Log.d("Bearing - 3", String.valueOf(averageBearing[2]));
         Log.d("Bearing - 4", String.valueOf(averageBearing[3]));
         Log.d("Bearing - 5", String.valueOf(averageBearing[4]));
-        Log.d("Bearing - C", String.valueOf(gps.getLatitude()));
+//        Log.d("Bearing - C", String.valueOf(gps.getLatitude()));
+//        Log.d("Bearing - D", stations.get(1).statDist);
     }
 
     public void averageBearing() {
@@ -347,6 +369,7 @@ public class DriveActivity extends Activity {
         String roadTemp;
         String airTemp;
         String windSpeed;
+        Double statDist;
     }
 }
 
