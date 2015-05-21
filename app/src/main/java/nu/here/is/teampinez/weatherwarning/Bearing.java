@@ -12,7 +12,7 @@ import android.hardware.SensorManager;
 public class Bearing implements SensorEventListener {
     Context context;
     SensorManager sensorManager;
-    double activeBearing;
+    Integer activeBearing;
 
     private Sensor sensorMagneticField;
     private Sensor sensorAccelerometer;
@@ -71,12 +71,12 @@ public class Bearing implements SensorEventListener {
 
     }
 
-    private double returnAzimuth() {
+    private Integer returnAzimuth() {
         float azimuthInDegrees = (float) Math.toDegrees(matrixValues[0]);
         if(azimuthInDegrees < 0.0f) {
             azimuthInDegrees += 360.0f;
-            return azimuthInDegrees;
+            return Math.round(azimuthInDegrees);
         }
-        return azimuthInDegrees;
+        return Math.round(azimuthInDegrees);
     }
 }
