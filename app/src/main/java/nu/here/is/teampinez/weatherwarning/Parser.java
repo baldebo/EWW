@@ -5,8 +5,13 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,16 +27,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Parser extends AsyncTask<Integer, Void, String> {
+public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
     private final static String authid = "5fe4551a599447929a301bc183b83a26";
 
+    ArrayList<Station> stations = new ArrayList<>();
+
     private ProgressDialog progressDialog;
-    MyCurrentLocationListener gps;
+    private LocationHandler locationHandler;
+    private ListView listview;
+    private Activity activity;
 
     Parser(Activity activity) {
         super();
-        gps = new MyCurrentLocationListener(activity);
+        locationHandler = new LocationHandler(activity);
         progressDialog = new ProgressDialog(activity);
+    }
+
+    Parser(Activity activity, ListView listView) {
+        super();
+        locationHandler = new LocationHandler(activity);
+        progressDialog = new ProgressDialog(activity);
+        this.listview = listView;
+        this.activity = activity;
     }
 
     @Override
@@ -51,25 +68,84 @@ public class Parser extends AsyncTask<Integer, Void, String> {
      * Set params[1] when using radius to set the size.
      */
     @Override
-    protected String doInBackground(Integer... params) {
+    protected ArrayList<Station> doInBackground(Integer... params) {
         try {
+            JSONArray jsonArray;
             if(params[0] == 1) {
-                Log.d(getClass().getName(), String.valueOf(params[2]));
-                return getJson(1, null, params[2], 5000);
+                jsonArray = new JSONObject(getJson(1, null, params[2], 5000)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
             } else {
-                return getJson(0, params[1], null, 5000);
+                jsonArray = new JSONObject(getJson(0, params[1], null, 5000)).getJSONObject("RESPONSE").getJSONArray("RESULT").getJSONObject(0).getJSONArray("WeatherStation");
             }
-        } catch (SocketTimeoutException e) {
+            for(int i=0; i<jsonArray.length(); i++) {
+                Station s = new Station();
+                JSONObject parsedStation = jsonArray.getJSONObject(i);
+
+                // Parse data.
+                s.name = parsedStation.getString("Name");
+
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
+                    s.airTemp = "N/A";
+                } else {
+                    s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
+                }
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
+                    s.roadTemp = "N/A";
+                } else {
+                    s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
+                }
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
+                    s.windSpeed = "N/A";
+                } else {
+                    s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
+                }
+
+                try {
+                    if (!s.roadTemp.equals("N/A")) {
+                        double roadTempDouble = Double.parseDouble(s.roadTemp);
+                        if (roadTempDouble < -50) {
+                            s.roadTemp = "N/A";
+                        } else {
+                            s.roadTemp += "°C";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), String.valueOf(e));
+
+                }
+
+                try {
+                    if(!s.airTemp.equals("N/A")) {
+                        double airTempDouble = Double.parseDouble(s.airTemp);
+                        if(airTempDouble < -50) {
+                            s.airTemp = "N/A";
+                        } else {
+                            s.airTemp += "°C";
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    Log.i(getClass().getName(), e.toString());
+                }
+
+                if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
+
+                // Add object to ArrayList
+                stations.add(s);
+            }
+        } catch (SocketTimeoutException |JSONException e) {
             Log.e(getClass().getName(), String.valueOf(e));
         }
-        return null;
+
+        return stations;
     }
 
     @Override
-    protected void onPostExecute(String v) {
+    protected void onPostExecute(ArrayList<Station> s) {
         progressDialog.dismiss();
         //TODO Remove debug logging
-        Log.d("Post Execute", v);
+        if(listview != null) {
+            ListViewAdapter adapter = new ListViewAdapter(activity, stations);
+            listview.setAdapter(adapter);
+        }
     }
 
     /**
@@ -95,10 +171,10 @@ public class Parser extends AsyncTask<Integer, Void, String> {
             OutputStream os = c.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            SWEREF99Position position = gps.getLoc();
+            SWEREF99Position position = locationHandler.coordinates.getLoc();
 
             if(searchType == 1) {
-                writer.write(paramsCone(authid, gps.getTriangle(bearing)));
+                writer.write(paramsCone(authid, locationHandler.coordinates.getTriangle(bearing)));
             } else {
                 writer.write(paramsRadius(authid, position, radius));
             }
@@ -120,6 +196,7 @@ public class Parser extends AsyncTask<Integer, Void, String> {
                         sb.append(line).append("\n");
                     }
                     br.close();
+                    Log.d(getClass().getName(), sb.toString());
                     return sb.toString();
             }
 

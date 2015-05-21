@@ -22,6 +22,11 @@
             android:layout_height="wrap_content"
             android:text="Search Cone"
             android:id="@+id/coneSearch" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/clearSearch" />
     </LinearLayout>
 
     <ListView

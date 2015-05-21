@@ -109,26 +109,6 @@ public class GUIActivity extends Activity {
      * These methods facilitate changes between activities
      **/
 
-    public void openSettings(View view) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    public void openSearch(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-    }
-
-    public void openHelp(View view) {
-        Intent intent = new Intent(this, HelpActivity.class);
-        startActivity(intent);
-    }
-
-    public void openFavorites(View view) {
-        Intent intent = new Intent(this, FavoritesActivity.class);
-        startActivity(intent);
-    }
-
     public void openMap(View view) {
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
