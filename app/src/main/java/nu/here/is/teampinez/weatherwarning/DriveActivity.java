@@ -346,16 +346,32 @@ public class DriveActivity extends Activity {
         txtStationName0.setText(stations.get(0).name);
         txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
 
+        String notificationString = "";
+        boolean alertFlag = false;
+
        for (int i = 0; i < stations.size(); i++){
 
-        double numAirTemp = Double.parseDouble(stations.get(i).airTemp);
-        double numRoadTemp = Double.parseDouble(stations.get(i).roadTemp);
-        double numWindSpeed = Double.parseDouble(stations.get(i).windSpeed);
+           double numAirTemp = Double.parseDouble(stations.get(i).airTemp);
+           double numRoadTemp = Double.parseDouble(stations.get(i).roadTemp);
+           double numWindSpeed = Double.parseDouble(stations.get(i).windSpeed);
+
+           if (numAirTemp < 3){
+               notificationString += "Air Temperature Low!";
+           }
+           if (numRoadTemp < 3){
+               notificationString += "Road Temperature Low!";
+           }
+           if (numWindSpeed > 15){
+               notificationString += "Wind Speed High!";
+           }
 
         sendNotification(stations.get(i).name, numAirTemp, numRoadTemp, numWindSpeed);
 
         }
 
+        Log.d("StationD - 50", stations.get(findStationByDistance(50)).name + " - " + stations.get(findStationByDistance(50)).statDist);
+        Log.d("StationD - 30", stations.get(findStationByDistance(30)).name + " - " + stations.get(findStationByDistance(30)).statDist);
+        Log.d("StationD - 10", stations.get(findStationByDistance(10)).name + " - " + stations.get(findStationByDistance(10)).statDist);
 
         //sendNotification(stations.get(0).name, 12.2, 12.2, 12.2);
     }
@@ -402,8 +418,6 @@ public class DriveActivity extends Activity {
                     public void run() {
                         getAverageBearingTask startTask = new getAverageBearingTask();
                         startTask.execute();
-                        notificationSound.start();
-
                     }
                 });
             }
@@ -449,8 +463,23 @@ public class DriveActivity extends Activity {
             super.onPostExecute(avgBearing);
             gps = new MyCurrentLocationListener(DriveActivity.this);
             displayBearing(avgBearing);
-
         }
+    }
+
+    public int findStationByDistance(double distance){
+
+        double myDistance = Math.abs(stations.get(0).statDist - distance);
+        int iKeeper = 0;
+
+        for (int i = 0; i < stations.size(); i++){
+            double iDistance = Math.abs(stations.get(i).statDist - distance);
+            if (iDistance < myDistance){
+                iKeeper = i;
+                myDistance = iDistance;
+            }
+        }
+
+        return iKeeper;
     }
 
     final class Station {
