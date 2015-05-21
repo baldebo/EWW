@@ -44,7 +44,6 @@
             android:id="@+id/warningPic"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/snowyroad"
             android:contentDescription="@string/warningPic"/>
 
         <TableRow
@@ -210,8 +209,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:id="@+id/warningPic2"
-            android:layout_gravity="center_horizontal"
-            android:src="@mipmap/noun_7702"/>
+            android:layout_gravity="center_horizontal" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -297,8 +295,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:id="@+id/warningPic3"
-            android:layout_gravity="center_horizontal"
-            android:src="@mipmap/noun_7702" />
+            android:layout_gravity="center_horizontal" />
 
         <TableRow
             android:layout_width="match_parent"
