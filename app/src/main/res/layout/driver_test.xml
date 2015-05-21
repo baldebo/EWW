@@ -211,7 +211,7 @@
             android:layout_height="32dp"
             android:id="@+id/warningPic2"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/noun_7702" />
+            android:src="@mipmap/noun_7702"/>
 
         <TableRow
             android:layout_width="match_parent"

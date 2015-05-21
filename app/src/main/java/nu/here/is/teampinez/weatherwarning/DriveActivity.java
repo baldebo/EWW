@@ -32,6 +32,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -53,13 +55,25 @@ public class DriveActivity extends Activity {
     TextView txtTempAir;
     MyCurrentLocationListener gps;
 
+    // AverageBearing Variables
+
+    double currentBearing = 0;
+    int averageCounter = 0;
+    int counter = 0;
+    double calcAverage;
+    double avgBearing;
+    Double averageBearing[] = new Double[5];
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gps = new MyCurrentLocationListener(DriveActivity.this);
         setContentView(R.layout.driver_test);
-        getWeather();
-
+        //getWeather();
+        for (int i = 0; i < averageBearing.length; i++){
+            averageBearing[i] = gps.getBearing();
+        }
+        averageBearing();
 
             }
 
@@ -172,4 +186,82 @@ public class DriveActivity extends Activity {
 
         return distanceInKm;
     }
+
+    public void displayBearing(double avgBearing) {
+        TextView txtAvgBearing = (TextView) findViewById(R.id.windSpd);
+        txtAvgBearing.setText(String.valueOf(avgBearing) + "\u00B0");
+        Log.d("Bearing", "------------");
+        Log.d("Bearing - 1", String.valueOf(averageBearing[0]));
+        Log.d("Bearing - 2", String.valueOf(averageBearing[1]));
+        Log.d("Bearing - 3", String.valueOf(averageBearing[2]));
+        Log.d("Bearing - 4", String.valueOf(averageBearing[3]));
+        Log.d("Bearing - 5", String.valueOf(averageBearing[4]));
+        Log.d("Bearing - C", String.valueOf(gps.getLatitude()));
+    }
+
+    public void averageBearing() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getAverageBearingTask startTask = new getAverageBearingTask();
+                        startTask.execute();
+
+                    }
+                });
+            }
+        }, 0, 5000);
+    }
+
+
+    private class getAverageBearingTask extends AsyncTask<Double, Void, Double> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            gps = new MyCurrentLocationListener(DriveActivity.this);
+        }
+
+        @Override
+        protected Double doInBackground(Double... args0) {
+
+            if (counter >= 5) {
+                counter = 0;
+            }
+
+            averageBearing[counter] = gps.getBearing();
+            calcAverage = 0;
+            for(int i = 0; i < averageBearing.length; i++){
+                if (averageBearing[i] != 0){
+                    averageCounter++;
+                    calcAverage += averageBearing[i];
+                }else {
+                    i++;
+                }
+            }
+            if (averageCounter > 5){
+                averageCounter = 5;
+            }
+
+            avgBearing = (calcAverage / averageCounter)%360;
+            counter++;
+            return avgBearing;
+        }
+
+        @Override
+        protected void onPostExecute(Double avgBearing) {
+            super.onPostExecute(avgBearing);
+            gps = new MyCurrentLocationListener(DriveActivity.this);
+            displayBearing(avgBearing);
+
+        }
+    }
 }
+
+
+
+
+
+

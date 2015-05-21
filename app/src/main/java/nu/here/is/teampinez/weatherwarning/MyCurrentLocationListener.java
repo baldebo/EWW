@@ -26,6 +26,8 @@ public class MyCurrentLocationListener implements LocationListener {
     double locLat;
     double locLon;
 
+
+
     public MyCurrentLocationListener(Context context) {
         this.context = context;
         getLocation();
@@ -108,13 +110,8 @@ public class MyCurrentLocationListener implements LocationListener {
 
     public double getBearing(){
         double gpsBearing = location.getBearing();
+        gpsBearing = location.getBearing();
         return gpsBearing;
-    }
-
-    public double getAverageBearing(){
-        double averageBearing[] = new double[5];
-        Log.d("Array Length", String.valueOf(averageBearing.length));
-        return averageBearing.length;
     }
 
     ArrayList<SWEREF99Position> getTriangle() {
