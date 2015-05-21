@@ -158,6 +158,11 @@ public class DriveActivity extends Activity {
                     public void run() {
                         try {
                             stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            String coordSplitter = stations.getJSONObject("Geometry").getString("WGS84");
+                            for (Station s : stations){
+                                s.statDist = getDistance(locationHandler.coordinates.location.getLatitude(), locationHandler.coordinates.location.getLongitude());
+                            }
+                            printStations();
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
@@ -388,8 +393,8 @@ public class DriveActivity extends Activity {
         Log.d("Notification", "Starting getDistance");
         double v = 6372.8;
 
-        double gpsLat = gps.getLatitude(); //lat1
-        double gpsLon = gps.getLongitude(); //lon1
+        double gpsLat = locationHandler.coordinates.location.getLatitude(); //lat1
+        double gpsLon = locationHandler.coordinates.location.getLongitude(); //lon1
 
         double dLat = Math.toRadians(statLat - gpsLat);
         double dLon = Math.toRadians(statLon - gpsLon);
@@ -509,8 +514,18 @@ public class DriveActivity extends Activity {
                 myDistance = iDistance;
             }
         }
-
         return iKeeper;
+    }
+
+    public void sortStations(){
+        for (int i = 1; i < stations.size(); i++) {
+            Collections.sort(stations, new Comparator < Station > () {
+                @Override
+                public int compare(Station c1, Station c2) {
+                    return Double.compare(c1.statDist, c2.statDist);
+                }
+            });
+        }
     }
 }
 
