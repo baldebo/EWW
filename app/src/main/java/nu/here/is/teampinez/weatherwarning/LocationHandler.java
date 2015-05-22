@@ -178,7 +178,7 @@ public class LocationHandler {
         private WGS84Position distantPos(WGS84Position p, double bearing) {
             WGS84Position newpos = new WGS84Position();
 
-            double dist = 40.0/6371.0;
+            double dist = 50.0/6371.0;
             bearing = Math.toRadians(bearing);
             double lat1 = Math.toRadians(p.getLatitude());
             double lon1 = Math.toRadians(p.getLongitude());

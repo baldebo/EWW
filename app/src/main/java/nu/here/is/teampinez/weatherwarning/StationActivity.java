@@ -1,5 +1,7 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import nu.here.is.teampinez.weatherwarning.parser.*;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,12 +44,12 @@ public class StationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.v(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
-                //getWeather(1, null, locationHandler.bearing.activeBearing);
-                try {
-                    new Parser(StationActivity.this, listView).execute(1, null, locationHandler.bearing.activeBearing).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                new ConeParser(StationActivity.this, listView, locationHandler.coordinates.getTriangle(locationHandler.bearing.activeBearing));
+//                try {
+//                    new Parser(StationActivity.this, listView).execute(1, null, locationHandler.bearing.activeBearing).get();
+//                } catch (InterruptedException | ExecutionException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
         radius.setOnClickListener(new View.OnClickListener() {
@@ -55,12 +57,7 @@ public class StationActivity extends Activity {
             public void onClick(View v) {
                 Log.v(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLongitude()));
                 Log.v(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLatitude()));
-                try {
-                    new Parser(StationActivity.this, listView).execute(0, 10000, null).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                //getWeather(0, 10000, null);
+                new RadiusParser(StationActivity.this, listView, 10000, locationHandler.coordinates.getLoc());
             }
         });
         clear.setOnClickListener(new View.OnClickListener() {

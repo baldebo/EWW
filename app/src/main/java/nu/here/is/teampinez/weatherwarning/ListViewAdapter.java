@@ -1,5 +1,7 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import nu.here.is.teampinez.weatherwarning.parser.Station;
+
 import android.widget.BaseAdapter;
 
 import android.app.Activity;
