@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.concurrent.ExecutionException;
-
 public class StationActivity extends Activity {
 
 
@@ -66,6 +64,18 @@ public class StationActivity extends Activity {
                 listView.setAdapter(null);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationHandler.bearing.sensorManager.unregisterListener(locationHandler.bearing);
+        locationHandler.coordinates.locationManager.removeUpdates(locationHandler.coordinates);
     }
 
     @Override

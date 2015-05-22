@@ -33,7 +33,7 @@ public class LocationHandler {
     }
 
     class Bearing implements SensorEventListener {
-        private SensorManager sensorManager;
+        SensorManager sensorManager;
         Integer activeBearing;
 
         private Sensor sensorMagneticField;
