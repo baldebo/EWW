@@ -29,8 +29,6 @@ import com.swedspot.vil.distraction.StealthMode;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -48,6 +46,8 @@ public class DriveActivity extends Activity {
     // Updating things
     Handler handler;
     LocationHandler locationHandler;
+    Timer timer;
+    TimerTask timerTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,22 +101,23 @@ public class DriveActivity extends Activity {
          * This is for updating every something minutes
          */
         handler = new Handler();
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            //stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
 
                             //stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
                             // Commented out for now, gives NullPointerException if not running AGA.
-                            //if (speed >= 50) {
-                            //} else {
-                            //    stations = new Parser(DriveActivity.this).execute(0, 7500, null).get();
-                            //}
+                            if (speed >= 50) {
+                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            } else {
+                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(0, 12500, null).get();
+                            }
                             //sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
 
                         } catch (InterruptedException | ExecutionException e) {
@@ -128,9 +129,24 @@ public class DriveActivity extends Activity {
         };
         // 5 minutes, Milliseconds?
         //timer.schedule(timerTask, 0, 300000);
-        timer.schedule(timerTask, 0, 30000);
+        //timer.schedule(timerTask, 0, 30000);
     }
 
+    @Override
+    public void onPause() {
+        Log.v(getClass().getName(), "Pausing task");
+        super.onPause();
+
+        locationHandler.coordinates.locationManager.removeUpdates(locationHandler.coordinates);
+        timer.cancel();
+    }
+
+    @Override
+    public void onResume() {
+        Log.v(getClass().getName(), "Resuming task");
+        super.onRestart();
+        timer.schedule(timerTask, 0, 30000);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

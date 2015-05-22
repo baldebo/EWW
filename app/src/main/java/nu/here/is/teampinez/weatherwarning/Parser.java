@@ -34,42 +34,40 @@ import java.util.logging.Logger;
 public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
     private final static String authid = "5fe4551a599447929a301bc183b83a26";
 
-    private ArrayList<Station> stations = new ArrayList<>();
-
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     private LocationHandler locationHandler;
     private ListView listview;
     private Activity activity;
     View driveView;
 
     Parser(Activity activity) {
-        super();
+//        super();
         locationHandler = new LocationHandler(activity);
-        progressDialog = new ProgressDialog(activity);
+//        progressDialog = new ProgressDialog(activity);
     }
 
     Parser(Activity activity, View driveView) {
         super();
         locationHandler = new LocationHandler(activity);
-        progressDialog = new ProgressDialog(activity);
+//        progressDialog = new ProgressDialog(activity);
         this.driveView = driveView;
     }
 
     Parser(Activity activity, ListView listView) {
         super();
         locationHandler = new LocationHandler(activity);
-        progressDialog = new ProgressDialog(activity);
+//        progressDialog = new ProgressDialog(activity);
         this.listview = listView;
         this.activity = activity;
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog.setCancelable(true);
-        progressDialog.setMessage("Loading..");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setProgress(0);
-        progressDialog.show();
+//        progressDialog.setCancelable(true);
+//        progressDialog.setMessage("Loading..");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progressDialog.setProgress(0);
+//        progressDialog.show();
     }
 
     /**
@@ -81,6 +79,7 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
      */
     @Override
     protected ArrayList<Station> doInBackground(Integer... params) {
+        ArrayList<Station> stations = new ArrayList<>();
         try {
             JSONArray jsonArray;
             if(params[0] == 1) {
@@ -121,42 +120,11 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
 
     @Override
     protected void onPostExecute(ArrayList<Station> s) {
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
         //TODO Remove debug logging
         if(listview != null) {
-            try {
-                for (Station station : s) {
-                    if (station.roadTemp == null) {
-                        station.roadTemp = "N/A";
-                    } else {
-                        double temp = Double.parseDouble(station.roadTemp);
-                        if(temp < -50) {
-                            station.roadTemp = "N/A";
-                        } else {
-                            station.roadTemp += "°C";
-                        }
-                    }
-                    if (station.airTemp == null) {
-                        station.airTemp = "N/A";
-                    } else {
-                        double temp = Double.parseDouble(station.airTemp);
-                        if(temp < -50) {
-                            station.airTemp = "N/A";
-                        } else {
-                            station.airTemp += "°C";
-                        }
-                    }
-                    if (station.windSpeed == null) {
-                        station.windSpeed = "N/A";
-                    } else {
-                        station.windSpeed += " m/s";
-                    }
-
-                }
-            } catch(NumberFormatException e) {
-                e.printStackTrace();
-            }
-            ListViewAdapter adapter = new ListViewAdapter(activity, stations);
+            formatList(s);
+            ListViewAdapter adapter = new ListViewAdapter(activity, s);
             listview.setAdapter(adapter);
         }
 
@@ -187,27 +155,28 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
             }
 
             sortStations(s);
+            formatList(s);
 
             //Station 1
             txtStationName0.setText(s.get(findStationByDistance(0, s)).name);
-            txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
+            txtStationDistance0.setText(String.format("%.1f", s.get(0).statDist));
             txtAirTemp0.setText(s.get(findStationByDistance(0, s)).airTemp);
             txtRoadtemp0.setText(s.get(findStationByDistance(0, s)).roadTemp);
             txtWindSpd0.setText(s.get(findStationByDistance(0, s)).windSpeed);
 
             //Station 2
             txtStationName1.setText(s.get(findStationByDistance(20, s)).name);
-            txtStationDistance1.setText(String.format("%.1f", stations.get(findStationByDistance(20, s)).statDist) + " km");
-            txtAirTemp1.setText(s.get(findStationByDistance(20, s)).airTemp + "°C");
-            txtRoadtemp1.setText(s.get(findStationByDistance(20, s)).roadTemp + "°C");
-            txtWindSpd1.setText(s.get(findStationByDistance(20, s)).windSpeed + " m/s");
+            txtStationDistance1.setText(String.format("%.1f", s.get(findStationByDistance(20, s)).statDist));
+            txtAirTemp1.setText(s.get(findStationByDistance(20, s)).airTemp);
+            txtRoadtemp1.setText(s.get(findStationByDistance(20, s)).roadTemp);
+            txtWindSpd1.setText(s.get(findStationByDistance(20, s)).windSpeed);
 
             //Station 3
             txtStationName2.setText(s.get(findStationByDistance(40, s)).name);
-            txtStationDistance2.setText(String.format("%.1f", stations.get(findStationByDistance(40, s)).statDist) + " km");
-            txtAirTemp2.setText(s.get(findStationByDistance(40, s)).airTemp + "°C");
-            txtRoadtemp2.setText(s.get(findStationByDistance(40, s)).roadTemp + "°C");
-            txtWindSpd2.setText(s.get(findStationByDistance(40, s)).windSpeed + " m/s");
+            txtStationDistance2.setText(String.format("%.1f", s.get(findStationByDistance(40, s)).statDist));
+            txtAirTemp2.setText(s.get(findStationByDistance(40, s)).airTemp);
+            txtRoadtemp2.setText(s.get(findStationByDistance(40, s)).roadTemp);
+            txtWindSpd2.setText(s.get(findStationByDistance(40, s)).windSpeed);
         }
     }
 
@@ -393,6 +362,43 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
         double c = 2 * Math.asin(Math.sqrt(a));
 
         return v * c;
+    }
+
+    private ArrayList<Station> formatList(ArrayList<Station> s) {
+        ArrayList<Station> formatedList = new ArrayList<>();
+        try {
+            for (Station station : s) {
+                if (station.roadTemp == null) {
+                    station.roadTemp = "N/A";
+                } else {
+                    double temp = Double.parseDouble(station.roadTemp);
+                    if(temp < -50) {
+                        station.roadTemp = "N/A";
+                    } else {
+                        station.roadTemp += "°C";
+                    }
+                }
+                if (station.airTemp == null) {
+                    station.airTemp = "N/A";
+                } else {
+                    double temp = Double.parseDouble(station.airTemp);
+                    if(temp < -50) {
+                        station.airTemp = "N/A";
+                    } else {
+                        station.airTemp += "°C";
+                    }
+                }
+                if (station.windSpeed == null) {
+                    station.windSpeed = "N/A";
+                } else {
+                    station.windSpeed += " m/s";
+                }
+                formatedList.add(station);
+            }
+        } catch(NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return formatedList;
     }
 }
 
