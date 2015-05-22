@@ -1,5 +1,7 @@
 package nu.here.is.teampinez.weatherwarning;
 
+import nu.here.is.teampinez.weatherwarning.parser.*;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -108,21 +110,15 @@ public class DriveActivity extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
                             //stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
-
                             //stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
                             // Commented out for now, gives NullPointerException if not running AGA.
-                            if (speed >= 50) {
-                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
-                            } else {
-                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(0, 12500, null).get();
-                            }
+//                            if (speed >= 50) {
+//                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
+//                            } else {
+//                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(0, 12500, null).get();
+//                            }
                             //sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
-
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        }
                     }
                 });
             }
