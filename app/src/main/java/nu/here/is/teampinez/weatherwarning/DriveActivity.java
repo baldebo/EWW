@@ -168,28 +168,23 @@ public class DriveActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            //stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
-                            stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
+                            stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            //stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
                             for (Station s : stations){
                                // s.statDist = getDistance(locationHandler.coordinates.location.getLatitude(), locationHandler.coordinates.location.getLongitude());
-
                                 double usableCoordinates[] = splitCoordinates(s.wgs84);
-
                                 s.statDist = (getDistance(usableCoordinates[1],usableCoordinates[0]));
+                                Log.d("Station - ", s.name + " - " + s.statDist);
 
                             }
                             sortStations();
-                            for (Station s : stations) {
-                                Log.d("Station - ", s.name + " - " + s.statDist);
-                            }
                             printStations();
                             // Commented out for now, gives NullPointerException if not running AGA.
                             //if (speed >= 50) {
-                                stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
                             //} else {
                             //    stations = new Parser(DriveActivity.this).execute(0, 7500, null).get();
                             //}
-                            sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
+                            //sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
 
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
@@ -464,7 +459,7 @@ public class DriveActivity extends Activity {
 
             //Station 2
             txtStationName1.setText(stations.get(findStationByDistance(20)).name);
-            txtStationDistance1.setText(String.format("%.1f", stations.get(20).statDist) + " km");
+            txtStationDistance1.setText(String.format("%.1f", stations.get(findStationByDistance(20)).statDist) + " km");
             txtAirTemp1.setText(stations.get(findStationByDistance(20)).airTemp);
             txtRoadtemp1.setText(stations.get(findStationByDistance(20)).roadTemp);
             txtWindSpd1.setText(stations.get(findStationByDistance(20)).windSpeed);
@@ -472,7 +467,7 @@ public class DriveActivity extends Activity {
 
             //Station 3
             txtStationName2.setText(stations.get(findStationByDistance(40)).name);
-            txtStationDistance2.setText(String.format("%.1f", stations.get(40).statDist) + " km");
+            txtStationDistance2.setText(String.format("%.1f", stations.get(findStationByDistance(40)).statDist) + " km");
             txtAirTemp2.setText(stations.get(findStationByDistance(40)).airTemp);
             txtRoadtemp2.setText(stations.get(findStationByDistance(40)).roadTemp);
             txtWindSpd2.setText(stations.get(findStationByDistance(40)).windSpeed);

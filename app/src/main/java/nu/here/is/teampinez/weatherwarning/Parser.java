@@ -93,38 +93,9 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
                 if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() != 0) {
                     s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 }
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax").length() != 0) {
-                    s.windGust = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax");
-                }
-
-//                try {
-//                    if (!s.roadTemp.equals("N/A")) {
-//                        double roadTempDouble = Double.parseDouble(s.roadTemp);
-//                        if (roadTempDouble < -50) {
-//                            s.roadTemp = "N/A";
-//                        } else {
-//                            s.roadTemp += "°C";
-//                        }
-//                    }
-//                } catch (NumberFormatException e) {
-//                    Log.i(getClass().getName(), String.valueOf(e));
-//
+//                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax").length() != 0) {
+//                    s.windGust = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax");
 //                }
-//
-//                try {
-//                    if(!s.airTemp.equals("N/A")) {
-//                        double airTempDouble = Double.parseDouble(s.airTemp);
-//                        if(airTempDouble < -50) {
-//                            s.airTemp = "N/A";
-//                        } else {
-//                            s.airTemp += "°C";
-//                        }
-//                    }
-//                } catch (NumberFormatException e) {
-//                    Log.i(getClass().getName(), e.toString());
-//                }
-
-//                if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
 
                 // Add object to ArrayList
                 stations.add(s);
