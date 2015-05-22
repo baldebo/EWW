@@ -198,16 +198,16 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
             //Station 2
             txtStationName1.setText(s.get(findStationByDistance(20, s)).name);
             txtStationDistance1.setText(String.format("%.1f", stations.get(findStationByDistance(20, s)).statDist) + " km");
-            txtAirTemp1.setText(s.get(findStationByDistance(20, s)).airTemp);
-            txtRoadtemp1.setText(s.get(findStationByDistance(20, s)).roadTemp);
-            txtWindSpd1.setText(s.get(findStationByDistance(20, s)).windSpeed);
+            txtAirTemp1.setText(s.get(findStationByDistance(20, s)).airTemp + "°C");
+            txtRoadtemp1.setText(s.get(findStationByDistance(20, s)).roadTemp + "°C");
+            txtWindSpd1.setText(s.get(findStationByDistance(20, s)).windSpeed + " m/s");
 
             //Station 3
             txtStationName2.setText(s.get(findStationByDistance(40, s)).name);
             txtStationDistance2.setText(String.format("%.1f", stations.get(findStationByDistance(40, s)).statDist) + " km");
-            txtAirTemp2.setText(s.get(findStationByDistance(40, s)).airTemp);
-            txtRoadtemp2.setText(s.get(findStationByDistance(40, s)).roadTemp);
-            txtWindSpd2.setText(s.get(findStationByDistance(40, s)).windSpeed);
+            txtAirTemp2.setText(s.get(findStationByDistance(40, s)).airTemp + "°C");
+            txtRoadtemp2.setText(s.get(findStationByDistance(40, s)).roadTemp + "°C");
+            txtWindSpd2.setText(s.get(findStationByDistance(40, s)).windSpeed + " m/s");
         }
     }
 
