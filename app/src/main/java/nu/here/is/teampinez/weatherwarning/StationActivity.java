@@ -41,7 +41,7 @@ public class StationActivity extends Activity {
         cone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
+                Log.v(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
                 //getWeather(1, null, locationHandler.bearing.activeBearing);
                 try {
                     new Parser(StationActivity.this, listView).execute(1, null, locationHandler.bearing.activeBearing).get();
@@ -53,8 +53,8 @@ public class StationActivity extends Activity {
         radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLongitude()));
-                Log.e(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLatitude()));
+                Log.v(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLongitude()));
+                Log.v(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLatitude()));
                 try {
                     new Parser(StationActivity.this, listView).execute(0, 10000, null).get();
                 } catch (InterruptedException | ExecutionException e) {
