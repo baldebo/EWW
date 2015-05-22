@@ -433,18 +433,25 @@ public class DriveActivity extends Activity {
     public void printStations() {
         //getWeather(0);
         if (stations.size() > 2){
+
+            int id = 0;
+
+            //Station 1
             txtStationName0.setText(stations.get(findStationByDistance(0)).name);
             txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
             txtAirTemp0.setText(stations.get(findStationByDistance(0)).airTemp);
             txtRoadtemp0.setText(stations.get(findStationByDistance(0)).roadTemp);
             txtWindSpd0.setText(stations.get(findStationByDistance(0)).windSpeed);
 
+            //Station 2
             txtStationName1.setText(stations.get(findStationByDistance(20)).name);
             txtStationDistance1.setText(String.format("%.1f", stations.get(20).statDist) + " km");
             txtAirTemp1.setText(stations.get(findStationByDistance(20)).airTemp);
             txtRoadtemp1.setText(stations.get(findStationByDistance(20)).roadTemp);
             txtWindSpd1.setText(stations.get(findStationByDistance(20)).windSpeed);
             Log.d("Station 1 - AirTemp ", stations.get(1).airTemp);
+
+            //Station 3
             txtStationName2.setText(stations.get(findStationByDistance(40)).name);
             txtStationDistance2.setText(String.format("%.1f", stations.get(40).statDist) + " km");
             txtAirTemp2.setText(stations.get(findStationByDistance(40)).airTemp);
