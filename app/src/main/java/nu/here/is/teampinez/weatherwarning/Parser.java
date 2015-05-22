@@ -84,50 +84,47 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
                 s.name = parsedStation.getString("Name");
                 s.wgs84 = parsedStation.getJSONObject("Geometry").getString("WGS84");
 
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() == 0) {
-                    s.airTemp = "N/A";
-                } else {
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Air").length() != 0) {
                     s.airTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Air").getString("Temp");
                 }
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() == 0) {
-                    s.roadTemp = "N/A";
-                } else {
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Road").length() != 0) {
                     s.roadTemp = parsedStation.getJSONObject("Measurement").getJSONObject("Road").getString("Temp");
                 }
-                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() == 0) {
-                    s.windSpeed = "N/A";
-                } else {
+                if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() != 0) {
                     s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 }
-
-                try {
-                    if (!s.roadTemp.equals("N/A")) {
-                        double roadTempDouble = Double.parseDouble(s.roadTemp);
-                        if (roadTempDouble < -50) {
-                            s.roadTemp = "N/A";
-                        } else {
-                            s.roadTemp += "°C";
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    Log.i(getClass().getName(), String.valueOf(e));
-
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax").length() != 0) {
+                    s.windGust = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax");
                 }
 
-                try {
-                    if(!s.airTemp.equals("N/A")) {
-                        double airTempDouble = Double.parseDouble(s.airTemp);
-                        if(airTempDouble < -50) {
-                            s.airTemp = "N/A";
-                        } else {
-                            s.airTemp += "°C";
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    Log.i(getClass().getName(), e.toString());
-                }
+//                try {
+//                    if (!s.roadTemp.equals("N/A")) {
+//                        double roadTempDouble = Double.parseDouble(s.roadTemp);
+//                        if (roadTempDouble < -50) {
+//                            s.roadTemp = "N/A";
+//                        } else {
+//                            s.roadTemp += "°C";
+//                        }
+//                    }
+//                } catch (NumberFormatException e) {
+//                    Log.i(getClass().getName(), String.valueOf(e));
+//
+//                }
+//
+//                try {
+//                    if(!s.airTemp.equals("N/A")) {
+//                        double airTempDouble = Double.parseDouble(s.airTemp);
+//                        if(airTempDouble < -50) {
+//                            s.airTemp = "N/A";
+//                        } else {
+//                            s.airTemp += "°C";
+//                        }
+//                    }
+//                } catch (NumberFormatException e) {
+//                    Log.i(getClass().getName(), e.toString());
+//                }
 
-                if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
+//                if(!s.windSpeed.equals("N/A")) s.windSpeed += " m/s";
 
                 // Add object to ArrayList
                 stations.add(s);
@@ -144,6 +141,38 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
         progressDialog.dismiss();
         //TODO Remove debug logging
         if(listview != null) {
+            try {
+                for (Station station : s) {
+                    if (station.roadTemp == null) {
+                        station.roadTemp = "N/A";
+                    } else {
+                        double temp = Double.parseDouble(station.roadTemp);
+                        if(temp < -50) {
+                            station.roadTemp = "N/A";
+                        } else {
+                            station.roadTemp += "°C";
+                        }
+                    }
+                    if (station.airTemp == null) {
+                        station.airTemp = "N/A";
+                    } else {
+                        double temp = Double.parseDouble(station.airTemp);
+                        if(temp < -50) {
+                            station.airTemp = "N/A";
+                        } else {
+                            station.airTemp += "°C";
+                        }
+                    }
+                    if (station.windSpeed == null) {
+                        station.windSpeed = "N/A";
+                    } else {
+                        station.windSpeed += " m/s";
+                    }
+
+                }
+            } catch(NumberFormatException e) {
+                e.printStackTrace();
+            }
             ListViewAdapter adapter = new ListViewAdapter(activity, stations);
             listview.setAdapter(adapter);
         }
@@ -280,6 +309,7 @@ final class Station {
     String roadTemp;
     String airTemp;
     String windSpeed;
+    String windGust;
     String wgs84;
     Double statDist;
     // More data?
