@@ -14,30 +14,30 @@ import com.swedspot.vil.distraction.LightMode;
 import com.swedspot.vil.distraction.StealthMode;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Created by max on 5/22/15.
+ * DATA DATA.
  */
-public class AGAListener extends AsyncTask<Object, Void, ArrayList<Float>> {
-    ArrayList<Float> things;
-    public AGAListener(ArrayList<Float> passedArray) {
-        things = passedArray;
+public class AGAListener extends AsyncTask<Object, Void, HashMap<Integer, Object>> {
+    HashMap<Integer, Object> things;
+    public AGAListener(HashMap<Integer, Object> passedMap) {
+        things = passedMap;
     }
 
     @Override
-    protected ArrayList<Float> doInBackground(Object... objects) {
+    protected HashMap<Integer, Object> doInBackground(Object... objects) {
         AutomotiveFactory.createAutomotiveManagerInstance(
                 new AutomotiveCertificate(new byte[0]),
                 new AutomotiveListener() {
                     @Override
                     public void receive(final AutomotiveSignal automotiveSignal) {
-//                        new Runnable() {
-//                            @Override
-//                            public void run() {
-                                things.set(0,(((SCSFloat) automotiveSignal.getData()).getFloatValue()));
-//                            }
-//                        };
+                        if(automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_WHEEL_BASED_SPEED) {
+                            things.put(0, ((SCSFloat) automotiveSignal.getData()).getFloatValue());
+                        }
+                        if(automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_VEHICLE_MOTION) {
+                            things.put(1, automotiveSignal.getData());
+                        }
                     }
 
                     @Override
@@ -66,12 +66,12 @@ public class AGAListener extends AsyncTask<Object, Void, ArrayList<Float>> {
 
                     }
                 }
-        ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
+        ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED, AutomotiveSignalId.FMS_VEHICLE_MOTION);
         return things;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Float> f) {
+    protected void onPostExecute(HashMap<Integer, Object> f) {
         Log.e(getClass().getName(), "I AM DONE");
     }
 }
