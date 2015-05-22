@@ -5,9 +5,10 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-    android:weightSum="1"
-    android:background="@mipmap/roadrino"
-    android:gravity="top">
+        android:weightSum="1"
+        android:background="@mipmap/roadrino"
+        android:gravity="top"
+        android:id="@+id/driver_view">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
