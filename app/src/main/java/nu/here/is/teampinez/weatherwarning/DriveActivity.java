@@ -157,10 +157,19 @@ public class DriveActivity extends Activity {
                     @Override
                     public void run() {
                         try {
-                            stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
-                            String coordSplitter = stations.getJSONObject("Geometry").getString("WGS84");
+                            //stations = new Parser(DriveActivity.this).execute(1, null, locationHandler.bearing.activeBearing).get();
+                            stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
                             for (Station s : stations){
-                                s.statDist = getDistance(locationHandler.coordinates.location.getLatitude(), locationHandler.coordinates.location.getLongitude());
+                               // s.statDist = getDistance(locationHandler.coordinates.location.getLatitude(), locationHandler.coordinates.location.getLongitude());
+
+                                double usableCoordinates[] = splitCoordinates(s.wgs84);
+
+                                s.statDist = (getDistance(usableCoordinates[1],usableCoordinates[0]));
+
+                            }
+                            sortStations();
+                            for (Station s : stations) {
+                                Log.d("Station - ", s.name + " - " + s.statDist);
                             }
                             printStations();
                         } catch (InterruptedException | ExecutionException e) {
@@ -424,23 +433,23 @@ public class DriveActivity extends Activity {
     public void printStations() {
         //getWeather(0);
         if (stations.size() > 2){
-            txtStationName0.setText(stations.get(0).name);
+            txtStationName0.setText(stations.get(findStationByDistance(0)).name);
             txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
-            txtAirTemp0.setText(stations.get(0).airTemp);
-            txtRoadtemp0.setText(stations.get(0).roadTemp);
-            txtWindSpd0.setText(stations.get(0).windSpeed);
+            txtAirTemp0.setText(stations.get(findStationByDistance(0)).airTemp);
+            txtRoadtemp0.setText(stations.get(findStationByDistance(0)).roadTemp);
+            txtWindSpd0.setText(stations.get(findStationByDistance(0)).windSpeed);
 
-            txtStationName1.setText(stations.get(1).name);
-            txtStationDistance1.setText(String.format("%.1f", stations.get(1).statDist) + " km");
-            txtAirTemp1.setText(stations.get(1).airTemp);
-            txtRoadtemp1.setText(stations.get(1).roadTemp);
-            txtWindSpd1.setText(stations.get(1).windSpeed);
+            txtStationName1.setText(stations.get(findStationByDistance(20)).name);
+            txtStationDistance1.setText(String.format("%.1f", stations.get(20).statDist) + " km");
+            txtAirTemp1.setText(stations.get(findStationByDistance(20)).airTemp);
+            txtRoadtemp1.setText(stations.get(findStationByDistance(20)).roadTemp);
+            txtWindSpd1.setText(stations.get(findStationByDistance(20)).windSpeed);
             Log.d("Station 1 - AirTemp ", stations.get(1).airTemp);
-            txtStationName2.setText(stations.get(2).name);
-            txtStationDistance2.setText(String.format("%.1f", stations.get(2).statDist) + " km");
-            txtAirTemp2.setText(stations.get(2).airTemp);
-            txtRoadtemp2.setText(stations.get(2).roadTemp);
-            txtWindSpd2.setText(stations.get(2).windSpeed);
+            txtStationName2.setText(stations.get(findStationByDistance(40)).name);
+            txtStationDistance2.setText(String.format("%.1f", stations.get(40).statDist) + " km");
+            txtAirTemp2.setText(stations.get(findStationByDistance(40)).airTemp);
+            txtRoadtemp2.setText(stations.get(findStationByDistance(40)).roadTemp);
+            txtWindSpd2.setText(stations.get(findStationByDistance(40)).windSpeed);
         }
     }
 
@@ -526,6 +535,20 @@ public class DriveActivity extends Activity {
                 }
             });
         }
+    }
+
+    public double[] splitCoordinates (String coordinates){
+        double[] splitCoords = new double[2];
+
+        coordinates = coordinates.replace("POINT", "");
+        coordinates = coordinates.replace("(", "");
+        coordinates= coordinates.replace(")", "");
+
+        String[] parsedCoords = coordinates.split(" ");
+        splitCoords[0] = Double.parseDouble(parsedCoords[1]);
+        splitCoords[1] = Double.parseDouble(parsedCoords[2]);
+
+        return splitCoords;
     }
 }
 
