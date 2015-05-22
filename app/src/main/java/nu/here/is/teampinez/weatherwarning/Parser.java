@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
 
@@ -23,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,17 +34,25 @@ import java.util.logging.Logger;
 public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
     private final static String authid = "5fe4551a599447929a301bc183b83a26";
 
-    ArrayList<Station> stations = new ArrayList<>();
+    private ArrayList<Station> stations = new ArrayList<>();
 
     private ProgressDialog progressDialog;
     private LocationHandler locationHandler;
     private ListView listview;
     private Activity activity;
+    View driveView;
 
     Parser(Activity activity) {
         super();
         locationHandler = new LocationHandler(activity);
         progressDialog = new ProgressDialog(activity);
+    }
+
+    Parser(Activity activity, View driveView) {
+        super();
+        locationHandler = new LocationHandler(activity);
+        progressDialog = new ProgressDialog(activity);
+        this.driveView = driveView;
     }
 
     Parser(Activity activity, ListView listView) {
@@ -146,6 +158,56 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
             }
             ListViewAdapter adapter = new ListViewAdapter(activity, stations);
             listview.setAdapter(adapter);
+        }
+
+        if(driveView != null) {
+            TextView txtStationName0 = (TextView) driveView.findViewById(R.id.stationName);
+            TextView txtStationDistance0 = (TextView) driveView.findViewById(R.id.stationDistance);
+            TextView txtAirTemp0 = (TextView) driveView.findViewById(R.id.airTemp);
+            TextView txtRoadtemp0 = (TextView) driveView.findViewById(R.id.roadTemp);
+            TextView txtWindSpd0 = (TextView) driveView.findViewById(R.id.windSpd);
+
+            TextView txtStationName1 = (TextView) driveView.findViewById(R.id.stationName2);
+            TextView txtStationDistance1 = (TextView) driveView.findViewById(R.id.stationDistance2);
+            TextView txtAirTemp1 = (TextView) driveView.findViewById(R.id.airTemp2);
+            TextView txtRoadtemp1 = (TextView) driveView.findViewById(R.id.roadTemp2);
+            TextView txtWindSpd1 = (TextView) driveView.findViewById(R.id.windSpd2);
+
+            TextView txtStationName2 = (TextView) driveView.findViewById(R.id.stationName3);
+            TextView txtStationDistance2 = (TextView) driveView.findViewById(R.id.stationDistance3);
+            TextView txtAirTemp2 = (TextView) driveView.findViewById(R.id.airTemp3);
+            TextView txtRoadtemp2 = (TextView) driveView.findViewById(R.id.roadTemp3);
+            TextView txtWindSpd2 = (TextView) driveView.findViewById(R.id.windSpd3);
+
+            for (Station station : s){
+                // s.statDist = getDistance(locationHandler.coordinates.location.getLatitude(), locationHandler.coordinates.location.getLongitude());
+                double usableCoordinates[] = splitCoordinates(station.wgs84);
+                station.statDist = (getDistance(usableCoordinates[1],usableCoordinates[0]));
+                Log.d("Station - ", station.name + " - " + station.statDist);
+            }
+
+            sortStations(s);
+
+            //Station 1
+            txtStationName0.setText(s.get(findStationByDistance(0, s)).name);
+            txtStationDistance0.setText(String.format("%.1f", stations.get(0).statDist) + " km");
+            txtAirTemp0.setText(s.get(findStationByDistance(0, s)).airTemp);
+            txtRoadtemp0.setText(s.get(findStationByDistance(0, s)).roadTemp);
+            txtWindSpd0.setText(s.get(findStationByDistance(0, s)).windSpeed);
+
+            //Station 2
+            txtStationName1.setText(s.get(findStationByDistance(20, s)).name);
+            txtStationDistance1.setText(String.format("%.1f", stations.get(findStationByDistance(20, s)).statDist) + " km");
+            txtAirTemp1.setText(s.get(findStationByDistance(20, s)).airTemp);
+            txtRoadtemp1.setText(s.get(findStationByDistance(20, s)).roadTemp);
+            txtWindSpd1.setText(s.get(findStationByDistance(20, s)).windSpeed);
+
+            //Station 3
+            txtStationName2.setText(s.get(findStationByDistance(40, s)).name);
+            txtStationDistance2.setText(String.format("%.1f", stations.get(findStationByDistance(40, s)).statDist) + " km");
+            txtAirTemp2.setText(s.get(findStationByDistance(40, s)).airTemp);
+            txtRoadtemp2.setText(s.get(findStationByDistance(40, s)).roadTemp);
+            txtWindSpd2.setText(s.get(findStationByDistance(40, s)).windSpeed);
         }
     }
 
@@ -272,6 +334,65 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
         Log.d("Request", sb.toString());
 
         return sb.toString();
+    }
+
+    private void sortStations(ArrayList<Station> s){
+        for (int i = 1; i < s.size(); i++) {
+            Collections.sort(s, new Comparator< Station >() {
+                @Override
+                public int compare(Station c1, Station c2) {
+                    return Double.compare(c1.statDist, c2.statDist);
+                }
+            });
+        }
+    }
+
+    private double[] splitCoordinates (String coordinates){
+        double[] splitCoords = new double[2];
+
+        coordinates = coordinates.replace("POINT", "");
+        coordinates = coordinates.replace("(", "");
+        coordinates= coordinates.replace(")", "");
+
+        String[] parsedCoords = coordinates.split(" ");
+        splitCoords[0] = Double.parseDouble(parsedCoords[1]);
+        splitCoords[1] = Double.parseDouble(parsedCoords[2]);
+
+        return splitCoords;
+    }
+
+    private int findStationByDistance(double distance, ArrayList<Station> s){
+
+        double myDistance = Math.abs(s.get(0).statDist - distance);
+        int iKeeper = 0;
+
+        for (int i = 0; i < s.size(); i++){
+            double iDistance = Math.abs(s.get(i).statDist - distance);
+            if (iDistance < myDistance){
+                iKeeper = i;
+                myDistance = iDistance;
+            }
+        }
+        return iKeeper;
+    }
+
+    private double getDistance(double statLat, double statLon) {
+        Log.d("Notification", "Starting getDistance");
+        double v = 6372.8;
+
+        double gpsLat = locationHandler.coordinates.location.getLatitude(); //lat1
+        double gpsLon = locationHandler.coordinates.location.getLongitude(); //lon1
+
+        double dLat = Math.toRadians(statLat - gpsLat);
+        double dLon = Math.toRadians(statLon - gpsLon);
+
+        gpsLat = Math.toRadians(gpsLat);
+        statLat = Math.toRadians(statLat);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(gpsLat) * Math.cos(statLat);
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        return v * c;
     }
 }
 
