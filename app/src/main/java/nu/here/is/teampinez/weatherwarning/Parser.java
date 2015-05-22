@@ -93,6 +93,9 @@ public class Parser extends AsyncTask<Integer, Void, ArrayList<Station>> {
                 if (parsedStation.getJSONObject("Measurement").getJSONObject("Wind").length() != 0) {
                     s.windSpeed = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("Force");
                 }
+                if(parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax").length() != 0) {
+                    s.windGust = parsedStation.getJSONObject("Measurement").getJSONObject("Wind").getString("ForceMax");
+                }
 
 //                try {
 //                    if (!s.roadTemp.equals("N/A")) {
@@ -306,6 +309,7 @@ final class Station {
     String roadTemp;
     String airTemp;
     String windSpeed;
+    String windGust;
     String wgs84;
     Double statDist;
     // More data?
