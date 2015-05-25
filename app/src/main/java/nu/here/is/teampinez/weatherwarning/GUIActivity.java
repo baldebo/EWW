@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.swedspot.scs.data.Uint8;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -13,7 +15,8 @@ import java.util.TimerTask;
 
 public class GUIActivity extends Activity {
 
-    HashMap<Integer, Object> data = new HashMap<>();
+    private HashMap<String, Object> data = new HashMap<>();
+    private AGAValues agav = new AGAValues();
 
     /*
     Variables below this point are used to store coordinates.
@@ -23,24 +26,34 @@ public class GUIActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainscreenactivity);
 
-        new AGAListener(data).execute();
+        new AGAListener().execute();
 
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Log.e(getClass().getName(), String.valueOf(data.get(0)));
-                    Log.e(getClass().getName(), String.valueOf(data.get(1)));
-                } catch (NullPointerException e) {
-                }
-            }
-        };
-        timer.schedule(timerTask, 0, 1000);
+//        Timer timer = new Timer();
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                Log.d(getClass().getName(), String.valueOf(AGAValues.IN_MOTION));
+//                if(AGAValues.IN_MOTION == 0) {
+//                    Log.d(getClass().getName(), "STANDING STILL");
+//                } else {
+//                    Log.d(getClass().getName(), "MOVING TRUCK");
+//                }
+//            }
+//        };
+//        timer.schedule(timerTask, 0, 1000);
     }
+
     public void startDriveView() {
-        Intent intent = new Intent(this, DriveActivity.class);
-        startActivity(intent);
+        if(AGAValues.IN_MOTION == 1) {
+            Toast.makeText(getApplicationContext(), "sorry u driving", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, DriveActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    protected void onPause() {
+        super.onPause();
     }
 
 
@@ -54,12 +67,17 @@ public class GUIActivity extends Activity {
     }
 
     public void openStationView(View view) {
+
         Intent intent = new Intent(this, StationActivity.class);
         startActivity(intent);
     }
 
     public void openDriveView(View view) {
-        Intent intent = new Intent(this, DriveActivity.class);
-        startActivity(intent);
+        if(AGAValues.IN_MOTION == 1) {
+            Toast.makeText(getApplicationContext(), "sorry u driving", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, DriveActivity.class);
+            startActivity(intent);
+        }
     }
 }
