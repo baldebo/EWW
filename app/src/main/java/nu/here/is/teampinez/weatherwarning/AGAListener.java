@@ -27,10 +27,10 @@ public class AGAListener extends AsyncTask<Object, Void, Void> {
                 new AutomotiveListener() {
                     @Override
                     public void receive(final AutomotiveSignal automotiveSignal) {
-                        if(automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_WHEEL_BASED_SPEED) {
+                        if (automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_WHEEL_BASED_SPEED) {
                             AGAValues.SPEED = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
                         }
-                        if(automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_VEHICLE_MOTION) {
+                        if (automotiveSignal.getSignalId() == AutomotiveSignalId.FMS_VEHICLE_MOTION) {
                             AGAValues.IN_MOTION = ((Uint8) automotiveSignal.getData()).getIntValue();
                         }
                     }
@@ -48,7 +48,7 @@ public class AGAListener extends AsyncTask<Object, Void, Void> {
                 new DriverDistractionListener() {
                     @Override
                     public void levelChanged(DriverDistractionLevel driverDistractionLevel) {
-
+                        AGAValues.DISTRACTION_LEVEL = driverDistractionLevel.getLevel();
                     }
 
                     @Override
@@ -64,11 +64,6 @@ public class AGAListener extends AsyncTask<Object, Void, Void> {
         ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED, AutomotiveSignalId.FMS_VEHICLE_MOTION);
 
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void v) {
-        Log.e(getClass().getName(), "I AM DONE");
     }
 }
 
