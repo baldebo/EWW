@@ -12,14 +12,21 @@ import java.util.concurrent.ExecutionException;
 import nu.here.is.teampinez.weatherwarning.ListViewAdapter;
 
 /**
- * Created by max on 5/22/15.
+ * ConeParser
  */
 public class ConeParser extends Parser {
     private ListView listView;
     private Activity activity;
 
+    /**
+     * ConeParser Construction method
+     *
+     * @param activity Activity to bind to.
+     * @param listView ListView to output to.
+     * @param positions Positions to calculate cone with.
+     */
     public ConeParser(Activity activity, ListView listView, ArrayList<SWEREF99Position> positions) {
-        super(activity);
+        super();
         this.listView = listView;
         this.activity = activity;
 
@@ -39,6 +46,13 @@ public class ConeParser extends Parser {
         }
     }
 
+    /**
+     * Building string to pass to Trafikverket API
+     * http://api.trafikinfo.trafikverket.se/
+     *
+     * @param positions Positions to use for cone.
+     * @return String formatted to API Standards.
+     */
     private String paramsCone(ArrayList<SWEREF99Position> positions) {
         StringBuilder sb =  new StringBuilder();
         sb.append("<REQUEST>");
@@ -62,6 +76,8 @@ public class ConeParser extends Parser {
         sb.append("</QUERY></REQUEST>");
 
         //TODO Remove debug logging
+        Log.d(getClass().getName(), sb.toString());
+
         return sb.toString();
     }
 }

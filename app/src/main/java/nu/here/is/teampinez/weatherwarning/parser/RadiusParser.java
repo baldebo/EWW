@@ -16,14 +16,22 @@ import nu.here.is.teampinez.weatherwarning.ListViewAdapter;
 
 
 /**
- * Created by max on 5/22/15.
+ * RadiusParser Class
  */
 public class RadiusParser extends Parser {
     private ListView listView;
     private Activity activity;
 
+    /**
+     * Constuction method
+     *
+     * @param activity Activity to bind to.
+     * @param listView ListView to output to.
+     * @param radius Radius for search, in meters.
+     * @param position Center of search point.
+     */
     public RadiusParser(Activity activity, ListView listView, Integer radius, SWEREF99Position position) {
-        super(activity);
+        super();
         this.listView = listView;
         this.activity = activity;
         try {
@@ -42,6 +50,12 @@ public class RadiusParser extends Parser {
         }
     }
 
+    /**
+     * String to pass to Trafikverket API
+     * @param radius Radius in meters.
+     * @param position Center of search
+     * @return Strin formatted to API standards.
+     */
     private String paramsRadius(Integer radius, SWEREF99Position position) {
         StringBuilder sb = new StringBuilder();
         sb.append("<REQUEST>");
@@ -68,6 +82,8 @@ public class RadiusParser extends Parser {
         sb.append("</QUERY></REQUEST>");
 
         //TODO Remove debug logging
+        Log.d(getClass().getName(), sb.toString());
+
         return sb.toString();
     }
 }

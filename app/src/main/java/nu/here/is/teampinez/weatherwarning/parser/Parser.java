@@ -1,6 +1,5 @@
 package nu.here.is.teampinez.weatherwarning.parser;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -18,15 +17,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Created by max on 5/22/15.
+ * Parser Class
  */
 public class Parser extends AsyncTask<String, Void, ArrayList<Station>> {
     final static String authid = "5fe4551a599447929a301bc183b83a26";
-    private Activity activity;
-
-    Parser(Activity activity) {
-        this.activity = activity;
-    }
 
     @Override
     protected ArrayList<Station> doInBackground(String... params) {
