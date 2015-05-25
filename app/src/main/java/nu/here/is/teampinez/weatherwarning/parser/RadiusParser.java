@@ -1,7 +1,6 @@
 package nu.here.is.teampinez.weatherwarning.parser;
 
 import android.app.Activity;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ListView;
 

@@ -43,11 +43,6 @@ public class StationActivity extends Activity {
             public void onClick(View v) {
                 Log.v(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
                 new ConeParser(StationActivity.this, listView, locationHandler.coordinates.getTriangle(locationHandler.bearing.activeBearing));
-//                try {
-//                    new Parser(StationActivity.this, listView).execute(1, null, locationHandler.bearing.activeBearing).get();
-//                } catch (InterruptedException | ExecutionException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
         radius.setOnClickListener(new View.OnClickListener() {

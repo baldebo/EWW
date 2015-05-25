@@ -4,79 +4,83 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.swedspot.scs.data.Uint8;
-import android.util.Log;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Locale;
 
-public class GUIActivity extends Activity {
+public class GUIActivity extends Activity implements TextToSpeech.OnInitListener {
 
-    private HashMap<String, Object> data = new HashMap<>();
-    private AGAValues agav = new AGAValues();
+    private TextToSpeech tts;
+    private final String TTS_ERROR_MSG = "Distraction level too high";
+    private final String TOAST_ERROR_MSG = "Unavailable while driving";
 
-    /*
-    Variables below this point are used to store coordinates.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainscreenactivity);
 
+        tts = new TextToSpeech(this, this);
         new AGAListener().execute();
-
-//        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                Log.d(getClass().getName(), String.valueOf(AGAValues.IN_MOTION));
-//                if(AGAValues.IN_MOTION == 0) {
-//                    Log.d(getClass().getName(), "STANDING STILL");
-//                } else {
-//                    Log.d(getClass().getName(), "MOVING TRUCK");
-//                }
-//            }
-//        };
-//        timer.schedule(timerTask, 0, 1000);
     }
 
-    public void startDriveView() {
-        if(AGAValues.IN_MOTION == 1) {
-            Toast.makeText(getApplicationContext(), "sorry u driving", Toast.LENGTH_LONG).show();
-        } else {
-            Intent intent = new Intent(this, DriveActivity.class);
-            startActivity(intent);
-        }
-    }
-
+    @Override
     protected void onPause() {
         super.onPause();
+        tts.stop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tts.stop();
+        tts.shutdown();
+    }
+
+    @Override
+    public void onInit(int i) {
+        if(i == TextToSpeech.SUCCESS) {
+            tts.setLanguage(Locale.getDefault());
+        }
+    }
 
     /**
      * These methods facilitate changes between activities
      **/
 
-    public void openMap(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
+    public void openDriveView(View view) {
+        Intent intent = new Intent(this, DriveActivity.class);
         startActivity(intent);
     }
 
     public void openStationView(View view) {
-
-        Intent intent = new Intent(this, StationActivity.class);
-        startActivity(intent);
+        if(AGAValues.IN_MOTION == 1) {
+            if(AGAValues.DISTRACTION_LEVEL < 3) {
+                Intent intent = new Intent(this, StationActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), TOAST_ERROR_MSG, Toast.LENGTH_LONG).show();
+                //noinspection deprecation
+                tts.speak(TTS_ERROR_MSG, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        } else {
+            Intent intent = new Intent(this, StationActivity.class);
+            startActivity(intent);
+        }
     }
 
-    public void openDriveView(View view) {
+    public void openMap(View view) {
         if(AGAValues.IN_MOTION == 1) {
-            Toast.makeText(getApplicationContext(), "sorry u driving", Toast.LENGTH_LONG).show();
+            if(AGAValues.DISTRACTION_LEVEL < 2) {
+                Toast.makeText(getApplicationContext(), TOAST_ERROR_MSG, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), TOAST_ERROR_MSG, Toast.LENGTH_LONG).show();
+                //noinspection deprecation
+                tts.speak(TTS_ERROR_MSG, TextToSpeech.QUEUE_FLUSH, null);
+            }
         } else {
-            Intent intent = new Intent(this, DriveActivity.class);
+            Intent intent = new Intent(this, MapActivity.class);
             startActivity(intent);
         }
     }
