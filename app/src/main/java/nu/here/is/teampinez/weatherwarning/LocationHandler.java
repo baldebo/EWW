@@ -18,20 +18,22 @@ import com.github.goober.coordinatetransformation.positions.WGS84Position;
 import java.util.ArrayList;
 
 /**
- * Created by max on 5/21/15.
+ * LocationHandler
+ * Contains Bearing and Location classes.
  */
 public class LocationHandler {
-    private Context context;
     Bearing bearing;
     Coordinates coordinates;
 
     LocationHandler(Context context) {
-        this.context = context;
-        bearing = new Bearing(this.context);
-        coordinates = new Coordinates(this.context);
+        bearing = new Bearing(context);
+        coordinates = new Coordinates(context);
 
     }
 
+    /**
+     * Bearing class
+     */
     class Bearing implements SensorEventListener {
         SensorManager sensorManager;
         Integer activeBearing;
@@ -46,6 +48,11 @@ public class LocationHandler {
         private float[] matrixI;
         private float[] matrixValues;
 
+        /**
+         * Bearing Constructor
+         * 
+         * @param context Context to bind to.
+         */
         Bearing(Context context) {
             sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -62,6 +69,9 @@ public class LocationHandler {
             sensorManager.registerListener(this, sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
+        /**
+         * @see SensorEventListener
+         */
         @Override
         public void onSensorChanged(SensorEvent event) {
             switch (event.sensor.getType()) {
@@ -92,6 +102,11 @@ public class LocationHandler {
 
         }
 
+        /**
+         * returnAzimuth
+         *
+         * @return Azimuth in Degrees.
+         */
         private Integer returnAzimuth() {
             float azimuthInDegrees = (float) Math.toDegrees(matrixValues[0]);
             if(azimuthInDegrees < 0.0f) {
@@ -102,6 +117,9 @@ public class LocationHandler {
         }
     }
 
+    /**
+     * Coordinates class
+     */
     class Coordinates implements LocationListener {
 
         LocationManager locationManager;
@@ -121,6 +139,9 @@ public class LocationHandler {
             locationManager.requestLocationUpdates(provider, 1L, 1f, this);
         }
 
+        /**
+         * @see LocationListener
+         */
         @Override
         public void onLocationChanged(Location loc) {
             String longitude = "Longitude: " + loc.getLongitude();
@@ -146,10 +167,21 @@ public class LocationHandler {
 
         }
 
+        /**
+         * Transforms a WGS84 coordinate to SWEREF99 Coordinates
+         *
+         * @return Transformed position
+         */
         public SWEREF99Position getLoc() {
             return new SWEREF99Position(new WGS84Position(location.getLatitude(), location.getLongitude()), SWEREF99Position.SWEREFProjection.sweref_99_tm);
         }
 
+        /**
+         * Calculates a "cone" of using current location.
+         *
+         * @param bearing Magnetic heading
+         * @return ArrayList with three SWEREF99Positions
+         */
         ArrayList<SWEREF99Position> getTriangle(Integer bearing) {
             ArrayList<SWEREF99Position> pos = new ArrayList<>();
             WGS84Position[] wgs84Positions = new WGS84Position[3];
@@ -175,10 +207,21 @@ public class LocationHandler {
 
         }
 
+        /**
+         * Returns a position 80km away from current position using the current bearing
+         *
+         * @param p Base Position
+         * @param bearing Magnetic Heading
+         * @return Position 80km away from current position.
+         */
         private WGS84Position distantPos(WGS84Position p, double bearing) {
             WGS84Position newpos = new WGS84Position();
 
-            double dist = 50.0/6371.0;
+            /**
+             * TODO
+             * Calculate relevant distance using AGAValues.SPEED
+             */
+            double dist = 80.0/6371.0;
             bearing = Math.toRadians(bearing);
             double lat1 = Math.toRadians(p.getLatitude());
             double lon1 = Math.toRadians(p.getLongitude());
