@@ -37,111 +37,44 @@ import java.util.concurrent.ExecutionException;
 
 
 public class DriveActivity extends Activity {
-    ArrayList<Station> stations = new ArrayList<>();
-
-    // AverageBearing Variables
-
-    float speed = 0f;
-    Double averageBearing[] = new Double[5];
     MediaPlayer notificationSound;
 
     // Updating things
-    Handler handler;
     LocationHandler locationHandler;
-    Timer timer;
-    TimerTask timerTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationHandler = new LocationHandler(this);
         setContentView(R.layout.driver_test);
+
+        locationHandler = new LocationHandler(this);
 
         notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
 
-        // Assign TextViews
 
-
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object... objects) {
-                AutomotiveFactory.createAutomotiveManagerInstance(
-                        new AutomotiveCertificate(new byte[0]),
-                        new AutomotiveListener() {
-                            @Override
-                            public void receive(final AutomotiveSignal automotiveSignal) {
-                                speed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
-                            }
-
-                            @Override
-                            public void timeout(int i) {
-                            }
-
-                            @Override
-                            public void notAllowed(int i) {
-                            }
-                        },
-                        new DriverDistractionListener() {
-                            @Override
-                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
-                            }
-
-                            @Override
-                            public void lightModeChanged(LightMode lightMode) {
-                            }
-
-                            @Override
-                            public void stealthModeChanged(StealthMode stealthMode) {
-                            }
-                        }
-                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
-                return null;
-            }
-        }.execute();
-
-        /**
-         * This is for updating every something minutes
-         */
-        handler = new Handler();
-        timer = new Timer();
-        timerTask = new TimerTask() {
+        new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                            //stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
-                            //stations = new Parser(DriveActivity.this).execute(0,100000,null).get();
-                            // Commented out for now, gives NullPointerException if not running AGA.
-//                            if (speed >= 50) {
-//                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(1, null, locationHandler.bearing.activeBearing).get();
-//                            } else {
-//                                stations = new Parser(DriveActivity.this, findViewById(R.id.driver_view)).execute(0, 12500, null).get();
-//                            }
-                            //sendNotification(stations.get(0).name, Double.parseDouble(stations.get(0).airTemp), Double.parseDouble(stations.get(0).roadTemp), Double.parseDouble(stations.get(0).windSpeed));
-                    }
-                });
+                Log.d(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLatitude()));
+                Log.d(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
+                new ConeParser(DriveActivity.this, findViewById(R.id.driver_view), locationHandler.coordinates.getTriangle(locationHandler.bearing.activeBearing), locationHandler.coordinates.location);
             }
-        };
-        // 5 minutes, Milliseconds?
-        //timer.schedule(timerTask, 0, 300000);
-        //timer.schedule(timerTask, 0, 30000);
+        }, 2000, 20000);
     }
 
     @Override
     public void onPause() {
         Log.v(getClass().getName(), "Pausing task");
         super.onPause();
-
         locationHandler.coordinates.locationManager.removeUpdates(locationHandler.coordinates);
-        timer.cancel();
+        //timer.cancel();
     }
 
     @Override
     public void onResume() {
         Log.v(getClass().getName(), "Resuming task");
         super.onRestart();
-        timer.schedule(timerTask, 0, 30000);
+        //timer.schedule(timerTask, 0, 30000);
     }
 
     @Override

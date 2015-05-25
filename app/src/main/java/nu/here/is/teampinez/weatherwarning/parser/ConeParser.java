@@ -1,15 +1,22 @@
 package nu.here.is.teampinez.weatherwarning.parser;
 
 import android.app.Activity;
+import android.location.Location;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
+import nu.here.is.teampinez.weatherwarning.AGAValues;
 import nu.here.is.teampinez.weatherwarning.ListViewAdapter;
+import nu.here.is.teampinez.weatherwarning.R;
 
 /**
  * ConeParser
@@ -17,9 +24,12 @@ import nu.here.is.teampinez.weatherwarning.ListViewAdapter;
 public class ConeParser extends Parser {
     private ListView listView;
     private Activity activity;
+    private View view;
+    private Location location;
 
     /**
      * ConeParser Construction method
+     * Used in StationActivity
      *
      * @param activity Activity to bind to.
      * @param listView ListView to output to.
@@ -37,12 +47,55 @@ public class ConeParser extends Parser {
         }
     }
 
+    public ConeParser(Activity activity, View view, ArrayList<SWEREF99Position> positions, Location location) {
+        super();
+        this.activity = activity;
+        this.view = view;
+        this.location = location;
+
+        try {
+            this.execute(paramsCone(positions)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    protected void onPostExecute(ArrayList<Station> s) {
+    protected void onPostExecute(ArrayList<Station> stations) {
         Log.v(getClass().getName(), "Executed ConeParser");
         if(listView != null) {
-            ListViewAdapter adapter = new ListViewAdapter(activity, s);
+            ListViewAdapter adapter = new ListViewAdapter(activity, stations);
             listView.setAdapter(adapter);
+        }
+
+        /* TODO Make this so much more nice :( */
+        if(view != null) {
+            for(Station s : stations) {
+                double usableCoordinates[] = splitCoordinates(s.wgs84);
+                s.statDist = (getDistance(usableCoordinates[1], usableCoordinates[0]));
+            }
+            sortStations(stations);
+            for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
+
+            /* First stations is always the closest one */
+            ((TextView) view.findViewById(R.id.stationName)).setText(stations.get(0).name);
+            ((TextView) view.findViewById(R.id.stationDistance)).setText(String.format("%.1f", stations.get(0).statDist));
+            ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
+            ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
+            ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
+
+            ((TextView) view.findViewById(R.id.stationName2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).name);
+            ((TextView) view.findViewById(R.id.stationDistance2)).setText(String.format("%.1f", stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).statDist));
+            ((TextView) view.findViewById(R.id.airTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).airTemp);
+            ((TextView) view.findViewById(R.id.roadTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).roadTemp);
+            ((TextView) view.findViewById(R.id.windSpd2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).windSpeed);
+
+            ((TextView) view.findViewById(R.id.stationName3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).name);
+            ((TextView) view.findViewById(R.id.stationDistance3)).setText(String.format("%.1f", stations.get(findStationByDistance(AGAValues.SPEED, stations)).statDist));
+            ((TextView) view.findViewById(R.id.airTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp);
+            ((TextView) view.findViewById(R.id.roadTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
+            ((TextView) view.findViewById(R.id.windSpd3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
+
         }
     }
 
@@ -79,5 +132,59 @@ public class ConeParser extends Parser {
         Log.d(getClass().getName(), sb.toString());
 
         return sb.toString();
+    }
+
+    private double[] splitCoordinates(String coordinates) {
+        double[] coords = new double[2];
+
+        coordinates = coordinates.replace("POINT", "").replace("(", "").replace(")", "");
+
+        String[] parsedCoords = coordinates.split(" ");
+        coords[0] = Double.parseDouble(parsedCoords[1]);
+        coords[1] = Double.parseDouble(parsedCoords[2]);
+
+        return coords;
+    }
+
+    private int findStationByDistance(Float distance, ArrayList<Station> station) {
+        double myDistance = Math.abs(station.get(0).statDist - distance);
+        int iKeeper = 0;
+        for(int i=0; i<station.size(); i++) {
+            double iDistance = Math.abs(station.get(i).statDist - distance);
+            if (iDistance < myDistance){
+                iKeeper = i;
+                myDistance = iDistance;
+            }
+        }
+        return iKeeper;
+    }
+
+    private double getDistance(double statLat, double statLon) {
+        double v = 6372.8;
+
+        double gpsLat = location.getLatitude(); //lat1
+        double gpsLon = location.getLongitude(); //lon1
+
+        double dLat = Math.toRadians(statLat - gpsLat);
+        double dLon = Math.toRadians(statLon - gpsLon);
+
+        gpsLat = Math.toRadians(gpsLat);
+        statLat = Math.toRadians(statLat);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(gpsLat) * Math.cos(statLat);
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        return v * c;
+    }
+
+    private void sortStations(ArrayList<Station> stations) {
+        for(int i=1; i<stations.size(); i++) {
+            Collections.sort(stations, new Comparator<Station>() {
+                @Override
+                public int compare(Station t1, Station t2) {
+                    return Double.compare(t1.statDist, t2.statDist);
+                }
+            });
+        }
     }
 }
