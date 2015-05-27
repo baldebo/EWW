@@ -92,25 +92,121 @@ public class ConeParser extends Parser {
             /* First stations is always the closest one */
             ((TextView) view.findViewById(R.id.stationName)).setText(stations.get(0).name);
             ((TextView) view.findViewById(R.id.stationDistance)).setText(String.format("%.1f", stations.get(0).statDist));
-            if(Float.parseFloat(stations.get(0).airTemp) > 1 && stations.get(0).airTemp != null ) {
+
+            /* Air Temperature with warnings */
+            if(Float.parseFloat(stations.get(0).airTemp) < 3 && stations.get(0).airTemp != null ) {
                 mp.start();
-                v.vibrate(5000);
-                ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.RED); }
-            ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
-            ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
-            ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
+            } else {
+                ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
+            }
+            /* Road Temperature with warnings */
+            if (Float.parseFloat(stations.get(0).roadTemp) < 3 && stations.get(0).roadTemp != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
 
-            ((TextView) view.findViewById(R.id.stationName2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).name);
-            ((TextView) view.findViewById(R.id.stationDistance2)).setText(String.format("%.1f", stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).statDist));
-            ((TextView) view.findViewById(R.id.airTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).airTemp);
-            ((TextView) view.findViewById(R.id.roadTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).roadTemp);
-            ((TextView) view.findViewById(R.id.windSpd2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).windSpeed);
+            } else {
+                ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
+            }
 
+            /* Wind speed with warnings */
+            if(Float.parseFloat(stations.get(0).windSpeed) < 20 && stations.get(0).windSpeed != null ) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
+            } else {
+                ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
+            }
+
+
+
+
+            /* Second station with warnings */
+            ((TextView) view.findViewById(R.id.stationName2)).setText(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).name);
+            ((TextView) view.findViewById(R.id.stationDistance2)).setText(String.format("%.1f", stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).statDist));
+            Float airTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).airTemp);
+            Float roadTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).roadTemp);
+            Float windSpdF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed);
+            if(airTempF > 1 && airTempF != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
+            } else {
+                ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
+            }
+            if(roadTempF < 1 && airTempF != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.roadTemp2)).setText(Float.toString(roadTempF) + "°C");
+            } else {
+                ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.roadTemp2)).setText(Float.toString(roadTempF) + "°C");
+            }
+            if(windSpdF > 15 && windSpdF != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.windSpd2)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.windSpd2)).setText(Float.toString(windSpdF) + "m/s");
+            } else {
+                ((TextView) view.findViewById(R.id.windSpd2)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.windSpd2)).setText(Float.toString(windSpdF) + "m/s");
+            }
+            //((TextView) view.findViewById(R.id.airTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).airTemp + "°C");
+            //((TextView) view.findViewById(R.id.roadTemp2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).roadTemp + "°C");
+            //((TextView) view.findViewById(R.id.windSpd2)).setText(stations.get(findStationByDistance((AGAValues.SPEED/60)*30, stations)).windSpeed + "m/s");
+
+            /* Third Station with warnings */
             ((TextView) view.findViewById(R.id.stationName3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).name);
             ((TextView) view.findViewById(R.id.stationDistance3)).setText(String.format("%.1f", stations.get(findStationByDistance(AGAValues.SPEED, stations)).statDist));
-            ((TextView) view.findViewById(R.id.airTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp);
-            ((TextView) view.findViewById(R.id.roadTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
-            ((TextView) view.findViewById(R.id.windSpd3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
+            Float airTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp);
+            Float roadTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
+            Float windSpdF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
+            if(airTempF2 < 3 && airTempF2 != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
+            } else {
+                ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
+            }
+            if(roadTempF2 < 3 && roadTempF2 != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.roadTemp3)).setText(Float.toString(roadTempF2) + "°C");
+            } else {
+                ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.roadTemp3)).setText(Float.toString(roadTempF2) + "°C");
+            }
+            if(windSpdF2 > 15 && windSpdF2 != null) {
+                mp.start();
+                v.vibrate(1000);
+                ((TextView) view.findViewById(R.id.windSpd3)).setTextColor(Color.RED);
+                ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
+            } else {
+                ((TextView) view.findViewById(R.id.windSpd3)).setTextColor(Color.WHITE);
+                ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
+            }
+
+
+
+
+
+            //((TextView) view.findViewById(R.id.airTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp + "°C");
+            //((TextView) view.findViewById(R.id.roadTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp + "°C");
+            //((TextView) view.findViewById(R.id.windSpd3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed + "m/s");
 
         }
     }
