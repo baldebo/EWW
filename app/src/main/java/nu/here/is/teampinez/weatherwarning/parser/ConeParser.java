@@ -1,7 +1,11 @@
 package nu.here.is.teampinez.weatherwarning.parser;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -15,6 +19,7 @@ import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
 import nu.here.is.teampinez.weatherwarning.AGAValues;
+import nu.here.is.teampinez.weatherwarning.DriveActivity;
 import nu.here.is.teampinez.weatherwarning.ListViewAdapter;
 import nu.here.is.teampinez.weatherwarning.R;
 
@@ -26,6 +31,7 @@ public class ConeParser extends Parser {
     private Activity activity;
     private View view;
     private Location location;
+    private Context context;
 
     /**
      * ConeParser Construction method
@@ -77,9 +83,19 @@ public class ConeParser extends Parser {
             sortStations(stations);
             for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
 
+            /* Vibrator to use for warning */
+            DriveActivity act = DriveActivity.getInstance();
+            Vibrator v = (Vibrator) act.getSystemService(Context.VIBRATOR_SERVICE);
+            /* Playing the sound warning */
+            final MediaPlayer mp = MediaPlayer.create(act, R.raw.warning);
+
             /* First stations is always the closest one */
             ((TextView) view.findViewById(R.id.stationName)).setText(stations.get(0).name);
             ((TextView) view.findViewById(R.id.stationDistance)).setText(String.format("%.1f", stations.get(0).statDist));
+            if(Float.parseFloat(stations.get(0).airTemp) > 1 && stations.get(0).airTemp != null ) {
+                mp.start();
+                v.vibrate(5000);
+                ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.RED); }
             ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
             ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
             ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);

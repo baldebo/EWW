@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 
 public class DriveActivity extends Activity {
     MediaPlayer notificationSound;
+    private static DriveActivity instance;
 
     // Updating things
     LocationHandler locationHandler;
@@ -47,10 +48,11 @@ public class DriveActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_test);
 
+        instance = this;
+
         locationHandler = new LocationHandler(this);
 
         notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
-
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -61,6 +63,7 @@ public class DriveActivity extends Activity {
             }
         }, 2000, 20000);
     }
+    public static DriveActivity getInstance() {return instance;}
 
     @Override
     public void onPause() {
