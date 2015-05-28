@@ -95,14 +95,15 @@ public class ConeParser extends Parser {
 
         /* TODO Make this so much more nice :( */
         if(view != null) {
-            for(Station s : stations) {
-                double usableCoordinates[] = splitCoordinates(s.wgs84);
-                s.statDist = (getDistance(usableCoordinates[1], usableCoordinates[0]));
-            }
-            sortStations(stations);
-            removeBadStations(stations);
-            
-            for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
+            try {
+                for(Station s : stations) {
+                    double usableCoordinates[] = splitCoordinates(s.wgs84);
+                    s.statDist = (getDistance(usableCoordinates[1], usableCoordinates[0]));
+                }
+                sortStations(stations);
+                //removeBadStations(stations);
+
+                for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
 
             /* Vibrator to use for warning */
                 DriveActivity act = DriveActivity.getInstance();
@@ -286,6 +287,7 @@ public class ConeParser extends Parser {
             } catch (IndexOutOfBoundsException exception) {
                 exception.printStackTrace();
             }
+
 
             //((TextView) view.findViewById(R.id.airTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp + "°C");
             //((TextView) view.findViewById(R.id.roadTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp + "°C");
