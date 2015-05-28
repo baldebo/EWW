@@ -118,11 +118,11 @@ public class ConeParser extends Parser {
             else windSpeederino = 99f;
 
             /* Air Temperature with warnings */
-            if(airTemperino > -90 && airTemperino < 3 && stations.get(0).airTemp != null ) {
+            if(airTemperino > -90 && airTemperino < 3 && stations.get(0).airTemp != null && airTemperino < 90) {
                 ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
                 count1++;
-            } else if(stations.get(0).airTemp != null && airTemperino > -90) {
+            } else if(stations.get(0).airTemp != null && airTemperino > -90 && airTemperino < 90) {
                 ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
             } else {
@@ -130,12 +130,12 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.airTemp)).setText("N/A");
             }
             /* Road Temperature with warnings */
-            if (roadTemperino > -90 && roadTemperino < 3 && stations.get(0).roadTemp != null) {
+            if (roadTemperino > -90 && roadTemperino < 3 && stations.get(0).roadTemp != null && roadTemperino < 90) {
                 ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
                 count1++;
 
-            } else if (stations.get(0).windSpeed != null && roadTemperino > -90) {
+            } else if (stations.get(0).windSpeed != null && roadTemperino > -90 && roadTemperino < 90) {
                 ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
             } else {
@@ -144,11 +144,11 @@ public class ConeParser extends Parser {
             }
 
             /* Wind speed with warnings */
-            if(windSpeederino > -90 && windSpeederino < 20 && stations.get(0).windSpeed != null ) {
+            if(windSpeederino > -90 && windSpeederino < 20 && stations.get(0).windSpeed != null && windSpeederino < 90) {
                 ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
                 count1++;
-            } else if (stations.get(0).windSpeed != null && windSpeederino > -90) {
+            } else if (stations.get(0).windSpeed != null && windSpeederino > -90 && windSpeederino < 90) {
                 ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
             } else {
@@ -176,7 +176,7 @@ public class ConeParser extends Parser {
                 windSpdF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed);
             } else windSpdF = 99f;
 
-            if(airTempF > 1 && airTempF != null && airTempF > -90) {
+            if(airTempF > 1 && airTempF != null && airTempF > -90 && airTempF < 90 ) {
                 ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
                 count1++;
@@ -187,7 +187,7 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp2)).setText("N/A°C");
             }
-            if(roadTempF < 1 && airTempF != null && roadTempF > -90) {
+            if(roadTempF < 1 && airTempF != null && roadTempF > -90 && roadTempF < 90) {
                 ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp2)).setText(Float.toString(roadTempF) + "°C");
                 count1++;
@@ -198,7 +198,7 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.roadTemp2)).setText("NA°C");
             }
-            if(windSpdF > 15 && windSpdF != null && windSpdF > -90) {
+            if(windSpdF > 15 && windSpdF != null && windSpdF > -90 && windSpdF < 90) {
                 ((TextView) view.findViewById(R.id.windSpd2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd2)).setText(Float.toString(windSpdF) + "m/s");
                 count1++;
@@ -231,7 +231,7 @@ public class ConeParser extends Parser {
             if(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed != null) {
                 windSpdF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
             } else windSpdF2 = 99f;
-            if(airTempF2 < 3 && airTempF2 != null && airTempF2 > -90) {
+            if(airTempF2 < 3 && airTempF2 != null && airTempF2 > -90 && airTempF2 < 90) {
                 ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
                 count1++;
@@ -242,7 +242,7 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp3)).setText("N/A°C");
             }
-            if(roadTempF2 < 3 && roadTempF2 != null && roadTempF2 > -90) {
+            if(roadTempF2 < 3 && roadTempF2 != null && roadTempF2 > -90 && roadTempF2 < 90) {
                 ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp3)).setText(Float.toString(roadTempF2) + "°C");
                 count1++;
@@ -253,7 +253,7 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.roadTemp3)).setText("N/A°C");
             }
-            if(windSpdF2 > 15 && windSpdF2 != null && windSpdF2 > -90) {
+            if(windSpdF2 > 15 && windSpdF2 != null && windSpdF2 > -90 && windSpdF2 < 90) {
                 ((TextView) view.findViewById(R.id.windSpd3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
                 count1++;
