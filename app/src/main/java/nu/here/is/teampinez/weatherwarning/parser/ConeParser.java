@@ -240,7 +240,7 @@ public class ConeParser extends Parser {
 
 
 
-            if (!mute.getMuteAlert()){
+            if (!act.getMuteAlert()){
                 mp.start();
                 v.vibrate(1000);
             }

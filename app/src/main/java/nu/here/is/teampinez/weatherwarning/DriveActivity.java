@@ -76,7 +76,7 @@ public class DriveActivity extends Activity {
                 new ConeParser(DriveActivity.this, findViewById(R.id.driver_view), locationHandler.coordinates.getTriangle(locationHandler.bearing.activeBearing), locationHandler.coordinates.location);
 
             }
-        }, 2000, 20000);
+        }, 2000, 30000);
     }
     public static DriveActivity getInstance() {return instance;}
 
