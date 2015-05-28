@@ -32,6 +32,8 @@ public class ConeParser extends Parser {
     private View view;
     private Location location;
     private Context context;
+    private int count1 = 0;
+    private int count2 = 0;
 
     /**
      * ConeParser Construction method
@@ -93,22 +95,23 @@ public class ConeParser extends Parser {
             ((TextView) view.findViewById(R.id.stationName)).setText(stations.get(0).name);
             ((TextView) view.findViewById(R.id.stationDistance)).setText(String.format("%.1f", stations.get(0).statDist));
 
+            count2 = count1;
+            count1 = 0;
+
             /* Air Temperature with warnings */
             if(Float.parseFloat(stations.get(0).airTemp) < 3 && stations.get(0).airTemp != null ) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.airTemp)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp)).setText(stations.get(0).airTemp);
             }
             /* Road Temperature with warnings */
             if (Float.parseFloat(stations.get(0).roadTemp) < 3 && stations.get(0).roadTemp != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp)).setText(stations.get(0).roadTemp);
+                count1++;
 
             } else {
                 ((TextView) view.findViewById(R.id.roadTemp)).setTextColor(Color.WHITE);
@@ -117,10 +120,9 @@ public class ConeParser extends Parser {
 
             /* Wind speed with warnings */
             if(Float.parseFloat(stations.get(0).windSpeed) < 20 && stations.get(0).windSpeed != null ) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.windSpd)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.windSpd)).setText(stations.get(0).windSpeed);
@@ -136,28 +138,25 @@ public class ConeParser extends Parser {
             Float roadTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).roadTemp);
             Float windSpdF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed);
             if(airTempF > 1 && airTempF != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
             }
             if(roadTempF < 1 && airTempF != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp2)).setText(Float.toString(roadTempF) + "°C");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.roadTemp2)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.roadTemp2)).setText(Float.toString(roadTempF) + "°C");
             }
             if(windSpdF > 15 && windSpdF != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.windSpd2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd2)).setText(Float.toString(windSpdF) + "m/s");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.windSpd2)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.windSpd2)).setText(Float.toString(windSpdF) + "m/s");
@@ -173,31 +172,33 @@ public class ConeParser extends Parser {
             Float roadTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
             Float windSpdF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
             if(airTempF2 < 3 && airTempF2 != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
             }
             if(roadTempF2 < 3 && roadTempF2 != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.roadTemp3)).setText(Float.toString(roadTempF2) + "°C");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.roadTemp3)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.roadTemp3)).setText(Float.toString(roadTempF2) + "°C");
             }
             if(windSpdF2 > 15 && windSpdF2 != null) {
-                mp.start();
-                v.vibrate(1000);
                 ((TextView) view.findViewById(R.id.windSpd3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
+                count1++;
             } else {
                 ((TextView) view.findViewById(R.id.windSpd3)).setTextColor(Color.WHITE);
                 ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
+            }
+
+            if (count1 > count2){
+                mp.start();
+                v.vibrate(1000);
             }
 
 
