@@ -69,19 +69,4 @@ public class GUIActivity extends Activity implements TextToSpeech.OnInitListener
             startActivity(intent);
         }
     }
-
-    public void openMap(View view) {
-        if(AGAValues.IN_MOTION == 1) {
-            if(AGAValues.DISTRACTION_LEVEL < 2) {
-                Toast.makeText(getApplicationContext(), TOAST_ERROR_MSG, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), TOAST_ERROR_MSG, Toast.LENGTH_LONG).show();
-                //noinspection deprecation
-                tts.speak(TTS_ERROR_MSG, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        } else {
-            Intent intent = new Intent(this, MapActivity.class);
-            startActivity(intent);
-        }
-    }
 }
