@@ -34,6 +34,7 @@ public class ConeParser extends Parser {
     private Context context;
     private int count1 = 0;
     private int count2 = 0;
+    private boolean muteAlarm;
 
     /**
      * ConeParser Construction method
@@ -68,6 +69,8 @@ public class ConeParser extends Parser {
         }
     }
 
+
+
     @Override
     protected void onPostExecute(ArrayList<Station> stations) {
         Log.v(getClass().getName(), "Executed ConeParser");
@@ -75,6 +78,9 @@ public class ConeParser extends Parser {
             ListViewAdapter adapter = new ListViewAdapter(activity, stations);
             listView.setAdapter(adapter);
         }
+
+        DriveActivity mute = new DriveActivity();
+
 
         /* TODO Make this so much more nice :( */
         if(view != null) {
@@ -97,9 +103,19 @@ public class ConeParser extends Parser {
 
             count2 = count1;
             count1 = 0;
-            Float airTemperino = Float.parseFloat(stations.get(0).airTemp);
-            Float roadTemperino = Float.parseFloat(stations.get(0).roadTemp);
-            Float windSpeederino = Float.parseFloat(stations.get(0).windSpeed);
+            Float airTemperino;
+            Float roadTemperino;
+            Float windSpeederino;
+
+            if (stations.get(0).airTemp != null) {
+                airTemperino = Float.parseFloat(stations.get(0).airTemp);}
+            else airTemperino = 99f;
+            if (stations.get(0).roadTemp != null) {
+                roadTemperino = Float.parseFloat(stations.get(0).roadTemp);}
+            else roadTemperino = 99f;
+            if (stations.get(0).windSpeed != null) {
+                windSpeederino = Float.parseFloat(stations.get(0).windSpeed);}
+            else windSpeederino = 99f;
 
             /* Air Temperature with warnings */
             if(airTemperino < 3 && stations.get(0).airTemp != null ) {
@@ -137,9 +153,20 @@ public class ConeParser extends Parser {
             /* Second station with warnings */
             ((TextView) view.findViewById(R.id.stationName2)).setText(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).name);
             ((TextView) view.findViewById(R.id.stationDistance2)).setText(String.format("%.1f", stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).statDist));
-            Float airTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).airTemp);
-            Float roadTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).roadTemp);
-            Float windSpdF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed);
+            Float airTempF;
+            Float roadTempF;
+            Float windSpdF;
+
+            if(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).airTemp != null) {
+                airTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).airTemp);
+            } else airTempF = 99f;
+            if(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).roadTemp != null) {
+                roadTempF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).roadTemp);
+            } else roadTempF = 99f;
+            if (stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed != null) {
+                windSpdF = Float.parseFloat(stations.get(findStationByDistance((AGAValues.SPEED / 60) * 30, stations)).windSpeed);
+            } else windSpdF = 99f;
+
             if(airTempF > 1 && airTempF != null) {
                 ((TextView) view.findViewById(R.id.airTemp2)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp2)).setText(Float.toString(airTempF) + "°C");
@@ -171,9 +198,21 @@ public class ConeParser extends Parser {
             /* Third Station with warnings */
             ((TextView) view.findViewById(R.id.stationName3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).name);
             ((TextView) view.findViewById(R.id.stationDistance3)).setText(String.format("%.1f", stations.get(findStationByDistance(AGAValues.SPEED, stations)).statDist));
-            Float airTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp);
-            Float roadTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
-            Float windSpdF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
+
+            Float airTempF2;
+            Float roadTempF2;
+            Float windSpdF2;
+
+            if(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp != null) {
+                airTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp);
+            } else airTempF2 = 99f;
+            if(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp != null) {
+                roadTempF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp);
+            } else roadTempF2 = 99f;
+
+            if(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed != null) {
+                windSpdF2 = Float.parseFloat(stations.get(findStationByDistance(AGAValues.SPEED, stations)).windSpeed);
+            } else windSpdF2 = 99f;
             if(airTempF2 < 3 && airTempF2 != null) {
                 ((TextView) view.findViewById(R.id.airTemp3)).setTextColor(Color.RED);
                 ((TextView) view.findViewById(R.id.airTemp3)).setText(Float.toString(airTempF2) + "°C");
@@ -199,7 +238,9 @@ public class ConeParser extends Parser {
                 ((TextView) view.findViewById(R.id.windSpd3)).setText(Float.toString(windSpdF2) + "m/s");
             }
 
-            if (count1 > count2){
+
+
+            if (!mute.getMuteAlert()){
                 mp.start();
                 v.vibrate(1000);
             }

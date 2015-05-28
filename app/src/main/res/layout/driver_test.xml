@@ -40,12 +40,16 @@
             android:id="@+id/stationName"
             android:layout_gravity="center_horizontal" />
 
-        <ImageView
-            android:layout_width="64dp"
-            android:id="@+id/warningPic"
-            android:layout_height="64dp"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/warningPic"/>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mute Alerts"
+            android:textSize="18sp"
+            android:textColor="#FFF"
+            android:textStyle="bold"
+            android:height="48dp"
+            android:id="@+id/muteAlerts"
+            android:layout_gravity="center_horizontal" />
 
         <TableRow
             android:layout_width="match_parent"

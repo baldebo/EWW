@@ -19,6 +19,9 @@ import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -39,6 +42,7 @@ import java.util.concurrent.ExecutionException;
 public class DriveActivity extends Activity {
     MediaPlayer notificationSound;
     private static DriveActivity instance;
+    private boolean muteAlert;
 
     // Updating things
     LocationHandler locationHandler;
@@ -47,6 +51,16 @@ public class DriveActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_test);
+
+        Switch alertSwitch = (Switch) findViewById(R.id.muteAlerts);
+        alertSwitch.setChecked(false);
+        alertSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) muteAlert = true;
+                else muteAlert = false;
+            }
+        });
 
         instance = this;
 
@@ -60,6 +74,7 @@ public class DriveActivity extends Activity {
                 Log.d(getClass().getName(), String.valueOf(locationHandler.coordinates.location.getLatitude()));
                 Log.d(getClass().getName(), String.valueOf(locationHandler.bearing.activeBearing));
                 new ConeParser(DriveActivity.this, findViewById(R.id.driver_view), locationHandler.coordinates.getTriangle(locationHandler.bearing.activeBearing), locationHandler.coordinates.location);
+
             }
         }, 2000, 20000);
     }
@@ -160,6 +175,11 @@ public class DriveActivity extends Activity {
         TextView txtAvgBearing = (TextView) findViewById(R.id.windSpd);
         txtAvgBearing.setText(String.valueOf(avgBearing) + "\u00B0");
     }
+
+    public boolean getMuteAlert() {
+        return muteAlert;
+    }
+
 
 
 //    public void averageBearing() {
