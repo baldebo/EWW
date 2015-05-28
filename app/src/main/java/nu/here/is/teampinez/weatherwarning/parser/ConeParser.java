@@ -75,6 +75,17 @@ public class ConeParser extends Parser {
     protected void onPostExecute(ArrayList<Station> stations) {
         Log.v(getClass().getName(), "Executed ConeParser");
         if(listView != null) {
+            for(int i=0; i<stations.size(); i++) {
+                if(Double.parseDouble(stations.get(i).airTemp) == -99.6 || stations.get(i).airTemp == null) {
+                    stations.get(i).airTemp = "N/A";
+                }
+                if(Double.parseDouble(stations.get(i).roadTemp) == -99.6 || stations.get(i).roadTemp == null) {
+                    stations.get(i).roadTemp = "N/A";
+                }
+                if(stations.get(i).windSpeed == null) {
+                    stations.get(i).windSpeed = "N/A";
+                }
+            }
             ListViewAdapter adapter = new ListViewAdapter(activity, stations);
             listView.setAdapter(adapter);
         }
@@ -274,7 +285,6 @@ public class ConeParser extends Parser {
             } catch (IndexOutOfBoundsException exception) {
                 exception.printStackTrace();
             }
-
 
             //((TextView) view.findViewById(R.id.airTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).airTemp + "°C");
             //((TextView) view.findViewById(R.id.roadTemp3)).setText(stations.get(findStationByDistance(AGAValues.SPEED, stations)).roadTemp + "°C");
