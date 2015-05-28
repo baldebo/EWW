@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="0.75"
+    android:weightSum="1"
     android:background="#ff272a2b"
     android:id="@+id/LinearLayout">
 
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.25"
+        android:layout_weight="0.5"
         android:weightSum="1">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="match_parent"
             android:id="@+id/imgBtnDriveView"
             android:src="@mipmap/truck"
             android:clickable="true"
@@ -25,31 +25,17 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.25">
+        android:layout_weight="0.5">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="match_parent"
             android:id="@+id/imgBtnStationView"
             android:src="@mipmap/therm"
             android:clickable="true"
             android:onClick="openStationView"/>
     </TableRow>
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.25">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="175dp"
-            android:id="@+id/imgBtnMap"
-            android:src="@mipmap/map"
-            android:clickable="true"
-            android:onClick="openMap"/>
-    </TableRow>
 </LinearLayout>
