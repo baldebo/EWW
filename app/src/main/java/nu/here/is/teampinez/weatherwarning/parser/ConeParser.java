@@ -95,13 +95,14 @@ public class ConeParser extends Parser {
 
         /* TODO Make this so much more nice :( */
         if(view != null) {
-            try {
-                for(Station s : stations) {
-                    double usableCoordinates[] = splitCoordinates(s.wgs84);
-                    s.statDist = (getDistance(usableCoordinates[1], usableCoordinates[0]));
-                }
-                sortStations(stations);
-                for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
+            for(Station s : stations) {
+                double usableCoordinates[] = splitCoordinates(s.wgs84);
+                s.statDist = (getDistance(usableCoordinates[1], usableCoordinates[0]));
+            }
+            sortStations(stations);
+            removeBadStations(stations);
+            
+            for(Station s : stations) Log.d("Station - ", s.name + " - " + s.statDist);
 
             /* Vibrator to use for warning */
                 DriveActivity act = DriveActivity.getInstance();
@@ -379,6 +380,16 @@ public class ConeParser extends Parser {
                     return Double.compare(t1.statDist, t2.statDist);
                 }
             });
+        }
+    }
+
+    private void removeBadStations(ArrayList<Station> stations) {
+        for(int i=0; i<stations.size(); i++) {
+            if(Double.parseDouble(stations.get(i).airTemp) == -99.6 || stations.get(i).airTemp == null) {
+                stations.remove(i);
+            } else if(Double.parseDouble(stations.get(i).roadTemp) == -99.6 || stations.get(i).roadTemp == null) {
+                stations.remove(i);
+            }
         }
     }
 }
