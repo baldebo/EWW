@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +18,9 @@ import java.util.TimerTask;
 
 
 public class DriveActivity extends Activity {
-    MediaPlayer notificationSound;
-    private static DriveActivity instance;
+    private MediaPlayer notificationSound;
+    private Vibrator vibrator;
+    private Timer alarmTimer;
     private boolean muteAlert;
 
     // Updating things
@@ -29,21 +31,30 @@ public class DriveActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_test);
 
+        locationHandler = new LocationHandler(this);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
+
         Switch alertSwitch = (Switch) findViewById(R.id.muteAlerts);
         alertSwitch.setChecked(false);
         alertSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) muteAlert = true;
-                else muteAlert = false;
+                if (isChecked) {
+                    alarmTimer.cancel();
+                } else {
+                    alarmTimer = new Timer();
+                    alarmTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //TODO Same function as below.
+                            // With the same interval.
+                            vibrator.vibrate(500);
+                        }
+                    }, 500, 1000);
+                }
             }
         });
-
-        instance = this;
-
-        locationHandler = new LocationHandler(this);
-
-        notificationSound = MediaPlayer.create(DriveActivity.this, R.raw.notification);
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -54,22 +65,34 @@ public class DriveActivity extends Activity {
 
             }
         }, 2000, 30000);
+
+        alarmTimer = new Timer();
+        alarmTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                /**
+                 * TODO Check for alarm boolean
+                 * Set a nice interval.
+                 *
+                 * Solution, Create a public static boolean to access from the ConeParser?
+                 **/
+                vibrator.vibrate(500);
+            }
+        }, 500, 1000);
     }
-    public static DriveActivity getInstance() {return instance;}
 
     @Override
     public void onPause() {
         Log.v(getClass().getName(), "Pausing task");
         super.onPause();
         locationHandler.coordinates.locationManager.removeUpdates(locationHandler.coordinates);
-        //timer.cancel();
+        alarmTimer.cancel();
     }
 
     @Override
     public void onResume() {
         Log.v(getClass().getName(), "Resuming task");
         super.onRestart();
-        //timer.schedule(timerTask, 0, 30000);
     }
 
     @Override
@@ -92,10 +115,6 @@ public class DriveActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public boolean getMuteAlert() {
-        return muteAlert;
     }
 }
 
