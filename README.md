@@ -1,29 +1,16 @@
-# README #
+# Early Weather Warning #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+The application is divided into two views, DriveView and StationView. 
+DriveView displays a driving friendly view, listing stations relevant to the users current heading while minimizing user interaction required to benefit from its functionality.
 
 ### How do I get set up? ###
+* Fork/Clone repository
+* Gradle Sync
+* Contribute!
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+### External Libraries ###
+* [coordinate-transformation-library](https://github.com/goober/coordinate-transformation-library)
+* [AGA Project](https://developer.lindholmen.se/redmine/projects/aga/wiki/AGA_Project)
 
 ### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* Group 12 - DIT524
